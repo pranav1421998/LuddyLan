@@ -6,6 +6,7 @@ export const Login=()=>{
       email.preventDefault();
       console.log(email);
     }
+    
     return(
       <>
         <form onSubmit={handleSubmit}>
