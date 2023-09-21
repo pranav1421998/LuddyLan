@@ -6,7 +6,7 @@ export const Login=()=>{
       email.preventDefault();
       console.log(email);
     }
-    
+
     return(
       <>
         <form onSubmit={handleSubmit}>
@@ -16,7 +16,7 @@ export const Login=()=>{
           <input type="password" value={password} placeholder="*********" id="password" name="password"></input><br></br>
           <button>Login</button>
         </form>
-        <h6>Don't have an account?<button>Register</button></h6>
+        <h6>Don't have an account? <button>Register</button></h6>
       </>
     )
 }
