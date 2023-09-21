@@ -15,7 +15,8 @@ export const Register=()=>{
                 <label for="password">New Password: </label>
                 <input type="password" value={password} placeholder="*********" id="password" name="password"></input><br></br>
                 <label for="password" >Confirm Password: </label>
-          <input type="password" value={password} placeholder="*********" id="password" name="password"></input><br></br>
+                <input type="password" value={password} placeholder="*********" id="password" name="password"></input><br></br>
+                <button>Create Account</button>
             </form>
             <h6>Already have an account? <button>Login</button></h6>
         </>
