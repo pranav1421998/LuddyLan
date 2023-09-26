@@ -1,10 +1,15 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import React from 'react';
-import { Register } from './Register.js';
+import  {Register} from './Register.js';
+import React, { useState } from "react";
+import './App.css';
+import Login from './Login.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
-
+    const [currentForm, setCurrentForm] = useState('login');
+    const toggleForm = (formName) => {
+        setCurrentForm(formName);
+    }
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in
@@ -17,10 +22,10 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <Register></Register>
-            </header>
-        </div>
+      {
+        currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
+      }
+    </div>
     );
 }
 
