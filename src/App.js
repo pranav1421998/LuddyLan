@@ -6,7 +6,7 @@ import Login from './Login.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
-    const [currentForm, setCurrentForm] = useState('password');
+    const [currentForm, setCurrentForm] = useState('login');
     const toggleForm = (formName) => {
         setCurrentForm(formName);
     }
@@ -23,7 +23,7 @@ function App() {
     return (
         <div className="App">
       {
-        currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
+       currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
       }
     </div>
     );
