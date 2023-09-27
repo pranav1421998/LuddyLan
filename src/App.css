@@ -7,7 +7,7 @@
   color:black;
 }
 
-.auth-form-container, .login-form, .register-form {
+.auth-form-container, .login-form, .register-form, .createpassword-form {
   display: flex;
   flex-direction: column;
 }

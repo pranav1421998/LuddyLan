@@ -6,7 +6,7 @@ import Login from './Login.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
-    const [currentForm, setCurrentForm] = useState('login');
+    const [currentForm, setCurrentForm] = useState('password');
     const toggleForm = (formName) => {
         setCurrentForm(formName);
     }
