@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "./firebaseConfig"; 
-import "firebase/auth";
 import React, { useState } from "react";
 import {GoogleButton} from 'react-google-button';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -13,15 +13,18 @@ const Login = (props) => {
     }
   // Define the Google Sign-In method
   const app = initializeApp(firebaseConfig);
-  const signInWithGoogle = () => {
-      const provider = new app.auth.GoogleAuthProvider();
-      app.auth().signInWithPopup(provider).then((result) => {
-          const user = result.user;
-          // Redirect or navigate to another page after successful login, if desired
-          console.log("Logged in as:", user.displayName);
-      }).catch((error) => {
-          console.error("Error during Google sign-in:", error);
-      });
+  const auth = getAuth();
+
+    const handleGoogleSignIn = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // Successful login. Redirect or update UI as needed.
+                console.log("Logged in as:", result.user.displayName);
+            })
+            .catch((error) => {
+                console.error("Error during Google sign-in:", error);
+            });
   };
 
   return (
@@ -36,10 +39,11 @@ const Login = (props) => {
                 <button type="submit">Log In</button>
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
-            <GoogleButton onClick={signInWithGoogle}></GoogleButton>
+            <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
         </div>
     </>
   );
 };
+
 
 export default Login;
