@@ -3,6 +3,7 @@ import firebaseConfig from "./firebaseConfig";
 import React, { useState } from "react";
 import {GoogleButton} from 'react-google-button';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import password from './password.js';
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
