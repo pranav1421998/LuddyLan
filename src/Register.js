@@ -18,9 +18,7 @@ export const Register = () => {
 
     return (
         <div className="register-container">
-            <button onClick={handleGoogleSignIn}>Sign in with Google</button>
             <h6>Already have an account? <button onClick={() => {
-                // Handle traditional email/password login
             }}>Login</button></h6>
         </div>
     );
