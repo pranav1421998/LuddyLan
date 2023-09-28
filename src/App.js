@@ -3,6 +3,7 @@ import  {Register} from './Register.js';
 import React, { useState } from "react";
 import './App.css';
 import Login from './Login.js';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
