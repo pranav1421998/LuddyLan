@@ -4,9 +4,12 @@ import React, { useState } from "react";
 import {GoogleButton} from 'react-google-button';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import password from './password.js';
+import { useNavigate } from "react-router-dom";
+
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,8 +23,9 @@ const Login = (props) => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
             .then((result) => {
-                // Successful login. Redirect or update UI as needed.
+                // Successful login.
                 console.log("Logged in as:", result.user.displayName);
+                navigate("/password");  // Navigate to Password.js page
             })
             .catch((error) => {
                 console.error("Error during Google sign-in:", error);
