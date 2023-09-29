@@ -13,6 +13,7 @@ export const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email);
+        // write code to send register info to database in firebase
     }
 
     const handleGoogleSignIn = () => {

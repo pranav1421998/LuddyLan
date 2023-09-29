@@ -51,8 +51,6 @@ const Login = (props) => {
             </form>
 
             <button className="link-btn">Forgot Password</button>
-
-            <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
             <div className="google-btn">
 
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
