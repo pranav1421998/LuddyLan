@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 
-export const CreatePassword = () => {
+export default function Password () {
     const [password,setPassword]=useState('');
     const [confirmPass,setConfirmPass]=useState('');
     const handleSavePassword= (e)=>{

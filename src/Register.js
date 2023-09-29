@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export const Register = () => {
     const auth = getAuth();
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [byear, setByear] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(email);
+    }
 
     const handleGoogleSignIn = () => {
         const provider = new GoogleAuthProvider();
@@ -18,44 +29,21 @@ export const Register = () => {
 
     return (
         <div className="register-container">
-            <button onClick={handleGoogleSignIn}>Sign in with Google</button>
-            <h6>Already have an account? <button onClick={() => {
-                // Handle traditional email/password login
-            }}>Login</button></h6>
+            <h2>Register</h2>
+            <form className="register-form" onSubmit={handleSubmit}>
+                <label htmlFor="email">New email:</label>
+                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Email" />
+                <label htmlFor="password">New password:</label>
+                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="Password" />
+                
+                <label>Please fill out some basic info:</label>
+                <label htmlFor="byear">Birth Year: 
+                <input value={byear} onChange={(e) => setByear(e.target.value)}type="byear" placeholder="1990" id="byear" name="byer" />
+                </label>
+        
+                <button type="submit" onClick={handleSubmit}>Create Account</button>
+            </form>
+            <button className="link-btn" onClick={() => navigate("/")}>Already have an account? Login.</button>
         </div>
     );
 };
-
-// import { GoogleButton } from 'react-google-button';
-// import { UserAuth } from '../context/AuthContext';
-// import { useNavigate } from 'react-router-dom';
-
-// const Register = () => {
-//   const { googleSignIn, user } = UserAuth();
-//   const navigate = useNavigate();
-
-//   const handleGoogleSignIn = async () => {
-//     try {
-//       await googleSignIn();
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-// //   useEffect(() => {
-// //     if (user != null) {
-// //       navigate('/account');
-// //     }
-// //   }, [user]);
-
-//   return (
-//     <div>
-//       <h1 className='text-center text-3xl font-bold py-8'>Sign in</h1>
-//       <div className='max-w-[240px] m-auto py-4'>
-//         <GoogleButton onClick={handleGoogleSignIn} />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Register;
