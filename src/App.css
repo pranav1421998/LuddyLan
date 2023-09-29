@@ -1,24 +1,10 @@
 .App {
   text-align: center;
-  display: flex;
-  min-height: 100vh;
+  /* display: flex; */
+  /* min-height: 100vh; */
   align-items: center;
   justify-content: center;
-  color:black;
-}
-
-.auth-form-container, .login-form, .register-form, .createpassword-form {
-  display: flex;
-  flex-direction: column;
-}
-
-@media screen and (min-width: 600px) {
-  .auth-form-container {
-    padding: 5rem;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin: 0.5rem;
-  }
+  color:#9b0303;
 }
 
 label {
@@ -28,7 +14,7 @@ label {
 
 input {
   margin: 0.5rem 0;
-  padding: 1rem;
+  padding: 8px;
   border: 1px solid black;
   border-radius: 10px;
   border-color: BLACK;
@@ -36,15 +22,29 @@ input {
 
 button {
   border: none;
-  background-color:green;
-  padding: 20px;
+  background-color:#9b0303;
+  padding: 10px;
   border-radius: 10px;
   cursor: pointer;
   color:white;
 }
 
-.link-btn {
-  background: none;
-  color: black;
-  text-decoration: underline;
+.auth-form-container{
+  display: flex;
+  flex-direction: column;
+  margin:auto;
+}
+
+.login-form, .register-form, .createpassword-form {
+  display: flex;
+  flex-direction: column;
+  margin:auto;
+}
+
+@media screen and (min-width: 600px) {
+  .auth-form-container {
+      padding: 5rem;
+      height: 60vh;
+      width: 50vw;
+  }
 }

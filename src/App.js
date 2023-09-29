@@ -3,9 +3,13 @@ import  {Register} from './Register.js';
 import React, { useState } from "react";
 import './App.css';
 import Login from './Login.js';
+
 // routing
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
+
+import Navbar from './Navbar.js';
+
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
@@ -22,8 +26,9 @@ function App() {
             console.log("(From app )User is signed out.");
         }
     });
-
+   
     return (
+
         
         <Router>
             <div className="App">
@@ -35,6 +40,7 @@ function App() {
                 </Routes>
             </div>
         </Router>
+
     );
 }
 
