@@ -41,13 +41,13 @@ export const Register = () => {
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="Password" />
                 
                 <label>Please fill out some basic info:</label>
-                <label htmlFor="first">First Name: 
+                <label htmlFor="first">First name: 
                 <input value={first} onChange={(e) => setFirst(e.target.value)}type="first" placeholder="first" id="first" name="first" />
                 </label>
-                <label htmlFor="last">Last Name: 
+                <label htmlFor="last">Last name: 
                 <input value={last} onChange={(e) => setLast(e.target.value)}type="last" placeholder="last" id="last" name="last" />
                 </label>
-                <label htmlFor="byear">Birth Year: 
+                <label htmlFor="byear">Birth year: 
                 <input value={byear} onChange={(e) => setByear(e.target.value)}type="byear" placeholder="1990" id="byear" name="byear" />
                 </label>
                 <label htmlFor="phone">Phone: 
