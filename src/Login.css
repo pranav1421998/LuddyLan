@@ -1,0 +1,20 @@
+
+.background {
+    background-image: url('./Images/luddy.png');
+    background-size: cover;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+  
+  .link-btn {
+    background: none;
+    color: black;
+    text-decoration: underline;
+  }
+
+  .google-btn {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 10px;
+  }
