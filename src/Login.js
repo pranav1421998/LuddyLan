@@ -34,7 +34,7 @@ const Login = (props) => {
     <>
     <div className="background">
     <div className="auth-form-container">
-            <h2>LOGIN</h2>
+            <h1>LOGIN</h1>
             <form className="login-form" onSubmit={handleSubmit}>
                 {/* <label htmlFor="email">Username</label> */}
                 <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Username" />
