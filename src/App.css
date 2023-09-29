@@ -1,13 +1,13 @@
 .App {
   text-align: center;
-  display: flex;
-  min-height: 100vh;
+  /* display: flex; */
+  /* min-height: 100vh; */
   align-items: center;
   justify-content: center;
-  color:black;
+  color:#9b0303;
 }
 
-.auth-form-container, .login-form, .register-form, .createpassword-form {
+/* .auth-form-container, .login-form, .register-form, .createpassword-form {
   display: flex;
   flex-direction: column;
 }
@@ -47,4 +47,4 @@ button {
   background: none;
   color: black;
   text-decoration: underline;
-}
+} */

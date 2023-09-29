@@ -3,6 +3,7 @@ import  {Register} from './Register.js';
 import React, { useState } from "react";
 import './App.css';
 import Login from './Login.js';
+import Navbar from './Navbar.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
@@ -19,9 +20,13 @@ function App() {
             console.log("(From app )User is signed out.");
         }
     });
-
+   
     return (
         <div className="App">
+ <div className="App">
+    <Navbar />
+    {/* The rest of your application */}
+    </div>
       {
        currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
       }

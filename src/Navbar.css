@@ -1,0 +1,35 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #9b0303;
+    color: #fff;
+    /* padding: 10px; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff; /* Customize the text color */
+    z-index: 100; 
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 15vh;
+    height: 10vh;
+    margin-right: 10px;
+  }
+  
+  .login {
+    margin-right: 20px;
+  }
+  
+  .login a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
