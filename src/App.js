@@ -7,7 +7,7 @@ import Login from './Login.js';
 // routing
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
-
+import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
 
 
@@ -36,6 +36,7 @@ function App() {
                     <Route path="/" element={<Login />} />
                     <Route path="/password" element={<Password />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
 
                 </Routes>
             </div>
