@@ -51,7 +51,6 @@ const Login = (props) => {
                 <Link to="/passwordrecovery">Forgot Password?</Link>
             </form>
 
-            <button className="link-btn">Forgot Password</button>
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>
