@@ -50,6 +50,8 @@ const Login = (props) => {
                 <button className="link-btn" onClick={() => navigate("/register")}>Don't have an account? Register here.</button>
                 <Link to="/passwordrecovery">Forgot Password?</Link>
             </form>
+
+            <button className="link-btn">Forgot Password</button>
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>

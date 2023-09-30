@@ -20,10 +20,10 @@ function App() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in
-            console.log("(From APP)User signed in:", user.displayName);
+            console.log("(From App)User signed in:", user.displayName);
         } else {
             // User is signed out
-            console.log("(From app )User is signed out.");
+            console.log("(From App)User is signed out.");
         }
     });
    
