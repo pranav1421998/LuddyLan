@@ -3,6 +3,7 @@ import  {Register} from './Register.js';
 import React, { useState } from "react";
 import './App.css';
 import Login from './Login.js';
+import Dashboard from './dashboard';
 
 // routing
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -37,6 +38,7 @@ function App() {
                     <Route path="/password" element={<Password />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
+                    <Route path="/dashboard" element={<Dashboard />} />
 
                 </Routes>
             </div>

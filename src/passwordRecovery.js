@@ -12,6 +12,8 @@ const PasswordRecovery = () => {
     const [error, setError] = useState('');
     const [showQuestion, setShowQuestion] = useState(false);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
     
     //for OTP
     const [otp, setOtp] = useState('');
@@ -45,8 +47,13 @@ const PasswordRecovery = () => {
             sendPasswordResetEmail(auth, email)
             .then(() => {
                 console.log('Password reset email sent!');
-                navigate('/login');
-                // navigate the user to the login page
+                setError('Password reset email sent');
+                setLoading(true); // Set loading to true to show loading indicator
+                setTimeout(() => {
+                    setLoading(false); // Set loading to false before navigation
+                    navigate('/'); // navigate the user to the login page after 5s
+                }, 5000);
+                
             })
             .catch((error) => {
                 console.error('Error sending password reset email:', error);
@@ -58,7 +65,8 @@ const PasswordRecovery = () => {
             setError('Incorrect OTP!');
         }
     };
-    
+
+
 
 
     const fetchQuestion = async () => {
@@ -103,7 +111,16 @@ const PasswordRecovery = () => {
         }
 
         return (
-            <form onSubmit={showOtpInput ? verifyOtp : (showQuestion ? handleRecovery : handleEmailSubmit)}>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                if (showOtpInput) {
+                    verifyOtp();
+                } else if (showQuestion) {
+                    handleRecovery(e);
+                } else {
+                    handleEmailSubmit(e);
+                }
+            }}>
                 {!showQuestion && !showOtpInput && (
                     <div>
                         <label>
@@ -134,6 +151,7 @@ const PasswordRecovery = () => {
                 {error && <p>{error}</p>}
             </form>
         );
+        
 };
 
 export default PasswordRecovery;

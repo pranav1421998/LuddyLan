@@ -2,8 +2,7 @@ import { initializeApp } from "firebase/app";
 import firebaseConfig from "./firebaseConfig"; 
 import React, { useState } from "react";
 import {GoogleButton} from 'react-google-button';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import password from './password.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword} from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -14,11 +13,28 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email);
-    }
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+            console.log('User logged in:', userCredential.user);
+            navigate('/dashboard'); // Replace with the route you want to navigate to upon successful login
+        } catch (error) {
+            console.error('Error during sign-in:', error);
+            if (error.code === 'auth/wrong-password') {
+                setError('Incorrect password. Please try again.');
+            } else if (error.code === 'auth/user-not-found') {
+                setError('No account found with this email. Please register.');
+            } else {
+                setError('Error during sign-in. Please try again.');
+            }
+        }
+    };
+
+
   // Define the Google Sign-In method
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
@@ -29,7 +45,7 @@ const Login = (props) => {
             .then((result) => {
                 // Successful login.
                 console.log("Logged in as:", result.user.displayName);
-                navigate("/password");  // Navigate to Password.js page
+                navigate("/dashboard");  // Navigate to Password.js page
             })
             .catch((error) => {
                 console.error("Error during Google sign-in:", error);
@@ -54,6 +70,7 @@ const Login = (props) => {
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>
+            {error && <p style={{color: 'red'}}>{error}</p>}
         </div>
         </div>
     </>
