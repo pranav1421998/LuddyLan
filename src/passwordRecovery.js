@@ -111,6 +111,7 @@ const PasswordRecovery = () => {
         }
 
         return (
+            <div className='auth-form-container'>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (showOtpInput) {
@@ -150,6 +151,7 @@ const PasswordRecovery = () => {
                 )}
                 {error && <p>{error}</p>}
             </form>
+            </div>
         );
         
 };

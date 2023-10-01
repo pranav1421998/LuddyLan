@@ -13,7 +13,7 @@ const Navbar = () => {
         <img src={icon} alt="Logo" />
       </div>
       <div className="login">
-        <a href="/contact"> <FontAwesomeIcon icon={faUser} /> Sign In</a>
+        <a href="/"> <FontAwesomeIcon icon={faUser} /> Sign In</a>
       </div>
     </nav>
   );

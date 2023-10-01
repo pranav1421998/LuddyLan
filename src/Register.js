@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
-
+import './Register.css';
 
 
 
@@ -74,8 +74,9 @@ export const Register = () => {
     };
 
     return (
-        <div className="register-container">
-            <h2>Register</h2>
+        <div className="background-container">
+        <div className="auth-form-container">
+            <h2>REGISTER</h2>
             <form className="register-form" onSubmit={handleSubmit}>
                 <label htmlFor="email">New email:</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Email" />
@@ -110,6 +111,7 @@ export const Register = () => {
                 {loading && <p>Loading...</p>}
                 {error && <p style={{color: 'red'}}>{error}</p>}
             </div>
+        </div>
         </div>
 
     );

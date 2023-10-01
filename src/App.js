@@ -33,6 +33,7 @@ function App() {
         
         <Router>
             <div className="App">
+                <Navbar></Navbar>
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/password" element={<Password />} />
