@@ -35,7 +35,7 @@ button {
   margin:auto;
 }
 
-.login-form, .register-form, .createpassword-form {
+.login-form, .register-form, .register-container, .createpassword-form {
   display: flex;
   flex-direction: column;
   margin:auto;
