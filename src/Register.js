@@ -1,3 +1,4 @@
+// Register
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -5,38 +6,113 @@ import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 import './Register.css';
 
-
-
-
 export const Register = () => {
     const auth = getAuth();
     const db = getFirestore();
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
     const [byear, setByear] = useState('');
     const [first, setFirst] = useState('');
     const [last, setLast] = useState('');
     const [phone, setPhone] = useState('');
-    const [error, setError] = useState('');
     const [secQues, setSecQues] = useState('');
     const [secAns, setSecAns] = useState('');
-
-    const navigate = useNavigate();  
+    const [emailError, setEmailError] = useState('');
+    const [passError, setPassError] = useState('');
+    const [confirmPassError, setConfirmPassError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    
-    const handleSubmit = async (e) => { // <-- Mark handleSubmit as async
+    // Define an array of security questions
+    const securityQuestions = [
+        "Where were you born?",
+        "What was the first exam you failed?",
+        "What is your favorite food?",
+        "What color do you like the most?",
+        "What is your favorite sport?"
+    ];
+
+    const navigate = useNavigate();  
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value;
+        setEmail(value);
+
+        // Check if email is empty or doesn't end with 'iu.edu'
+        if (!value || !value.endsWith('iu.edu')) {
+            setEmailError('Please enter a valid IU email address.');
+        } else {
+            setEmailError('');
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPass(value);
+
+        // Check if password meets constraints
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\-]).{8,}$/;
+        if (!passwordRegex.test(value)) {
+            setPassError('Password must be at least 8 characters long.Should include: A upper case letter, A special character.');
+        } else {
+            setPassError('');
+        }
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const value = e.target.value;
+        setConfirmPass(value);
+
+        // Check if passwords match
+        if (value !== pass) {
+            setConfirmPassError('Passwords do not match.');
+        } else {
+            setConfirmPassError('');
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, pass); // <-- use await here
-            console.log('User registered:', userCredential.user);
-            setError('Registered, Redirecting to login page...');
-            setLoading(true); // Set loading to true to show loading indicator
     
-            // Add user details to Firestore
-            const userDocRef = doc(db, "users", email); // using email as the document ID
-            await setDoc(userDocRef, { // <-- use await here
+        // Check if any required fields are empty
+        if (
+            !email.endsWith('iu.edu') ||
+            !email ||
+            !pass ||
+            !confirmPass ||
+            !first ||
+            !last ||
+            !secQues ||
+            !secAns
+        ) {
+            setEmailError('Please fill out all required fields correctly.');
+            window.scrollTo(0, 0);
+            return;
+        }
+    
+        // Check if passwords match
+        if (pass !== confirmPass) {
+            setConfirmPassError('Passwords do not match.');
+            window.scrollTo(0, 0);
+            return;
+        }
+    
+        // Check password constraints
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\-]).{8,}$/;
+        if (!passwordRegex.test(pass)) {
+            setPassError('Password must be at least 8 characters long, include a capital letter, and a special character.');
+            window.scrollTo(0, 0);
+            return;
+        }
+    
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            console.log('User registered:', userCredential.user);
+            setLoading(true);
+    
+            const userDocRef = doc(db, "users", email);
+            await setDoc(userDocRef, {
                 firstName: first,
                 lastName: last,
                 birthYear: byear,
@@ -46,21 +122,20 @@ export const Register = () => {
             });
     
             setTimeout(() => {
-                setLoading(false); // Set loading to false before navigation
-                navigate('/'); // navigate the user to the login page after 5s
+                setLoading(false);
+                navigate('/');
             }, 5000);
         } catch (error) {
-            // Handle all errors here
             if (error.code === 'auth/email-already-in-use') {
                 console.error('Email already in use:', error);
-                setError('This email address is already in use. Please use a different email address or sign in.');
+                setEmailError('This email address is already in use. Please use a different email address or sign in.');
             } else {
                 console.error('Error registering user:', error);
-                setError('Error registering user. Please try again.');
+                setEmailError('Error registering user. Please try again.');
             }
         }
     };
-
+    
     const handleGoogleSignIn = () => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
@@ -77,42 +152,89 @@ export const Register = () => {
         <div className="background-container">
         <div className="auth-form-container">
             <h2>REGISTER</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <label htmlFor="email">New email:</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Email" />
-                <label htmlFor="password">New password:</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="Password" />
-                
-                <label>Please fill out some basic info:</label>
-                <label htmlFor="first">First name: 
-                <input value={first} onChange={(e) => setFirst(e.target.value)}type="first" placeholder="first" id="first" name="first" />
-                </label>
-                <label htmlFor="last">Last name: 
-                <input value={last} onChange={(e) => setLast(e.target.value)}type="last" placeholder="last" id="last" name="last" />
-                </label>
-                <label htmlFor="byear">Birth year: 
-                <input value={byear} onChange={(e) => setByear(e.target.value)}type="byear" placeholder="1990" id="byear" name="byear" />
-                </label>
-                <label htmlFor="phone">Phone: 
-                <input value={phone} onChange={(e) => setPhone(e.target.value)}type="phone" placeholder="5556667777" id="phone" name="phone" />
-                </label>
-                <label htmlFor="secQues">Security Question: 
-                <input value={secQues} onChange={(e) => setSecQues(e.target.value)}type="secQues" placeholder="Type security question" id="secQues" name="secQues" />
-                </label>
-                <label htmlFor="secAns">Security Answer: 
-                <input value={secAns} onChange={(e) => setSecAns(e.target.value)}type="secAns" placeholder="Type answer" id="secAns" name="secAns" />
-                </label>
-                <button type="submit" onClick={handleSubmit}>Create Account</button>
-            </form>
-            <button className="link-btn" onClick={() => navigate("/")}>Already have an account? Login.</button>
-            
-            
             <div>
                 {loading && <p>Loading...</p>}
-                {error && <p style={{color: 'red'}}>{error}</p>}
             </div>
-        </div>
-        </div>
+            <form className="register-form" onSubmit={handleSubmit}>
+                <label htmlFor="email">IU Email*:</label>
+                <input 
+                    value={email} 
+                    onChange={handleEmailChange}
+                    type="email" 
+                    placeholder="username@iu.edu" 
+                    id="email" 
+                    name="Email" 
+                />
+                {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+                
+                <label htmlFor="password">New password*:</label>
+                <input 
+                    value={pass} 
+                    onChange={handlePasswordChange}
+                    type="password" 
+                    placeholder="********" 
+                    id="password" 
+                    name="Password" 
+                />
+                {passError && <p style={{ color: 'red' }}>{passError}</p>}
 
+                <label htmlFor="confirmPass">Confirm Password*:</label>
+                <input 
+                    value={confirmPass} 
+                    onChange={handleConfirmPasswordChange}
+                    type="password" 
+                    placeholder="********" 
+                    id="confirmPass" 
+                    name="ConfirmPassword" 
+                />
+                {confirmPassError && <p style={{ color: 'red' }}>{confirmPassError}</p>}
+
+                <label htmlFor="first">First name*:</label>
+                <input value={first} onChange={(e) => setFirst(e.target.value)} type="text" placeholder="First Name" id="first" name="first" />
+                <label htmlFor="last">Last name*:</label>
+                <input value={last} onChange={(e) => setLast(e.target.value)} type="text" placeholder="Last Name" id="last" name="last" />
+                <label htmlFor="byear">Birth year:</label>
+                <input value={byear} onChange={(e) => setByear(e.target.value)} type="text" placeholder="xxxx" id="byear" name="byear" />
+                <label htmlFor="phone">Phone:</label>
+                <input
+                    value={phone}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        // Use a regular expression to match and extract digits
+                        const digitsOnly = value.replace(/\D/g, '');
+                        // Ensure the phone number has exactly 10 digits
+                        if (digitsOnly.length === 10) {
+                            // Split the digits into groups of three and add hyphens
+                            const formattedValue = `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(3, 6)}-${digitsOnly.slice(6)}`;
+                            setPhone(formattedValue);
+                        } else {
+                            // If the input doesn't have 10 digits, set the value as is (no formatting)
+                            setPhone(value);
+                        }
+                    }}
+                    type="text"
+                    placeholder="xxx-xxx-xxxx"
+                    id="phone"
+                    name="phone"
+                    pattern="[0-9-]{12}"
+                    maxLength="12"
+                />
+                {/* Dropdown for Security Questions */}
+                <label htmlFor="secQues">Security Question*:</label>
+                <select value={secQues} onChange={(e) => setSecQues(e.target.value)} id="secQues" name="secQues">
+                    <option value="">Select a security question</option>
+                    {securityQuestions.map((question, index) => (
+                        <option key={index} value={question}>{question}</option>
+                    ))}
+                </select>
+
+                <label htmlFor="secAns">Security Answer*:</label>
+                <input value={secAns} onChange={(e) => setSecAns(e.target.value)} type="text" placeholder="Type answer" id="secAns" name="secAns" />
+                <button type="submit">Create Account</button>
+            </form>
+            <button className="link-btn" onClick={() => navigate("/")}>Already have an account? Login.</button>
+        </div>
+        </div>
     );
 };
+
