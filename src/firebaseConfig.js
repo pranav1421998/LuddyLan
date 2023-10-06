@@ -1,3 +1,5 @@
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyBchoNYXCrGHdcPrs326HQyoDNYfpTavlM",
   authDomain: "luddy-lan.firebaseapp.com",
@@ -7,6 +9,8 @@ const firebaseConfig = {
   appId: "1:291881690617:web:6475e10fc8c5f82e03c928",
   measurementId: "G-7P277WPKRE"
 };
-  
-  export default firebaseConfig;
+
+export default firebaseConfig;
+const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
   
