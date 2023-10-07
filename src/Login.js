@@ -1,10 +1,11 @@
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "./firebaseConfig"; 
+import { auth, db, provider } from "./firebaseConfig"; 
+import { doc, getDoc } from 'firebase/firestore';
 import React, { useState } from "react";
 import {GoogleButton} from 'react-google-button';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword} from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
 
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate} from "react-router-dom";
 import { Link } from 'react-router-dom';
 import './Login.css';
 
@@ -14,6 +15,7 @@ const Login = (props) => {
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
     const [error, setError] = useState('');
+
 
 
     const handleSubmit = async (e) => {
@@ -36,21 +38,29 @@ const Login = (props) => {
 
 
   // Define the Google Sign-In method
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
 
     const handleGoogleSignIn = () => {
-        const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
-            .then((result) => {
+            .then(async(result) => {
                 // Successful login.
-                console.log("Logged in as:", result.user.displayName);
-                navigate("/dashboard");  // Navigate to Password.js page
+                const user_email = result.user.email;
+                // Retrieve the document with ID equal to user_email from 'users' collection
+                const userDocRef = doc(db, 'users', user_email);
+                const userDocSnapshot = await getDoc(userDocRef);
+
+                if (!userDocSnapshot.exists()) { // Check if the document exists
+                    // User not found, redirect to Register.js with email
+                    navigate('/register', { state: { email: user_email } });
+                }else {
+                  // User found, redirect to Dashboard
+                  navigate('/dashboard');
+                }
+        
             })
             .catch((error) => {
                 console.error("Error during Google sign-in:", error);
             });
-  };
+    };
 
   return (
     <>
