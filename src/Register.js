@@ -1,6 +1,6 @@
 // Register
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate , useLocation} from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
@@ -10,6 +10,7 @@ export const Register = () => {
     const auth = getAuth();
     const db = getFirestore();
 
+    //variable for the form
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -23,7 +24,6 @@ export const Register = () => {
     const [passError, setPassError] = useState('');
     const [confirmPassError, setConfirmPassError] = useState('');
     const [loading, setLoading] = useState(false);
-
     // Define an array of security questions
     const securityQuestions = [
         "Where were you born?",
@@ -33,18 +33,22 @@ export const Register = () => {
         "What is your favorite sport?"
     ];
 
+    //helper varibles to check if the user comes from the register button or google auth
+    const [isEmailReadOnly, setIsEmailReadOnly] = useState(false);
+    const location = useLocation();
     const navigate = useNavigate();  
 
     const handleEmailChange = (e) => {
-        const value = e.target.value;
-        setEmail(value);
+        //not settable if user came from google auth
+        //if (!isEmailReadOnly) {
+            const value = e.target.value;
+            setEmail(value);
 
-        // Check if email is empty or doesn't end with 'iu.edu'
-        if (!value || !value.endsWith('iu.edu')) {
-            setEmailError('Please enter a valid IU email address.');
-        } else {
-            setEmailError('');
-        }
+            // Check if email is empty or doesn't end with 'iu.edu'
+            if (!value || !value.endsWith('iu.edu')) {
+                setEmailError('Please enter a valid IU email address.');
+            } else { setEmailError('');}
+       // }
     };
 
     const handlePasswordChange = (e) => {
@@ -54,7 +58,7 @@ export const Register = () => {
         // Check if password meets constraints
         const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\-]).{8,}$/;
         if (!passwordRegex.test(value)) {
-            setPassError('Password must be at least 8 characters long.Should include: A upper case letter, A special character.');
+            setPassError('Password must be at least 8 characters long.\nShould include: A upper case letter, A special character.');
         } else {
             setPassError('');
         }
@@ -76,8 +80,10 @@ export const Register = () => {
         e.preventDefault();
     
         // Check if any required fields are empty
-        if (
-            !email.endsWith('iu.edu') ||
+        if(!email.endsWith('iu.edu')){
+            setEmailError('Should be an IU email')
+        }
+        else if (
             !email ||
             !pass ||
             !confirmPass ||
@@ -107,10 +113,11 @@ export const Register = () => {
         }
     
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-            console.log('User registered:', userCredential.user);
+            //create authentication entry only when not using google auth
+            if(!(isEmailReadOnly)){const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            console.log('User registered:', userCredential.user);}
+
             setLoading(true);
-    
             const userDocRef = doc(db, "users", email);
             await setDoc(userDocRef, {
                 firstName: first,
@@ -126,27 +133,26 @@ export const Register = () => {
                 navigate('/');
             }, 5000);
         } catch (error) {
-            if (error.code === 'auth/email-already-in-use') {
-                console.error('Email already in use:', error);
-                setEmailError('This email address is already in use. Please use a different email address or sign in.');
-            } else {
-                console.error('Error registering user:', error);
-                setEmailError('Error registering user. Please try again.');
-            }
+            
+                if (error.code === 'auth/email-already-in-use') {
+                    console.error('Email already in use:', error);
+                    setEmailError('This email address is already in use. Please use a different email address or sign in.');
+                } else {
+                    console.error('Error registering user:', error);
+                    setEmailError('Error registering user. Please try again.');
+                }
         }
     };
     
-    const handleGoogleSignIn = () => {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // Successful login. Redirect or update UI as needed.
-                console.log("Logged in as:", result.user.displayName);
-            })
-            .catch((error) => {
-                console.error("Error during Google sign-in:", error);
-            });
-    };
+    useEffect(() => {
+        // Extract email from location state and set it to the email state
+        if (location && location.state && location.state.email) {
+          setEmail(location.state.email);
+          setIsEmailReadOnly(true); // Set email input to read-only since email was passed
+        } else {
+          setIsEmailReadOnly(false); // Allow email input to be editable since no email was passed
+        }
+      }, [location]);
 
     return (
         <div className="background-container">
@@ -164,6 +170,7 @@ export const Register = () => {
                     placeholder="username@iu.edu" 
                     id="email" 
                     name="Email" 
+                    readOnly={isEmailReadOnly}//conditional readonly    
                 />
                 {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
                 
