@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
+import { Link } from "react-router-dom";
  
 
 const Dashboard = () => {
@@ -38,10 +39,9 @@ const Dashboard = () => {
                     <p>Last Name: {userDetails.lastName}</p>
                     <p>Birth Year: {userDetails.birthYear}</p>
                     <p>Phone: {userDetails.phone}</p>
-                </div>
-            ) : (
-                <p className="loading">Loading user details...</p>
-            )}
+                </div> ) : ( <p className="loading">Loading user details...</p>)}
+                <Link to="/profile">Profile Page</Link>
+
         </div>
     );
 };

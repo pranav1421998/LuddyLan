@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import './App.css';
 import Login from './Login.js';
 import Dashboard from './dashboard';
+import Profile from "./profile.js";
+import ProfileSettings from "./profileSettings.js";
 
 // routing
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -41,6 +43,8 @@ function App() {
                     <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/CreatePost" element={<FileUpload></FileUpload>}/>
+                    <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/profileSettings" element={<ProfileSettings/>}/>
                 </Routes>
             </div>
         </Router>
