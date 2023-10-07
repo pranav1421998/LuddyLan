@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { auth, db, provider } from "./firebaseConfig"; 
+import {sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 
@@ -41,8 +42,6 @@ const PasswordRecovery = () => {
     const verifyOtp = () => {
         if (otp === generatedOtp) {
             console.log('OTP verified!');
-    
-            const auth = getAuth();
             
             sendPasswordResetEmail(auth, email)
             .then(() => {
