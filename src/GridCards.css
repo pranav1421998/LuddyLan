@@ -11,8 +11,6 @@
   .card {
     background-color: #fff;
     border: 1px solid #ccc;
-    padding: 16px;
-    text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: 40vh;
     width: 40vh;
@@ -31,4 +29,16 @@
       grid-template-columns: repeat(3, 1fr); /* Display three cards per row on screens wider than 1024px */
     }
   }
+
+.profile-picture {
+    background-image: url('Images/user.jpg');
+    height: 25vh;
+    width: 40vh;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    /* width: 100%;
+    height: 100%; */
+    object-fit: cover;
+}
+
   
