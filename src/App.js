@@ -11,7 +11,7 @@ import Password from './password';
 import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
 import FileUpload from './CreatePost.js';
-
+import FriendRequests from './FriendRequests.js';
 function App() {
     const auth = getAuth();  // Initialize the auth instance
     const [currentForm, setCurrentForm] = useState('login');
@@ -41,6 +41,7 @@ function App() {
                     <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/CreatePost" element={<FileUpload></FileUpload>}/>
+                    <Route path="/friendRequests" element={<FriendRequests />} />
                 </Routes>
             </div>
         </Router>
