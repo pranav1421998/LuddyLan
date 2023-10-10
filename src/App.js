@@ -12,7 +12,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
 import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
-import FileUpload from './CreatePost.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
