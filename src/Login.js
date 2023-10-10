@@ -12,11 +12,11 @@ import './Login.css';
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [status, setStatus] = useState(false);
+    const navigate = useNavigate();
 
-
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

@@ -9,8 +9,16 @@
     top: 0;
     left: 0;
     width: 100%;
-    color: #fff; /* Customize the text color */
     z-index: 100; 
+  }
+
+  .navbar2 {
+    display: flex;
+    background-color: #9b0303;
+    color: white;
+    margin-left: 20vw;
+    width: 100%;
+    gap: 10vw;
   }
   
   .logo {
