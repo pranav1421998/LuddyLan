@@ -1,41 +1,66 @@
+/* profile.css */
+
 .profile-container {
-    margin-top: 20px; /* Adjusted space for the navigation bar */
+    margin-top: 60px;
     padding: 20px;
     background-color: #f0f0f0;
-    min-height: 100vh; /* Ensures the container takes at least the full height of the viewport */
+    min-height: 100vh;
 }
 
-.profile-header {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.profile-info {
+.profile-card, .post-card {
     background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    border-radius: 5%;
+}
+.post-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto; /* Add a scrollbar if the content exceeds the height */
+  }
+  
+
+.profile-picture {
+    /* Add styling for profile picture */
+    object-fit: cover;
 }
 
 .button-container {
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
+    /* Style your buttons, you can refer to .tab in Sidebar.css */
+    padding: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
 .button:hover {
     background-color: #ddd;
 }
-
-.button-link {
-    text-decoration: none;
-    color: #333;
+.main-content {
+    flex-grow: 1;
+    position: relative;
+    margin-left: 0px; /* Width of the sidebar, adjust as needed */
+    margin-top: 100px;
+    padding: 100px;
+}
+.container {
+    display: flex;
+    margin-top: 30px;
+}
+.sidebar {
+    width: 250px;
+    height: calc(100vh - 70px); /* Adjust 60px to the actual height of your navbar */
+    background-color: #333;
+    color: #000000;
+    position: fixed;
+    left: 0;
+    margin-top: 10px;
+}
+.image {
+    width: 500px;
 }

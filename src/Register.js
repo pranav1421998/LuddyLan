@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
-import { getFirestore } from 'firebase/firestore';
+import { db } from "./firebaseConfig";
 import './Register.css';
 
 export const Register = () => {
     const auth = getAuth();
-    const db = getFirestore();
 
     //variable for the form
     const [email, setEmail] = useState('');

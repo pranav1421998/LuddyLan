@@ -2,7 +2,7 @@
 
 import React from 'react';
 import './Navbar.css'
-import icon from './Images/icon.png';
+import icon from './Images/icon2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 

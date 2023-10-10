@@ -1,49 +1,56 @@
+/* profileSettings.css */
+
 .settings-container {
-    margin-top: 60px; /* Adjusted space for the navigation bar */
+    margin-top: 60px;
     padding: 20px;
     background-color: #f0f0f0;
-    min-height: 100vh; /* Ensures the container takes at least the full height of the viewport */
+    min-height: 100vh;
 }
 
-.settings-header {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.settings-form {
+.settings-card {
     background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5%;
 }
 
-.settings-form label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.setting {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
 }
 
-.settings-form label:last-child {
-    border-bottom: none;
+.button-container {
+    display: flex;
+    justify-content: space-between;
 }
 
-.save-button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 5px;
+.button {
+    /* Style your buttons */
+    padding: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
-.save-button:hover {
+.button:hover {
     background-color: #ddd;
 }
-
-.button-link {
-    text-decoration: none;
-    color: #333;
+.main-content {
+    flex-grow: 1;
+    margin-left: 0px; /* Width of the sidebar, adjust as needed */
+    margin-top: 30px;
+    padding: 20px;
+}
+.container {
+    display: flex;
+    margin-top: 30px;
+}
+.sidebar {
+    width: 250px;
+    height: calc(100vh - 70px); /* Adjust 60px to the actual height of your navbar */
+    background-color: #333;
+    color: #000000;
+    position: fixed;
+    left: 0;
+    margin-top: 10px;
 }
