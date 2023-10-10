@@ -40,7 +40,6 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/CreatePost" element={<FileUpload></FileUpload>}/>
                 </Routes>
             </div>
         </Router>
