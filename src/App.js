@@ -12,6 +12,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
 import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
+import FileUpload from './CreatePost.js';
+import FriendRequests from './FriendRequests.js';
 
 function App() {
     const auth = getAuth();  // Initialize the auth instance
@@ -42,6 +44,7 @@ function App() {
                     <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/CreatePost" element={<FileUpload></FileUpload>}/>
+                    <Route path="/friendRequests" element={<FriendRequests />} />
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/profileSettings" element={<ProfileSettings/>}/>
                 </Routes>
