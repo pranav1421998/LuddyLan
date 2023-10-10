@@ -23,5 +23,3 @@ const storage = getStorage(app);
 
 export default firebaseConfig;
 export { auth, db, provider, storage};
-
-  

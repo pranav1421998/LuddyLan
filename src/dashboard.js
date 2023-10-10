@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
- 
+import { Link } from "react-router-dom";
+import { db, auth } from "./firebaseConfig";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
-    const db = getFirestore();
-    const auth = getAuth();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -33,15 +32,15 @@ const Dashboard = () => {
             {userDetails ? (
                 <div className="user-details">
                     <img src={process.env.PUBLIC_URL + './icon2.png'} alt="App Logo" className="logo" />
+                    <Link to="/profile">Profile Page</Link>
                     <p>Email: {userDetails.id}</p>
                     <p>First Name: {userDetails.firstName}</p>
                     <p>Last Name: {userDetails.lastName}</p>
                     <p>Birth Year: {userDetails.birthYear}</p>
                     <p>Phone: {userDetails.phone}</p>
-                </div>
-            ) : (
-                <p className="loading">Loading user details...</p>
-            )}
+                </div> ) : ( <p className="loading">Loading user details...</p>)}
+                
+
         </div>
     );
 };

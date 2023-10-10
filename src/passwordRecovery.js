@@ -66,8 +66,6 @@ const PasswordRecovery = () => {
     };
 
 
-
-
     const fetchQuestion = async () => {
         try {
             const db = getFirestore();
