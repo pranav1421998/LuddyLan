@@ -2,12 +2,20 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
-import { Link } from "react-router-dom";
+import {Link ,useNavigate} from "react-router-dom";
 import { db, auth } from "./firebaseConfig";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
-
+    const navigate=useNavigate();
+    const handlePost = async (e) => {
+        e.preventDefault();
+        try {
+            navigate('/CreatePost'); 
+        } catch (error) {
+            console.error('Error during redirecting:', error);
+        }
+    };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -38,8 +46,8 @@ const Dashboard = () => {
                     <p>Last Name: {userDetails.lastName}</p>
                     <p>Birth Year: {userDetails.birthYear}</p>
                     <p>Phone: {userDetails.phone}</p>
+                    <button type="submit" onClick={handlePost}>Create Post</button>
                 </div> ) : ( <p className="loading">Loading user details...</p>)}
-                
 
         </div>
     );

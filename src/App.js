@@ -6,6 +6,7 @@ import Login from './Login.js';
 import Dashboard from './dashboard';
 import Profile from "./profile.js";
 import ProfileSettings from "./profileSettings.js";
+import PollForm from "./CreatePoll.js"
 
 // routing
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -47,6 +48,7 @@ function App() {
                     <Route path="/friendRequests" element={<FriendRequests />} />
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/profileSettings" element={<ProfileSettings/>}/>
+                    <Route path="/CreatePoll" element={<PollForm/>}/>
                 </Routes>
             </div>
         </Router>
