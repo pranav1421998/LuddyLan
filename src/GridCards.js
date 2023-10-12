@@ -1,31 +1,24 @@
 import React from "react";
 import './GridCards.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark  } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GridCards = () => {
+const GridCards = ({ name, profilePicture }) => {
     return (
         <div className="grid-cards">
-            {/* Your grid cards content goes here */}
             <div className="card">
                 <div className="profile-picture">
+                    <img src={profilePicture} alt={name} />
                 </div>
-                <p>Veda Charitha</p>
+                <p>{name}</p>
                 <div>
-                <a>
-                    <FontAwesomeIcon icon={faCircleCheck} style ={{color: 'green'}}/>
-                </a>
-                <FontAwesomeIcon icon={faCircleXmark} />
+                    <a>
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px' }} />
+                        {/* Adjust the font-size as needed (e.g., '24px') */}
+                    </a>
+                    <FontAwesomeIcon icon={faTimesCircle} style={{ fontSize: '24px' }} />
                 </div>
             </div>
-            <div className="card">Card 2</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-
             {/* Add more cards as needed */}
         </div>
     );

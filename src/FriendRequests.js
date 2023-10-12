@@ -1,20 +1,14 @@
 import React from "react";
 import './FriendRequests.css';
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
-import GridCards from "./GridCards"; // Updated import statement
-
+import GridCards from "./GridCards";
+import SidebarFriends from "./SidebarFriends";
 const FriendRequests = () => {
     return (
-        <div className="sidebar-container">
-            <Sidebar className="sidebar">
-                <Menu style={{background: '#9b0303', color: 'white'}}>
-                    <MenuItem> Friend Requests </MenuItem>
-                    <MenuItem> My Friends </MenuItem>
-                    <MenuItem> All Users </MenuItem>
-                </Menu>
-            </Sidebar>
+        <div className="component">
+            <SidebarFriends></SidebarFriends>
+            <h2>Friend Requests</h2>
             <div>
-            <GridCards /> {/* Use the GridCards component */}
+            <GridCards name={"userName"} profilePicture={"Images/user.jpg"} /> {/* Use the GridCards component */}
             </div>
         </div>
     );

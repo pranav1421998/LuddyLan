@@ -2,6 +2,7 @@
   margin-top: 10vh;
   display: flex;
   height: 100vh;
+  position: fixed;
 }
 
 .sidebar {
@@ -13,18 +14,6 @@
     display: flex;
     /* Add any other container styles you need */
 }
-
-/* .sidebar-container {
-    position: fixed;
-    margin-top: 10vh;
-    top: 0;
-    left: 0;
-    width: 250px;
-    background: #9b0303;
-    color: white;
-    height: 100vh;
-    display: flex;
-} */
 
 .content {
     margin-left: 250px; /* Adjust this margin to match the sidebar width */
