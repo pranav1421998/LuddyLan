@@ -20,3 +20,7 @@
     /* Add any other content styles you need */
     overflow: auto;
 }
+
+.heading {
+    position: fixed;
+}
