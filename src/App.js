@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
 import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
+import navbar2 from './Navbar2.js';
 import FileUpload from './CreatePost.js';
 import FriendRequests from './FriendRequests.js';
 

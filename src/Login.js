@@ -1,5 +1,5 @@
 import { auth, db, provider } from "./firebaseConfig"; 
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc , updateDoc} from 'firebase/firestore';
 import React, { useState, useEffect } from "react";
 import {GoogleButton} from 'react-google-button';
 import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
@@ -13,23 +13,44 @@ const Login = (props) => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const changeLoginStatus = (e) => {
-        // create a reference of the collection's document
-        const user_email = e.user.email;
-        const userDocRef = doc(db, 'users', user_email);
-        console.log("loggedIn: " + userDocRef.loggedIn)
-        // Update the "loggedIn" in the document
-        if (userDocRef.loggedIn=true) {
-            userDocRef.update({loggedIn: false})
-            .then(() => { console.log('Document field updated successfully'); })
-            .catch((error) => { console.error('Error updating document field:', error); }); 
-        } else {
-            userDocRef.update({loggedIn: true})
-            .then(() => { console.log('Document field updated successfully'); })
-            .catch((error) => { console.error('Error updating document field:', error); }); 
-        }    
-    };
+    // const changeLoginStatus = (e) => {
+    //     // create a reference of the collection's document
+    //     const user_email = e.user.email;
+    //     const userDocRef = doc(db, 'users', user_email);
+    //     console.log("loggedIn: " + userDocRef.loggedIn)
+    //     // Update the "loggedIn" in the document
+    //     if (userDocRef.loggedIn=true) {
+    //         userDocRef.update({loggedIn: false})
+    //         .then(() => { console.log('Document field updated successfully'); })
+    //         .catch((error) => { console.error('Error updating document field:', error); }); 
+    //     } else {
+    //         userDocRef.update({loggedIn: true})
+    //         .then(() => { console.log('Document field updated successfully'); })
+    //         .catch((error) => { console.error('Error updating document field:', error); }); 
+    //     }    
+    // };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            // your async logic here
+            const userEmail = auth.currentUser ? auth.currentUser.email : null;
+            if(userEmail){
+                    const ref = doc(db, 'users', userEmail);
+
+                            // Update a single field in the document
+                            try {
+                            await updateDoc(ref, {
+                                loggedIn: false
+                            });
+                            window.loggedstatus = false;
+                            console.log("Document successfully updated!");
+                            } catch (error) {
+                            console.error("Error updating document: ", error);
+                            }
+            }
+        };
+        fetchData();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,7 +60,7 @@ const Login = (props) => {
             const user_email = e.user.email;
             const userDocRef = doc(db, 'users', user_email); 
             navigate('/dashboard'); // Replace with the route you want to navigate to upon successful login
-            changeLoginStatus();
+            //changeLoginStatus();
         } catch (error) {
             console.error('Error during sign-in:', error);
             if (error.code === 'auth/wrong-password') {
@@ -69,7 +90,7 @@ const Login = (props) => {
                 }else {
                   // User found, redirect to Dashboard
                   navigate('/dashboard');
-                  changeLoginStatus();
+                  //changeLoginStatus();
                 }
         
             })

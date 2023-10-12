@@ -13,7 +13,7 @@ const Navbar = () => {
   // var to keep track of login status
   var [loginStatus, setLoginStatus] = useState(false);
   
-  if (loginStatus = true) {
+  if (window.loggedstatus == true) {
     return (
       <nav className="navbar">
         <div className="logo">
