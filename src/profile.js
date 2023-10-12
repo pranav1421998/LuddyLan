@@ -61,9 +61,6 @@ function Profile() {
             <p>Post ID: {post.id}</p>
             <p>Caption: {post.Caption}</p>
             <img src={post.Media} alt="Post" className='image'/>
-
-
-            
             {/* Add a delete button for each post */}
             <button className='button'>Delete</button>
           </div>
