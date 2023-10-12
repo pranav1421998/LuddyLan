@@ -2,18 +2,18 @@
 
 import './Navbar.css'
 import icon from './Images/icon.png';
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { auth, db } from "./firebaseConfig"; 
+import { doc, getDoc, updateDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faUsers, faComment, faGear, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   
-  const navigate = useNavigate();  
-  // var to keep track of login status
-  var [loginStatus, setLoginStatus] = useState(false);
-  
-  if (window.loggedstatus == true) {
+  const navigate = useNavigate();   
+
+  if (window.status == true) {
     return (
       <nav className="navbar">
         <div className="logo">
@@ -27,7 +27,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="login">
-          <a href="/" onClick={() => setLoginStatus(false)}><FontAwesomeIcon icon={faSignOut}/> Log out</a>
+          <a href="/" onClick={() => window.status = false}><FontAwesomeIcon icon={faSignOut}/> Log out</a>
         </div>
       </nav>
     );
@@ -38,7 +38,7 @@ const Navbar = () => {
           <img src={icon} alt="Logo" />
         </div>
         <div className="login">
-        <a href="/" onClick={() => setLoginStatus(true)}> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
+        <a href="/" onClick={() => window.status = true}> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
         </div>
       </nav>
     );
