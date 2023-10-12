@@ -24,6 +24,7 @@ const Login = (props) => {
                     await updateDoc(ref, {
                         loggedIn: false
                     });
+                    window.status = false;
                     console.log("Document successfully updated!");
                 } catch (error) {
                     console.error("Error updating document: ", error);

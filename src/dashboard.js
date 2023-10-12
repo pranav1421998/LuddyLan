@@ -22,7 +22,7 @@ const Dashboard = () => {
                         await updateDoc(userDocRef, {
                             loggedIn: true
                         });
-                        window.loggedstatus = true;
+                        window.status = true;
                         console.log("Document successfully updated!");
                         } catch (error) {
                         console.error("Error updating document: ", error);
