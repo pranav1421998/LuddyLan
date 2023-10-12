@@ -126,7 +126,8 @@ export const Register = () => {
                 birthYear: byear,
                 phone: phone,
                 securityQuestion: secQues,
-                securityAnswer: secAns
+                securityAnswer: secAns,
+                loggedIn: false
             });
     
             setTimeout(() => {

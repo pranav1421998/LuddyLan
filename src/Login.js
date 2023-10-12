@@ -1,10 +1,8 @@
 import { auth, db, provider } from "./firebaseConfig"; 
 import { doc, getDoc } from 'firebase/firestore';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {GoogleButton} from 'react-google-button';
 import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
-
-
 import { useNavigate,Link } from "react-router-dom";
 import './Login.css';
 
@@ -13,16 +11,35 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [error, setError] = useState('');
-    const [status, setStatus] = useState(false);
     const navigate = useNavigate();
 
-    
+    const changeLoginStatus = (e) => {
+        // create a reference of the collection's document
+        const user_email = e.user.email;
+        const userDocRef = doc(db, 'users', user_email);
+        console.log("loggedIn: " + userDocRef.loggedIn)
+        // Update the "loggedIn" in the document
+        if (userDocRef.loggedIn=true) {
+            userDocRef.update({loggedIn: false})
+            .then(() => { console.log('Document field updated successfully'); })
+            .catch((error) => { console.error('Error updating document field:', error); }); 
+        } else {
+            userDocRef.update({loggedIn: true})
+            .then(() => { console.log('Document field updated successfully'); })
+            .catch((error) => { console.error('Error updating document field:', error); }); 
+        }    
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             console.log('User logged in:', userCredential.user);
+            const user_email = e.user.email;
+            const userDocRef = doc(db, 'users', user_email); 
             navigate('/dashboard'); // Replace with the route you want to navigate to upon successful login
+            changeLoginStatus();
         } catch (error) {
             console.error('Error during sign-in:', error);
             if (error.code === 'auth/wrong-password') {
@@ -46,13 +63,13 @@ const Login = (props) => {
                 // Retrieve the document with ID equal to user_email from 'users' collection
                 const userDocRef = doc(db, 'users', user_email);
                 const userDocSnapshot = await getDoc(userDocRef);
-
                 if (!userDocSnapshot.exists()) { // Check if the document exists
                     // User not found, redirect to Register.js with email
                     navigate('/register', { state: { email: user_email } });
                 }else {
                   // User found, redirect to Dashboard
                   navigate('/dashboard');
+                  changeLoginStatus();
                 }
         
             })

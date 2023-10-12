@@ -5,7 +5,7 @@ import icon from './Images/icon.png';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faUsers, faComment, faGear, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   
@@ -18,15 +18,16 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="logo">
           <img src={icon} alt="Logo" />
-        <div className="navbar2">
-          <p onClick={() => navigate('/FriendRequest')}>Friends</p>
-          <p>Chat</p>
-          <p>Profile</p>
-          <p>Settings</p>
-        </div>
+          <div className="navbar2">
+            <p onClick={() => navigate('/dashboard')}><FontAwesomeIcon icon={faHome}/>Home</p>
+            <p onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/>Friends</p>
+            <p onClick={() => navigate('/chat')}><FontAwesomeIcon icon={faComment}/>Chat</p>
+            <p onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/>Profile</p>
+            <p onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/>Settings</p>
+          </div>
         </div>
         <div className="login">
-          <a href="/" onClick={() => setLoginStatus(false)}> <FontAwesomeIcon icon={faUser} /> Log out</a>
+          <a href="/" onClick={() => setLoginStatus(false)}><FontAwesomeIcon icon={faSignOut}/> Log out</a>
         </div>
       </nav>
     );
@@ -37,7 +38,7 @@ const Navbar = () => {
           <img src={icon} alt="Logo" />
         </div>
         <div className="login">
-        <a href="/" onClick={() => setLoginStatus(true)}> <FontAwesomeIcon icon={faUser} /> Sign in</a>
+        <a href="/" onClick={() => setLoginStatus(true)}> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
         </div>
       </nav>
     );
