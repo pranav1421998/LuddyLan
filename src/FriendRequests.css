@@ -1,14 +1,3 @@
-.sidebar-container {
-  margin-top: 10vh;
-  display: flex;
-  height: 100vh;
-  position: fixed;
-}
-
-.sidebar {
-    background-color: white;
-}
-
 /* FriendRequests.css or your custom CSS file */
 .container {
     display: flex;

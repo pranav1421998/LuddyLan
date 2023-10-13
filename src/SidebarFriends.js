@@ -14,8 +14,8 @@ const SidebarFriends = () => {
           <Link to="/friendRequests">
             <MenuItem active={activeTab === './friendRequests'}>Friend Requests</MenuItem>
           </Link>
-          <Link to="/friendRequests">
-            <MenuItem active={activeTab === './friendRequests'}>My Friends</MenuItem>
+          <Link to="/myFriends">
+            <MenuItem active={activeTab === './myFriends'}>My Friends</MenuItem>
           </Link>
           <Link to="/allUsers">
             <MenuItem active={activeTab === './allUsers'}>All Users</MenuItem>

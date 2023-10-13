@@ -6,7 +6,7 @@ import { auth, db, storage } from "./firebaseConfig";
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useUser } from './UserContext';
 
-const FriendRequests = () => {
+const MyFriends = () => {
     const [userdata, setDocuments] = useState([]);
     const [userData, setUserData] = useState([]); // State to store fetched user details
     const user = useUser();
@@ -16,7 +16,7 @@ const FriendRequests = () => {
             try {
                 // Assuming you have a "friends" collection
                 const friendsRef = collection(db, 'friends');
-                const q = query(friendsRef, where('user_email', '==', user?.email), where('is_accepted', '==', false));
+                const q = query(friendsRef, where('user_email', '==', user.email), where('is_accepted', '==', true));
                 const friendSnapshot = await getDocs(q);
 
                 const friendDataArray = friendSnapshot.docs.map(doc => doc.data());
@@ -71,18 +71,18 @@ const FriendRequests = () => {
     const data = userData.map(user => ({
         name: user.firstName + ' ' + user.lastName, // Adjust this based on the field name in your "users" collection
         profilePicture: user.profilePicture, // Adjust this based on the field name in your "users" collection
-        condition: "FriendRequests",
+        condition: "MyFriends",
     }));
 
     return (
         <div className="component">
             <SidebarFriends></SidebarFriends>
             <div>
-            <h2 className='heading'>Friend Requests</h2>
+            <h2 className='heading'>My Friends</h2>
                 <GridCards data={data} />
             </div>
         </div>
     );
 };
 
-export default FriendRequests;
+export default MyFriends;
