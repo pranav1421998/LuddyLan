@@ -44,3 +44,93 @@ p {
 p.loading {
     color: #999;
 }
+
+ul {
+    list-style-type: none;
+}
+
+.main {
+    width: 100%;
+    position: relative;
+    margin-top: 100px;
+    display: flex;
+    padding: 0 10vw 100px;
+    gap: 50px;
+}
+
+.post {
+    width: 100%;
+    border: 1px solid #999;
+    background: #fff;
+    margin-bottom: 30px;
+  }
+
+  .post-container {
+    width: 60%;
+  }
+
+  .image-container {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .image-container img{
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+  }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem;
+    gap: 10px;
+  }
+
+  .post-header .user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  .post-header .username {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .post-feed {
+    width: 100%;
+    height: 500px;
+    position: relative;
+  }
+
+  .post-detail {
+    color: black;
+    padding: 1.2rem;
+  }
+
+  .detail-interactions {
+    display: flex;
+    gap: 50px;
+  }
+
+  .detail-interactions img{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .like-btn {
+
+  }
+
+  .comment-btn {
+    
+  }
+
+  .share-btn {
+    
+  }

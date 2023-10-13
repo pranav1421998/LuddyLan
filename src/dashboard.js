@@ -1,16 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
-//import Sidebar from './Sidebar';
-import { Link } from "react-router-dom";
 import { db, auth } from "./firebaseConfig";
-
+import React, { useEffect, useState } from "react";
+import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
+
+        // const fetchDocumentById = async (documentId) => {
+        //     try {
+        //       const documentRef = db.collection('posts').doc(documentId);
+        //       const documentSnapshot = await documentRef.get();
+        //       if (documentSnapshot.exists) {
+        //         const documentData = documentSnapshot.data();
+        //         console.log('Fetched document data:', documentData);
+        //       } else {
+        //         console.log('Document does not exist.');
+        //       }
+        //     } catch (error) { console.error('Error fetching document:', error); }
+        // };        
+
+        const fetchPosts = async () => {
+            const collectionRef = collection(db, 'posts');
+            const querySnapshot = await getDocs(collectionRef);
+            const documentsData = [];
+            querySnapshot.forEach((doc) => {
+              documentsData.push({ id: doc.id, ...doc.data() });
+            });
+            setPosts(documentsData);
+            
+            documentsData.forEach((data) => {
+                // const collectionData = document.getElementById(data.id);
+                // console.log(collectionData.data);
+            });
+
+        };
+        fetchPosts();
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userDocRef = doc(db, "users", user.email);
@@ -37,21 +68,40 @@ const Dashboard = () => {
     }, [auth, db]);
 
     return (
-        <div className="container">
-            {/* <Sidebar /> */}
-            <img src={process.env.PUBLIC_URL + './icon2.png'} alt="App Logo" className="logo" />
-            <h1>User Dashboard</h1>
-            {userDetails ? (
-                <div className="user-details">
-                    <p>Email: {userDetails.id}</p>
-                    <p>First Name: {userDetails.firstName}</p>
-                    <p>Last Name: {userDetails.lastName}</p>
-                    <p>Birth Year: {userDetails.birthYear}</p>
-                    <p>Phone: {userDetails.phone}</p>
-                </div> ) : ( <p className="loading">Loading user details...</p>)}
-                
+            
+    <section className="main">
+        <div className="post-container">
+            <ul>
+            {posts.map((post) => (
+            <li key={post.id}>
+            <div className="post">
+                {/* post header */}
+                <div className="post-header">
+                    <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
+                <p className= "username">{post.ownerId}</p> 
+                </div>
+                {/* post section */}
+                <div className="post-feed">
+                    <img src={post.media} className="image-container" alt="Image" />
+                </div>
+                {/* post caption */}
+                <div className="post-detail">
+                    <p>{post.caption}</p>
+                    <div className="detail-interactions">
+                        <p className="like-btn"><FontAwesomeIcon icon={faThumbsUp}/></p>
+                        <p className="comment-btn"><FontAwesomeIcon icon={faComment}/></p>
+                        <p className="share-btn"><FontAwesomeIcon icon={faShare}/></p>
 
+                    </div>
+                </div>
+            </div>
+                
+            </li>
+            ))}
+            </ul>
         </div>
+    </section>
+
     );
 };
 
