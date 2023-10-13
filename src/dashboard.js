@@ -88,9 +88,9 @@ const Dashboard = () => {
                 <div className="post-detail">
                     <p>{post.caption}</p>
                     <div className="detail-interactions">
-                        <p className="like-btn"><FontAwesomeIcon icon={faThumbsUp}/></p>
-                        <p className="comment-btn"><FontAwesomeIcon icon={faComment}/></p>
-                        <p className="share-btn"><FontAwesomeIcon icon={faShare}/></p>
+                        <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/></button>
+                        <button className="btn"><FontAwesomeIcon icon={faComment}/></button>
+                        <button className="btn"><FontAwesomeIcon icon={faShare}/></button>
 
                     </div>
                 </div>
