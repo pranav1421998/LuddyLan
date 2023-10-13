@@ -1,5 +1,5 @@
 import { auth, db, provider } from "./firebaseConfig"; 
-import { doc, getDoc, updateDoc} from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from "react";
 import {GoogleButton} from 'react-google-button';
 import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
