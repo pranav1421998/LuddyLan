@@ -1,10 +1,5 @@
-// src/components/Navbar.js
-
 import './Navbar.css'
-import icon from './Images/icon.png';
 import React, { useEffect } from "react";
-import { auth, db } from "./firebaseConfig"; 
-import { doc, getDoc, updateDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import icon from './Images/icon2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
