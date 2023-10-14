@@ -1,41 +1,62 @@
-.profile-container {
-    margin-top: 20px; /* Adjusted space for the navigation bar */
+/* profile.css */
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #f7f7f7;
+    position: fixed;
+    /* Add other styles as necessary */
+}
+
+.main-content {
+    margin-top: 500px;
+    margin-left: 300px;
     padding: 20px;
-    background-color: #f0f0f0;
-    min-height: 100vh; /* Ensures the container takes at least the full height of the viewport */
+    /* width: calc(100% - 300px); */
+}
+
+.profile-section {
+    position: fixed;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 500px);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    /* object-fit: cover; */
+    border-radius: 50%;
 }
 
 .profile-header {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #333;
+    margin: 20px ;
 }
 
-.profile-info {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);
+.post-container {
+    margin-top: 500px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.button-container {
-    margin-top: 20px;
+.post {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-bottom: 30px;
 }
 
-.button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.button:hover {
-    background-color: #ddd;
-}
-
-.button-link {
-    text-decoration: none;
-    color: #333;
+.post-image {
+    margin-top: 100px;
+    width: 100%;
+    height: auto;
 }

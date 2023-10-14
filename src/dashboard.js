@@ -1,44 +1,48 @@
 import './dashboard.css';
-import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { db, auth } from "./firebaseConfig";
+import Sidebar from './Sidebar';
+import { Link, useNavigate } from "react-router-dom";
+import CreatePost from './CreatePost';
+import PollPopup from './CreatePoll';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
     const [posts, setPosts] = useState([]);
 
+    const navigate = useNavigate();
+
+    const openPollPopup = () => {
+        setShowPopup(true);
+    };
+
+    const ClosePollPopup = () => {
+        setShowPopup(false);
+    };
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     useEffect(() => {
-
-        // const fetchDocumentById = async (documentId) => {
-        //     try {
-        //       const documentRef = db.collection('posts').doc(documentId);
-        //       const documentSnapshot = await documentRef.get();
-        //       if (documentSnapshot.exists) {
-        //         const documentData = documentSnapshot.data();
-        //         console.log('Fetched document data:', documentData);
-        //       } else {
-        //         console.log('Document does not exist.');
-        //       }
-        //     } catch (error) { console.error('Error fetching document:', error); }
-        // };        
-
         const fetchPosts = async () => {
             const collectionRef = collection(db, 'posts');
             const querySnapshot = await getDocs(collectionRef);
             const documentsData = [];
             querySnapshot.forEach((doc) => {
-              documentsData.push({ id: doc.id, ...doc.data() });
+                documentsData.push({ id: doc.id, ...doc.data() });
             });
             setPosts(documentsData);
-            
-            documentsData.forEach((data) => {
-                // const collectionData = document.getElementById(data.id);
-                // console.log(collectionData.data);
-            });
-
         };
         fetchPosts();
 
@@ -47,17 +51,16 @@ const Dashboard = () => {
                 const userDocRef = doc(db, "users", user.email);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
-                    setUserDetails({ id: userDoc.id, ...userDoc.data() }); // Include the document ID in the user data
-                    // Update a single field in the document
+                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
                     try {
                         await updateDoc(userDocRef, {
                             loggedIn: true
                         });
                         window.status = true;
                         console.log("Document successfully updated!");
-                        } catch (error) {
+                    } catch (error) {
                         console.error("Error updating document: ", error);
-                        }
+                    }
                 } else {
                     console.log("No such document!");
                 }
@@ -65,45 +68,38 @@ const Dashboard = () => {
                 console.log("No user is signed in");
             }
         });
+
+        return () => unsubscribe(); // Unsubscribe from the observer on component unmount
     }, [auth, db]);
 
     return (
-            
-    <section className="main">
-        <div className="post-container">
-            <ul>
-            {posts.map((post) => (
-            <li key={post.id}>
-            <div className="post">
-                {/* post header */}
-                <div className="post-header">
-                    <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
-                <p className= "username">{post.ownerId}</p> 
-                </div>
-                {/* post caption */}
-                <div className="post-detail">
-                    <p className="no-top-margin">{post.caption}</p>    
-                </div>
-                {/* post section */}
-                <div className="post-feed">
-                    <img src={post.media} className="image-container" alt="Image" />
-                </div>
-                {/* post buttons */}
-                <div className="detail-interactions">
-                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>
-                    <button className="btn"><FontAwesomeIcon icon={faComment}/> Comment</button>
-                    <button className="btn"><FontAwesomeIcon icon={faShare}/> Share</button>
-
-                </div>
-                
+        <section className="main">
+            <div className="post-container">
+                <ul>
+                    {posts.map((post) => (
+                        <li key={post.id}>
+                            <div className="post">
+                                <div className="post-header">
+                                    <p className="user-icon"><FontAwesomeIcon icon={faUser} /></p>
+                                    <p className="username">{post.ownerId}</p>
+                                </div>
+                                <div className="post-detail">
+                                    <p className="no-top-margin">{post.caption}</p>
+                                </div>
+                                <div className="post-feed">
+                                    <img src={post.media} className="image-container" alt="Image" />
+                                </div>
+                                <div className="detail-interactions">
+                                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp} /> Like</button>
+                                    <button className="btn"><FontAwesomeIcon icon={faComment} /> Comment</button>
+                                    <button className="btn"><FontAwesomeIcon icon={faShare} /> Share</button>
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </div>
-                
-            </li>
-            ))}
-            </ul>
-        </div>
-    </section>
-
+        </section>
     );
 };
 

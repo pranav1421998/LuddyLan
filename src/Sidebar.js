@@ -1,41 +1,52 @@
-// // Sidebar.js
-// import React, { useState } from 'react';
-// import './Sidebar';
-// const Sidebar = () => {
-//   const [activeTab, setActiveTab] = useState('tab1');
+// Sidebar.js
+import React, { useState, useEffect } from 'react';
+import './Sidebar.css';
+import { Link, useLocation} from 'react-router-dom';
 
-//   const handleTabClick = (tab) => {
-//     setActiveTab(tab);
-//   };
+const Sidebar = () => {
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState('profile');
+  useEffect(() => {
+    const currentPath = location.pathname; // Get current path
+    const pathTabMap = { // Map paths to tab names
+      '/profile': 'profile',
+      '/profileSettings': 'settings',
+      '/dashboard': 'dashboard',
+    };
+    setActiveTab(pathTabMap[currentPath] || ''); // Set active tab based on current path
+  }, [location.pathname]); // Dependence on pathname ensures effect runs on route change
 
-//   return (
-//     <div className="sidebar">
-//       <div className="tabs">
-//         <div
-//           className={`tab ${activeTab === 'tab1' ? 'active' : ''}`}
-//           onClick={() => handleTabClick('tab1')}
-//         >
-//           Tab 1
-//         </div>
-//         <div
-//           className={`tab ${activeTab === 'tab2' ? 'active' : ''}`}
-//           onClick={() => handleTabClick('tab2')}
-//         >
-//           Tab 2
-//         </div>
-//         <div
-//           className={`tab ${activeTab === 'tab3' ? 'active' : ''}`}
-//           onClick={() => handleTabClick('tab3')}
-//         >
-//           Tab 3
-//         </div>
-//       </div>
-//       {/* Sidebar content for each tab */}
-//       {activeTab === 'tab1' && <div className="tab-content">Tab 1 Content</div>}
-//       {activeTab === 'tab2' && <div className="tab-content">Tab 2 Content</div>}
-//       {activeTab === 'tab3' && <div className="tab-content">Tab 3 Content</div>}
-//     </div>
-//   );
-// };
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
-// export default Sidebar;
+  return (
+    <div className="sidebar">
+      <div className="tabs">
+        <div
+          className={`tab ${activeTab === 'profile' ? 'active' : ''}`}
+          onClick={() => handleTabClick('profile')}
+        >
+          <Link to="/profile">Profile</Link> {/* Link to the Profile page */}
+        </div>
+        <div
+          className={`tab ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => handleTabClick('settings')}
+        >
+          <Link to="/profileSettings">Settings</Link> {/* Link to the Settings page */}
+        </div>
+        <div
+          className={`tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+          onClick={() => handleTabClick('dashboard')}
+        >
+          <Link to="/dashboard">Dashboard</Link> {/* Link to the Dashboard page */}
+        </div>
+      </div>
+      {/* Sidebar content for each tab */}
+      {/* You can add more content for each tab as needed */}
+    </div>
+  );
+};
+
+export default Sidebar;
+

@@ -1,30 +1,30 @@
 /* GridCards.css */
 .grid-cards {
     display: grid;
-    grid-template-columns: repeat(1, 1fr); /* By default, display one card per row */
-  
-    /* Define the card styling */
-    gap: 16px; /* Adjust the gap between cards */
-    padding: 40px;
+    grid-template-columns: repeat(1, 1fr);
+    margin-left: 20vw;
+    gap: 16px;
+    padding-left: 60px;
+    padding-top: 10vh;
   }
   
   .card {
     background-color: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 40vh;
-    width: 40vh;
+    height: 50vh;
+    width: 50vh;
     border-radius: 5%;
   }
   
   /* Media queries for responsiveness */
-  @media (min-width: 768px) {
+  @media (min-width: 700px) {
     .grid-cards {
       grid-template-columns: repeat(2, 1fr); /* Display two cards per row on screens wider than 768px */
     }
   }
   
-  @media (min-width: 1024px) {
+  @media (min-width: 1100px) {
     .grid-cards {
       grid-template-columns: repeat(3, 1fr); /* Display three cards per row on screens wider than 1024px */
     }
@@ -32,13 +32,18 @@
 
 .profile-picture {
     background-image: url('Images/user.jpg');
-    height: 25vh;
-    width: 40vh;
+    height: 35vh;
+    width: 50vh;
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
-    /* width: 100%;
-    height: 100%; */
     object-fit: cover;
+    background-size: cover;
+}
+.connect-button {
+  margin-bottom: 10px;
 }
 
-  
+.heading {
+  margin-left: 26vw;
+  text-align: left;
+}
