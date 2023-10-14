@@ -1,66 +1,62 @@
 /* profile.css */
 
-.profile-container {
-    margin-top: 60px;
-    padding: 20px;
-    background-color: #f0f0f0;
-    min-height: 100vh;
-}
-
-.profile-card, .post-card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5%;
-}
-.post-container {
-    max-height: 400px; /* Adjust the height as needed */
-    overflow-y: auto; /* Add a scrollbar if the content exceeds the height */
-  }
-  
-
-.profile-picture {
-    /* Add styling for profile picture */
-    object-fit: cover;
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.button {
-    /* Style your buttons, you can refer to .tab in Sidebar.css */
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.button:hover {
-    background-color: #ddd;
-}
-.main-content {
-    flex-grow: 1;
-    position: relative;
-    margin-left: 0px; /* Width of the sidebar, adjust as needed */
-    margin-top: 100px;
-    padding: 100px;
-}
 .container {
     display: flex;
-    margin-top: 30px;
+    flex-direction: row;
 }
+
 .sidebar {
     width: 250px;
-    height: calc(100vh - 70px); /* Adjust 60px to the actual height of your navbar */
-    background-color: #333;
-    color: #000000;
+    height: 100vh;
+    background-color: #f7f7f7;
     position: fixed;
-    left: 0;
-    margin-top: 10px;
+    /* Add other styles as necessary */
 }
-.image {
-    width: 500px;
+
+.main-content {
+    margin-top: 500px;
+    margin-left: 300px;
+    padding: 20px;
+    /* width: calc(100% - 300px); */
+}
+
+.profile-section {
+    position: fixed;
+    top: 100px;
+    left: 300px;
+    width: calc(100% - 500px);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    /* object-fit: cover; */
+    border-radius: 50%;
+}
+
+.profile-header {
+    margin: 20px ;
+}
+
+.post-container {
+    margin-top: 500px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-bottom: 30px;
+}
+
+.post-image {
+    margin-top: 100px;
+    width: 100%;
+    height: auto;
 }
