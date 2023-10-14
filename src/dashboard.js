@@ -80,20 +80,22 @@ const Dashboard = () => {
                     <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
                 <p className= "username">{post.ownerId}</p> 
                 </div>
+                {/* post caption */}
+                <div className="post-detail">
+                    <p className="no-top-margin">{post.caption}</p>    
+                </div>
                 {/* post section */}
                 <div className="post-feed">
                     <img src={post.media} className="image-container" alt="Image" />
                 </div>
-                {/* post caption */}
-                <div className="post-detail">
-                    <p>{post.caption}</p>
-                    <div className="detail-interactions">
-                        <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/></button>
-                        <button className="btn"><FontAwesomeIcon icon={faComment}/></button>
-                        <button className="btn"><FontAwesomeIcon icon={faShare}/></button>
+                {/* post buttons */}
+                <div className="detail-interactions">
+                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>
+                    <button className="btn"><FontAwesomeIcon icon={faComment}/> Comment</button>
+                    <button className="btn"><FontAwesomeIcon icon={faShare}/> Share</button>
 
-                    </div>
                 </div>
+                
             </div>
                 
             </li>
