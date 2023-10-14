@@ -4,13 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle, faSolid, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 const GridCards = ({ data }) => {
-    const getIcons = (condition) => {
-        switch (condition) {
+    const getIcons = (item) => {
+        switch (item.condition) {
             case 'AllUsers':
-                return (
-                    <>
-                        <button className= "connect-button" style={{backgroundColor: '#9b0303'}}> <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '24px' }} />Connect</button>
-                    </>) // Two checkmark icons for 'AllUsers'
+                console.log(item,'********************');
+                if(item.is_accepted === true) {
+                    return (
+                        <><button className= "connect-button" style={{backgroundColor: '#9b0303'}}> <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '24px' }} />Connected</button></>)
+                } else {
+                    return (
+                        <><button className= "connect-button" style={{backgroundColor: '#9b0303'}}> <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '24px' }} />Connect</button></>)
+                }
             case 'FriendRequests':
                 return (
                     <>
@@ -32,7 +36,7 @@ const GridCards = ({ data }) => {
                     </div>
                     <p>{item.name}</p>
                     <div>
-                        <a>{getIcons(item.condition)}</a>
+                        <a>{getIcons(item)}</a>
                         <span className="icon-gap"></span>
                     </div>
                 </div>
