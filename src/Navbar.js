@@ -30,7 +30,7 @@ const Navbar = () => {
         </div>
         {/* log out */}
         <div className="login">
-          <a href="/" onClick={() => window.status = false}><FontAwesomeIcon icon={faSignOut}/> Log out</a>
+          <p onClick={() => navigate('/')}><FontAwesomeIcon icon={faSignOut}/> Log out</p>
         </div>
       </nav>
     );
