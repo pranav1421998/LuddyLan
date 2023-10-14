@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
+import React, { useEffect, useState } from "react";
+import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { db, auth } from "./firebaseConfig";
 import Sidebar from './Sidebar';
 import { Link, useNavigate } from "react-router-dom";
-import { db, auth } from "./firebaseConfig";
 import CreatePost from './CreatePost';
 import PollPopup from './CreatePoll';
 
-
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
-    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [posts, setPosts] = useState([]);
+
+    const navigate = useNavigate();
 
     const openPollPopup = () => {
         setShowPopup(true);
     };
-    const ClosePollPopup=()=>{
-      setShowPopup(false);
+
+    const ClosePollPopup = () => {
+        setShowPopup(false);
     };
 
     const handleOpenModal = () => {
@@ -31,12 +35,32 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+        const fetchPosts = async () => {
+            const collectionRef = collection(db, 'posts');
+            const querySnapshot = await getDocs(collectionRef);
+            const documentsData = [];
+            querySnapshot.forEach((doc) => {
+                documentsData.push({ id: doc.id, ...doc.data() });
+            });
+            setPosts(documentsData);
+        };
+        fetchPosts();
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userDocRef = doc(db, "users", user.email);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
-                    setUserDetails({ id: userDoc.id, ...userDoc.data() }); // Include the document ID in the user data
+                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
+                    try {
+                        await updateDoc(userDocRef, {
+                            loggedIn: true
+                        });
+                        window.status = true;
+                        console.log("Document successfully updated!");
+                    } catch (error) {
+                        console.error("Error updating document: ", error);
+                    }
                 } else {
                     console.log("No such document!");
                 }
@@ -49,40 +73,33 @@ const Dashboard = () => {
     }, [auth, db]);
 
     return (
-        <div className="container">
-            <Sidebar />
-            <img src={process.env.PUBLIC_URL + './icon2.png'} alt="App Logo" className="logo" />
-            <h1>User Dashboard</h1>
-            {userDetails ? (
-                <div className="user-details">
-                    <p>Email: {userDetails.id}</p>
-                    <p>First Name: {userDetails.firstName}</p>
-                    <p>Last Name: {userDetails.lastName}</p>
-                    <p>Birth Year: {userDetails.birthYear}</p>
-                    <p>Phone: {userDetails.phone}</p>
-                    <button type="button" onClick={handleOpenModal}>Create Post</button>
-                    <button onClick={openPollPopup}>Create Poll</button>
-                </div>
-            ) : (
-                <p className="loading">Loading user details...</p>
-            )}
-
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={handleCloseModal}>close</span>
-                        <CreatePost onClose={handleCloseModal} />
-                    </div>
-                </div>
-            )}
-              {showPopup && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <PollPopup onClose={ClosePollPopup} onPollCreated={ClosePollPopup} />
-                    </div>
-                </div>
-            )}
-        </div>
+        <section className="main">
+            <div className="post-container">
+                <ul>
+                    {posts.map((post) => (
+                        <li key={post.id}>
+                            <div className="post">
+                                <div className="post-header">
+                                    <p className="user-icon"><FontAwesomeIcon icon={faUser} /></p>
+                                    <p className="username">{post.ownerId}</p>
+                                </div>
+                                <div className="post-detail">
+                                    <p className="no-top-margin">{post.caption}</p>
+                                </div>
+                                <div className="post-feed">
+                                    <img src={post.media} className="image-container" alt="Image" />
+                                </div>
+                                <div className="detail-interactions">
+                                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp} /> Like</button>
+                                    <button className="btn"><FontAwesomeIcon icon={faComment} /> Comment</button>
+                                    <button className="btn"><FontAwesomeIcon icon={faShare} /> Share</button>
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </section>
     );
 };
 
