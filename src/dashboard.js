@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
+import Sidebar from './Sidebar';
 import { Link, useNavigate } from "react-router-dom";
 import { db, auth } from "./firebaseConfig";
 import CreatePost from './CreatePost';
 import PollPopup from './CreatePoll';
+
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -48,11 +50,11 @@ const Dashboard = () => {
 
     return (
         <div className="container">
+            <Sidebar />
+            <img src={process.env.PUBLIC_URL + './icon2.png'} alt="App Logo" className="logo" />
             <h1>User Dashboard</h1>
             {userDetails ? (
                 <div className="user-details">
-                    <img src={process.env.PUBLIC_URL + './icon2.png'} alt="App Logo" className="logo" />
-                    <Link to="/profile">Profile Page</Link>
                     <p>Email: {userDetails.id}</p>
                     <p>First Name: {userDetails.firstName}</p>
                     <p>Last Name: {userDetails.lastName}</p>

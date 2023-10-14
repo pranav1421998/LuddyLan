@@ -80,7 +80,7 @@ const Login = (props) => {
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            {error && <p style={{color: 'crimson'}}>{error}</p>}
         </div>
         </div>
     </>
