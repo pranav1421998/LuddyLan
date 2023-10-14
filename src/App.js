@@ -37,7 +37,7 @@ function App() {
         
         <Router>
             <div className="App">
-                <Navbar></Navbar>
+                <Navbar2></Navbar2>
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/password" element={<Password />} />

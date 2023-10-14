@@ -7,14 +7,14 @@ import { auth, db } from "./firebaseConfig";
 import { doc, getDoc, updateDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faUsers, faComment, faGear, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faUsers, faComment, faGear, faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   
   const navigate = useNavigate();   
 
-  if (window.status == true) {
-    return (
+  return (
+
       <nav className="navbar">
         <div className="logo">
           <img src={icon} alt="Logo" />
@@ -31,20 +31,7 @@ const Navbar = () => {
         </div>
       </nav>
     );
-  } else {
-    return (
-      <nav className="navbar">
-        <div className="logo">
-          <img src={icon} alt="Logo" />
-        </div>
-        <div className="login">
-        <a href="/" onClick={() => window.status = true}> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
-        </div>
-      </nav>
-    );
-  }
 
 };
-
 
 export default Navbar;
