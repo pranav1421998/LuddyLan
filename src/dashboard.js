@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import './dashboard.css';
-import {Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { db, auth } from "./firebaseConfig";
+import CreatePost from './CreatePost';
+import PollPopup from './CreatePoll';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
-    const navigate=useNavigate();
-    const handlePost = async (e) => {
-        e.preventDefault();
-        try {
-            navigate('/CreatePost'); 
-        } catch (error) {
-            console.error('Error during redirecting:', error);
-        }
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const openPollPopup = () => {
+        setShowPopup(true);
     };
+    const ClosePollPopup=()=>{
+      setShowPopup(false);
+    };
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -30,7 +42,7 @@ const Dashboard = () => {
                 console.log("No user is signed in");
             }
         });
-    
+
         return () => unsubscribe(); // Unsubscribe from the observer on component unmount
     }, [auth, db]);
 
@@ -46,9 +58,28 @@ const Dashboard = () => {
                     <p>Last Name: {userDetails.lastName}</p>
                     <p>Birth Year: {userDetails.birthYear}</p>
                     <p>Phone: {userDetails.phone}</p>
-                    <button type="submit" onClick={handlePost}>Create Post</button>
-                </div> ) : ( <p className="loading">Loading user details...</p>)}
+                    <button type="button" onClick={handleOpenModal}>Create Post</button>
+                    <button onClick={openPollPopup}>Create Poll</button>
+                </div>
+            ) : (
+                <p className="loading">Loading user details...</p>
+            )}
 
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={handleCloseModal}>close</span>
+                        <CreatePost onClose={handleCloseModal} />
+                    </div>
+                </div>
+            )}
+              {showPopup && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <PollPopup onClose={ClosePollPopup} onPollCreated={ClosePollPopup} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

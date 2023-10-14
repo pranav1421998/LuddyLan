@@ -7,7 +7,7 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import './FileUpload.css';
 import { v4 } from 'uuid';
 
-function FileUpload() {
+function FileUpload({onClose}) {
   const [imageUpload, setImageUpload] = useState(null);
   const [description, setDescription] = useState('');
   const [uploadTask, setUploadTask] = useState(null);
@@ -26,6 +26,7 @@ function FileUpload() {
           console.log('Image URL:', downloadURL);
           console.log('Description:', description);
           saveToFirestore(downloadURL);
+          onClose();
         });
       });
 
@@ -78,12 +79,12 @@ function FileUpload() {
       const newPost = {
         caption: description,
         media: downloadURL,
-        ownerId: user.uid,
+        ownerId: user.email,
         uploadedDate: Timestamp.fromDate(new Date()),
       };
       addDoc(postsCollection, newPost)
         .then(() => {
-          alert('Image and description uploaded to Firestore');
+          alert('Succesfully created a post');
         })
         .catch((error) => {
           console.error('Error adding post to Firestore: ', error);
