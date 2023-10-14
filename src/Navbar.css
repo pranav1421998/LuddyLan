@@ -1,10 +1,17 @@
-.navbar {
+  .navbar {
+    display: flex;
+    background-color: #9b0303;
+    color: white;
+    width: 100%;
+    gap: 10vw;
+  }
+
+  .navbar2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #9b0303;
     color: #fff;
-    /* padding: 10px; */
     position: fixed;
     top: 0;
     left: 0;
@@ -12,32 +19,42 @@
     z-index: 100; 
   }
 
-  .navbar2 {
+  .pages {
     display: flex;
-    background-color: #9b0303;
-    color: white;
-    margin-left: 10vw;
-    width: 100%;
-    gap: 10vw;
+    color: #fff;
+    position: relative;
+    align-items: center;
+    margin-left: -5vh;
+    margin-right: auto;
+    gap: 75px;
   }
   
   .logo {
     display: flex;
     align-items: center;
+    margin-right: 0px;
   }
   
   .logo img {
     width: 15vh;
     height: 10vh;
-    margin-right: 10px;
+    margin-right: 0px;
   }
   
   .login {
     margin-right: 20px;
+    align-items: center;
+    font-size: 16px;
   }
   
   .login a {
     text-decoration: none;
+    align-items: center;
+    font-size: 16px;
     color: #fff;
   }
-  
+
+  p {
+    color: white;
+    font-size: 16px;
+  }

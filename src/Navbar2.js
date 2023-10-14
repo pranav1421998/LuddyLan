@@ -9,7 +9,7 @@ import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 const Navbar2 = () => {
      
     return (
-      <nav className="navbar">
+      <nav className="navbar2">
         <div className="logo">
           <img src={icon} alt="Logo" />
         </div>
