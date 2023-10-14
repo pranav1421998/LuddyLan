@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { auth, db, provider } from "./firebaseConfig";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { storage } from './firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import './FileUpload.css';
 import { v4 } from 'uuid';
 
-function FileUpload() {
+function FileUpload({onClose}) {
   const [imageUpload, setImageUpload] = useState(null);
   const [description, setDescription] = useState('');
   const [uploadTask, setUploadTask] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-
+  const [user, setUser] = useState(null);
   useEffect(() => {
     if (uploadTask) {
       const unsubscribe = uploadTask.on('state_changed', (snapshot) => {
@@ -22,7 +25,8 @@ function FileUpload() {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('Image URL:', downloadURL);
           console.log('Description:', description);
-          alert('Image and description uploaded');
+          saveToFirestore(downloadURL);
+          onClose();
         });
       });
 
@@ -31,6 +35,26 @@ function FileUpload() {
       };
     }
   }, [uploadTask, description]);
+
+  const getCurrentUser = () => {
+    const authObserver = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return authObserver;
+  };
+
+  useEffect(() => {
+    const authObserver = getCurrentUser();
+
+    return () => {
+      authObserver();
+    };
+  }, []);
 
   const handleUpload = () => {
     if (imageUpload) {
@@ -47,6 +71,25 @@ function FileUpload() {
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
+  };
+
+  const saveToFirestore = (downloadURL) => {
+    if (user) {
+      const postsCollection = collection(db, 'posts');
+      const newPost = {
+        caption: description,
+        media: downloadURL,
+        ownerId: user.email,
+        uploadedDate: Timestamp.fromDate(new Date()),
+      };
+      addDoc(postsCollection, newPost)
+        .then(() => {
+          alert('Succesfully created a post');
+        })
+        .catch((error) => {
+          console.error('Error adding post to Firestore: ', error);
+        });
+    }
   };
 
   return (
