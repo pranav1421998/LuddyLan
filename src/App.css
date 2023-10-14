@@ -56,3 +56,7 @@ select {
   border-radius: 10px;
   border-color: BLACK;
 }
+
+.component {
+  margin-top: 10vh;
+}
