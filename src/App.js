@@ -8,11 +8,15 @@ import Login from "./Login.js";
 import Dashboard from "./dashboard";
 import Profile from "./profile.js";
 import ProfileSettings from "./profileSettings.js";
-import Password from "./password";
-import PasswordRecovery from "./passwordRecovery.js";
-import Navbar from "./Navbar.js";
-import FileUpload from "./CreatePost.js";
-import FriendRequests from "./FriendRequests.js";
+
+// routing
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Password from './password'; 
+import PasswordRecovery from './passwordRecovery.js';
+import Navbar from './Navbar.js';
+import Navbar2 from './Navbar2.js';
+import FileUpload from './CreatePost.js';
+import FriendRequests from './FriendRequests.js';
 import AllUsers from "./AllUsers.js";
 import MyFriends from "./MyFriends";
 import './App.css';

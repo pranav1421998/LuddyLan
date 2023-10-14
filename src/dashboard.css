@@ -45,7 +45,114 @@ p.loading {
     color: #999;
 }
 
-/* Add your existing styles here */
+ul {
+    list-style-type: none;
+}
+
+.main {
+    width: 100%;
+    position: relative;
+    margin-top: 100px;
+    display: flex;
+    padding: 0 10vw 100px;
+    gap: 50px;
+}
+
+.post {
+    width: 100%;
+    border: 2px solid #999;
+    background: #fff;
+    margin-bottom: 30px;
+    margin-left: 150px;
+}
+
+.post-container {
+    width: 50%;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid #999;
+}
+
+.image-container img{
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-top: 5px;
+    gap: 10px;
+}
+
+.post-header .user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #999;
+}
+
+.post-header .username {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: black;
+}
+
+.post-feed {
+    width: 100%;
+    height: 500px;
+    position: relative;
+}
+
+.post-detail {
+    color: black;
+    font-size: 14px;
+    margin-left: 35px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.detail-interactions {
+    gap: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.2rem;
+}
+
+.detail-interactions img{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.no-top-margin {
+    margin-top: 0px;
+}
+
+.btn {
+    background-color: white;
+    color: #555;
+}
+
+.like-btn {
+
+}
+
+.comment-btn {
+
+}
+
+.share-btn {
+
+}
 
 /* Modal Overlay */
 .modal-overlay {
@@ -89,5 +196,3 @@ p.loading {
     border-radius: 4px;
     cursor: pointer;
 }
-
-/* You can add more specific styles as needed */

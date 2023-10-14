@@ -23,6 +23,7 @@ export const Register = () => {
     const [passError, setPassError] = useState('');
     const [confirmPassError, setConfirmPassError] = useState('');
     const [loading, setLoading] = useState(false);
+
     // Define an array of security questions
     const securityQuestions = [
         "Where were you born?",
@@ -124,7 +125,8 @@ export const Register = () => {
                 birthYear: byear,
                 phone: phone,
                 securityQuestion: secQues,
-                securityAnswer: secAns
+                securityAnswer: secAns,
+                loggedIn: false
             });
     
             setTimeout(() => {
