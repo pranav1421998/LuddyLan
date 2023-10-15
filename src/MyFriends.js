@@ -44,6 +44,7 @@ const MyFriends = () => {
                     if (userSnapshot.exists()) {
                         // Fetch user details based on the document ID (email)
                         const userDetails = userSnapshot.data();
+                        userDetails.id = userSnapshot.id;
                         return userDetails;
                     }
                 });
@@ -72,6 +73,7 @@ const MyFriends = () => {
         name: user.firstName + ' ' + user.lastName, // Adjust this based on the field name in your "users" collection
         profilePicture: user.profilePicture, // Adjust this based on the field name in your "users" collection
         condition: "MyFriends",
+        email: user.id,
     }));
 
     return (
@@ -79,7 +81,11 @@ const MyFriends = () => {
             <SidebarFriends></SidebarFriends>
             <div>
             <h2 className='heading'>My Friends</h2>
-                <GridCards data={data} />
+            {data.length === 0 ? (
+                    <h4 style={{paddingTop: '25vh'}}>No friends</h4>
+                ) : (
+                    <GridCards data={data} />
+                )}
             </div>
         </div>
     );

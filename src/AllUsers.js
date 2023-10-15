@@ -24,7 +24,7 @@ const AllUsers = () => {
                 userSnapshot.docs.forEach(doc => {
                     if (doc.id !== user.email) { // Exclude the currently logged-in user
                         userIdArray.push(doc.id);
-                        userDataArray.push(doc.data());
+                        userDataArray.push({id:doc.id, ...doc.data()});
                     }
                 });
 
@@ -63,25 +63,43 @@ const AllUsers = () => {
         }
     }, [user, userIds]);
 
-    const data = userdata.map(user => {
-        // Check if the user's email is in the friendsData
-        const isConnected = friendsData.some(friend => friend.follower_email === user.id);
-    
-        return {
-            name: user.firstName + ' ' + user.lastName,
-            profilePicture: "Images/user.jpg",
-            condition: "AllUsers",
-            connected: isConnected, // Set connected based on the check
-        };
+    const userIdToUserData = {};
+    userIds.forEach((userId, index) => {
+    userIdToUserData[userId] = userdata[index];
     });
-    
+
+    const data = userIds.map(userId => {
+        const user = userIdToUserData[userId];
+        const friendData = friendsData.find(friend => friend.follower_email === userId);
+        let isConnected = ""; // Declare as a variable
+
+        if (friendData && friendData.is_accepted) {
+            isConnected = 'following';
+        } else if (friendData && !friendData.is_accepted) {
+            isConnected = 'requested';
+        } else {
+            isConnected = '';
+        }
+        return {
+          name: user.firstName + ' ' + user.lastName,
+          email: userId,
+          profilePicture: user.profilePicture,
+          condition: "AllUsers",
+          connected: isConnected,
+        };
+      });
+      
+      
 
     return (
         <div>
             <SidebarFriends></SidebarFriends>
             <div className="component">
-                <h2 className='heading'>All Users</h2>
-                <GridCards data={data} />
+                <div className='title'><h2 className='heading'>All Users</h2></div>
+                <div>
+                    <GridCards data={data} />
+                </div>
+
             </div>
         </div>
     );

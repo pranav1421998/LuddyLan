@@ -12,4 +12,14 @@
 
 .heading {
     position: fixed;
+    width: 100%;
+}
+
+.title {
+    position: fixed;
+    padding: 5px;
+}
+
+.grid {
+    padding-top: 50vh;
 }
