@@ -5,6 +5,7 @@
     position: fixed;
     width: 100%;
     gap: 10vw;
+    z-index: 2;
   }
 
   .navbar2 {
@@ -17,7 +18,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100; 
+    z-index: 2; 
   }
 
   .pages {

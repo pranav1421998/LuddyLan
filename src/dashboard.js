@@ -1,6 +1,9 @@
 import './dashboard.css';
+import CreatePost from './CreatePost';
+import PollPopup from './CreatePoll'; 
 import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +12,26 @@ import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [posts, setPosts] = useState([]);
+
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const openPollPopup = () => {
+        setShowPopup(true);
+    };
+    
+    const ClosePollPopup=()=>{
+      setShowPopup(false);
+    };
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     useEffect(() => {
 
@@ -58,6 +81,25 @@ const Dashboard = () => {
             
     <section className="main">
         <div className="post-container">
+
+        <button className="button" onClick={handleOpenModal}>Create Post</button>
+        <button className="button" onClick={openPollPopup}>Create Poll</button>
+        {showModal && (
+        <div className="modal">
+            <div className="modal-content">
+                <span className="close" onClick={handleCloseModal}>close</span>
+                <CreatePost onClose={handleCloseModal} />
+            </div>
+        </div>
+        )}
+        {showPopup && (
+        <div className="modal">
+            <div className="modal-content">
+                <PollPopup onClose={ClosePollPopup} onPollCreated={ClosePollPopup} />
+            </div>
+        </div>
+        )}
+
             <ul>
             {posts.map((post) => (
             <li key={post.id}>
@@ -80,9 +122,7 @@ const Dashboard = () => {
                     <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>
                     <button className="btn"><FontAwesomeIcon icon={faComment}/> Comment</button>
                     <button className="btn"><FontAwesomeIcon icon={faShare}/> Share</button>
-
-                </div>
-                
+                </div>   
             </div>
                 
             </li>
