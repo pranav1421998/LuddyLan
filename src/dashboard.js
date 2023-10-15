@@ -5,10 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from "./firebaseConfig";
-import Sidebar from './Sidebar';
 import { Link, useNavigate } from "react-router-dom";
-import CreatePost from './CreatePost';
-import PollPopup from './CreatePoll';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);

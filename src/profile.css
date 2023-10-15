@@ -10,7 +10,6 @@
     height: 100vh;
     background-color: #f7f7f7;
     position: fixed;
-    /* Add other styles as necessary */
 }
 
 .main-content {
@@ -18,6 +17,7 @@
     margin-left: 300px;
     padding: 20px;
     /* width: calc(100% - 300px); */
+    z-index: -1;
 }
 
 .profile-section {
@@ -35,7 +35,7 @@
 .profile-picture {
     width: 150px;
     height: 150px;
-    /* object-fit: cover; */
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -45,7 +45,7 @@
 
 .post-container {
     margin-top: 500px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.01);
 }
 
 .post {

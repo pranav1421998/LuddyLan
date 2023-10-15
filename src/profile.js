@@ -6,7 +6,6 @@ import userImage from './Images/user.jpg';
 import { doc, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { db, auth} from './firebaseConfig';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 
 function Profile() {

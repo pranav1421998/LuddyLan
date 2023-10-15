@@ -13,13 +13,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Password from './password'; 
 import PasswordRecovery from './passwordRecovery.js';
 import Navbar from './Navbar.js';
-import Navbar2 from './Navbar2.js';
 import FileUpload from './CreatePost.js';
 import FriendRequests from './FriendRequests.js';
 import AllUsers from "./AllUsers.js";
 import MyFriends from "./MyFriends";
 import './App.css';
-import PollForm from "./CreatePoll.js"
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
@@ -41,7 +39,7 @@ function App() {
     <UserProvider > {/* Wrap your app with the UserProvider */}
       <Router>
         <div className="App">
-          <Navbar />
+        <Navbar></Navbar>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/password" element={<Password />} />

@@ -29,7 +29,7 @@ h1 {
 }
 
 
-.logo {
+.logo {  
     width: 200px; /* Set the width of the logo */
     height: auto; /* Maintain aspect ratio */
 
