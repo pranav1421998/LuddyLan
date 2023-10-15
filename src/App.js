@@ -16,10 +16,12 @@ import FriendRequests from "./FriendRequests.js";
 import AllUsers from "./AllUsers.js";
 import MyFriends from "./MyFriends";
 import './App.css';
+import PollForm from "./CreatePoll.js"
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
   const [currentForm, setCurrentForm] = React.useState("login");
+
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -30,6 +32,7 @@ function App() {
       console.log("(From App) User is signed out.");
     }
   });
+
 
   return (
     <UserProvider > {/* Wrap your app with the UserProvider */}
