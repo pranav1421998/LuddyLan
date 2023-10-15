@@ -1,58 +1,61 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { UserProvider } from './UserContext'; // Import the UserProvider
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import  {Register} from './Register.js';
-import React, { useState } from "react";
-import './App.css';
-import Login from './Login.js';
-import Dashboard from './dashboard';
+
+import { Register } from "./Register.js";
+import Login from "./Login.js";
+import Dashboard from "./dashboard";
 import Profile from "./profile.js";
 import ProfileSettings from "./profileSettings.js";
-
-// routing
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Password from './password'; 
-import PasswordRecovery from './passwordRecovery.js';
-import Navbar from './Navbar.js';
-import Navbar2 from './Navbar2.js';
-import FileUpload from './CreatePost.js';
-import FriendRequests from './FriendRequests.js';
+import Password from "./password";
+import PasswordRecovery from "./passwordRecovery.js";
+import Navbar from "./Navbar.js";
+import FileUpload from "./CreatePost.js";
+import FriendRequests from "./FriendRequests.js";
+import AllUsers from "./AllUsers.js";
+import MyFriends from "./MyFriends";
+import './App.css';
+import PollForm from "./CreatePoll.js"
 
 function App() {
-    const auth = getAuth();  // Initialize the auth instance
-    const [currentForm, setCurrentForm] = useState('login');
-    const toggleForm = (formName) => {
-        setCurrentForm(formName);
+  const auth = getAuth(); // Initialize the auth instance
+  const [currentForm, setCurrentForm] = React.useState("login");
+
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      console.log("(From App) User signed in:", user.displayName);
+    } else {
+      // User is signed out
+      console.log("(From App) User is signed out.");
     }
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in
-            console.log("(From App)User signed in:", user.displayName);
-        } else {
-            // User is signed out
-            console.log("(From App)User is signed out.");
-        }
-    });
-   
-    return (
+  });
 
-        
-        <Router>
-            <div className="App">
-                <Navbar></Navbar>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/password" element={<Password />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/passwordrecovery" element={<PasswordRecovery/>} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/CreatePost" element={<FileUpload></FileUpload>}/>
-                    <Route path="/friendRequests" element={<FriendRequests />} />
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/profileSettings" element={<ProfileSettings/>}/>
-                </Routes>
-            </div>
-        </Router>
 
-    );
+  return (
+    <UserProvider > {/* Wrap your app with the UserProvider */}
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/password" element={<Password />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/passwordrecovery" element={<PasswordRecovery />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/CreatePost" element={<FileUpload />} />
+            <Route path="/friendRequests" element={<FriendRequests />} />
+            <Route path="/allUsers" element={<AllUsers />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profileSettings" element={<ProfileSettings />} />
+            <Route path="/myFriends" element={<MyFriends />} />
+          </Routes>
+        </div>
+      </Router>
+    </UserProvider>
+  );
 }
 
 export default App;

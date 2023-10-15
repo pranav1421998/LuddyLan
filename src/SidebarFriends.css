@@ -1,0 +1,17 @@
+.sidebar-container {
+  display: flex;
+  height: 100vh;
+  position: fixed;
+  background-color: #9b0303;
+}
+
+.sidebar {
+    padding: 0;
+    background-color: #9b0303 !important;
+}
+
+.custom-menu-item {
+  text-decoration: none !important;
+  color: white !important;
+}
+

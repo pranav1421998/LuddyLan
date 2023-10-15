@@ -2,11 +2,11 @@ import './FriendRequests.css';
 import GridCards from "./GridCards";
 import SidebarFriends from "./SidebarFriends";
 import React, { useState, useEffect } from "react";
-import { db} from "./firebaseConfig";
+import { auth, db, storage } from "./firebaseConfig";
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useUser } from './UserContext';
 
-const FriendRequests = () => {
+const MyFriends = () => {
     const [userdata, setDocuments] = useState([]);
     const [userData, setUserData] = useState([]); // State to store fetched user details
     const user = useUser();
@@ -16,7 +16,7 @@ const FriendRequests = () => {
             try {
                 // Assuming you have a "friends" collection
                 const friendsRef = collection(db, 'friends');
-                const q = query(friendsRef, where('follower_email', '==', user?.email), where('is_accepted', '==', false));
+                const q = query(friendsRef, where('user_email', '==', user.email), where('is_accepted', '==', true));
                 const friendSnapshot = await getDocs(q);
 
                 const friendDataArray = friendSnapshot.docs.map(doc => doc.data());
@@ -68,13 +68,11 @@ const FriendRequests = () => {
         }
     }, [userdata]);
 
-    console.log(userData);
-
     // Update the data array with user details
     const data = userData.map(user => ({
         name: user.firstName + ' ' + user.lastName, // Adjust this based on the field name in your "users" collection
         profilePicture: user.profilePicture, // Adjust this based on the field name in your "users" collection
-        condition: "FriendRequests",
+        condition: "MyFriends",
         email: user.id,
     }));
 
@@ -82,9 +80,9 @@ const FriendRequests = () => {
         <div className="component">
             <SidebarFriends></SidebarFriends>
             <div>
-                <h2 className='heading'>Friend Requests</h2>
-                {data.length === 0 ? (
-                    <h4 style={{paddingTop: '25vh'}}>No friend requests</h4>
+            <h2 className='heading'>My Friends</h2>
+            {data.length === 0 ? (
+                    <h4 style={{paddingTop: '25vh'}}>No friends</h4>
                 ) : (
                     <GridCards data={data} />
                 )}
@@ -93,4 +91,4 @@ const FriendRequests = () => {
     );
 };
 
-export default FriendRequests;
+export default MyFriends;
