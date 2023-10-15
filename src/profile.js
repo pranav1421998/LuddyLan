@@ -17,6 +17,7 @@ function Profile() {
       {/* Display user info */}
       <button><Link to="/profileSettings">Settings</Link></button>
       <button><Link to="/dashboard">Dashboard</Link></button>
+      <button><Link to="/CreatePost">Create Post</Link></button>
       {/* Map through userPosts to display each post and a delete button */}
     </div>
   );

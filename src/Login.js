@@ -92,7 +92,6 @@ const Login = (props) => {
                 <button type="submit" onClick={handleSubmit}>Log In</button>
                 <button className="link-btn" onClick={() => navigate("/register")}>Don't have an account? Register here.</button>
                 <Link to="/passwordrecovery">Forgot Password?</Link>
-                <Link to="/CreatePost">Create Post</Link>
             </form>
 
             <div className="google-btn">
