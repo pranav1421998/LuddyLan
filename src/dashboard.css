@@ -37,12 +37,12 @@ h1 {
 
 p {
     margin: 10px 0;
-    color: #555;
+    color: black;
     font-size: 1.2em;
 }
 
 p.loading {
-    color: #999;
+    color: black;
 }
 
 ul {
@@ -52,10 +52,10 @@ ul {
 .main {
     width: 100%;
     position: relative;
-    margin-top: 100px;
     display: flex;
-    padding: 0 10vw 100px;
+    padding: 20vh 10vw 100px;
     gap: 50px;
+    z-index: -1;
 }
 
 .post {
@@ -135,11 +135,17 @@ ul {
 
 .no-top-margin {
     margin-top: 0px;
+    color: black;
 }
 
 .btn {
     background-color: white;
     color: #555;
+}
+
+.caption {
+    margin-top: 0px;
+    color: black;
 }
 
 .like-btn {

@@ -35,6 +35,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+
         const fetchPosts = async () => {
             const collectionRef = collection(db, 'posts');
             const querySnapshot = await getDocs(collectionRef);
@@ -73,33 +74,42 @@ const Dashboard = () => {
     }, [auth, db]);
 
     return (
-        <section className="main">
-            <div className="post-container">
-                <ul>
-                    {posts.map((post) => (
-                        <li key={post.id}>
-                            <div className="post">
-                                <div className="post-header">
-                                    <p className="user-icon"><FontAwesomeIcon icon={faUser} /></p>
-                                    <p className="username">{post.ownerId}</p>
-                                </div>
-                                <div className="post-detail">
-                                    <p className="no-top-margin">{post.caption}</p>
-                                </div>
-                                <div className="post-feed">
-                                    <img src={post.media} className="image-container" alt="Image" />
-                                </div>
-                                <div className="detail-interactions">
-                                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp} /> Like</button>
-                                    <button className="btn"><FontAwesomeIcon icon={faComment} /> Comment</button>
-                                    <button className="btn"><FontAwesomeIcon icon={faShare} /> Share</button>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+            
+    <section className="main">
+        <div className="post-container">
+            <ul>
+            {posts.map((post) => (
+            <li key={post.id}>
+            <div className="post">
+                {/* post header */}
+                <div className="post-header">
+                    <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
+                <p className= "username">{post.ownerId}</p> 
+                </div>
+                {/* post caption */}
+                <div className="post-detail">
+                    <p style={{color: 'black'}}>{post.caption}</p>    
+                </div>
+                {/* post section */}
+                <div className="post-feed">
+                    <img src={post.media} className="image-container" alt="Image" />
+                </div>
+                {/* post buttons */}
+                <div className="detail-interactions">
+                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>
+                    <button className="btn"><FontAwesomeIcon icon={faComment}/> Comment</button>
+                    <button className="btn"><FontAwesomeIcon icon={faShare}/> Share</button>
+
+                </div>
+                
             </div>
-        </section>
+                
+            </li>
+            ))}
+            </ul>
+        </div>
+    </section>
+
     );
 };
 
