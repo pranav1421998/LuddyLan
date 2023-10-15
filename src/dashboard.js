@@ -12,19 +12,6 @@ const Dashboard = () => {
 
     useEffect(() => {
 
-        // const fetchDocumentById = async (documentId) => {
-        //     try {
-        //       const documentRef = db.collection('posts').doc(documentId);
-        //       const documentSnapshot = await documentRef.get();
-        //       if (documentSnapshot.exists) {
-        //         const documentData = documentSnapshot.data();
-        //         console.log('Fetched document data:', documentData);
-        //       } else {
-        //         console.log('Document does not exist.');
-        //       }
-        //     } catch (error) { console.error('Error fetching document:', error); }
-        // };        
-
         const fetchPosts = async () => {
             const collectionRef = collection(db, 'posts');
             const querySnapshot = await getDocs(collectionRef);
@@ -82,7 +69,7 @@ const Dashboard = () => {
                 </div>
                 {/* post caption */}
                 <div className="post-detail">
-                    <p className="no-top-margin">{post.caption}</p>    
+                    <p style={{color: 'black'}}>{post.caption}</p>    
                 </div>
                 {/* post section */}
                 <div className="post-feed">
