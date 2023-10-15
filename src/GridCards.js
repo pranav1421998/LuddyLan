@@ -1,32 +1,46 @@
 import React from "react";
 import './GridCards.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark  } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faTimesCircle, faSolid, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-const GridCards = () => {
+const GridCards = ({ data }) => {
+    const getIcons = (item) => {
+        switch (item.condition) {
+            case 'AllUsers':
+                console.log(item,'********************');
+                if(item.is_accepted === true) {
+                    return (
+                        <><button className= "connect-button" style={{backgroundColor: '#9b0303'}}> <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '24px' }} />Connected</button></>)
+                } else {
+                    return (
+                        <><button className= "connect-button" style={{backgroundColor: '#9b0303'}}> <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '24px' }} />Connect</button></>)
+                }
+            case 'FriendRequests':
+                return (
+                    <>
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#9b0303', fontSize: '24px' }} />
+                    </>)
+            case 'MyFriends':
+                return (<></>)
+            default:
+                return null; // You can also return a default icon or null
+        }
+    };
+
     return (
         <div className="grid-cards">
-            {/* Your grid cards content goes here */}
-            <div className="card">
-                <div className="profile-picture">
+            {data.map((item, index) => (
+                <div className="card" key={index}>
+                    <div className="profile-picture">
+                    </div>
+                    <p>{item.name}</p>
+                    <div>
+                        <a>{getIcons(item)}</a>
+                        <span className="icon-gap"></span>
+                    </div>
                 </div>
-                <p>Veda Charitha</p>
-                <div>
-                <a>
-                    <FontAwesomeIcon icon={faCircleCheck} style ={{color: 'green'}}/>
-                </a>
-                <FontAwesomeIcon icon={faCircleXmark} />
-                </div>
-            </div>
-            <div className="card">Card 2</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-            <div className="card">Card 3</div>
-
-            {/* Add more cards as needed */}
+            ))}
         </div>
     );
 };

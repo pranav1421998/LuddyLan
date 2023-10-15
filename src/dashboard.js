@@ -1,14 +1,38 @@
 import './dashboard.css';
-import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { db, auth } from "./firebaseConfig";
+import Sidebar from './Sidebar';
+import { Link, useNavigate } from "react-router-dom";
+import CreatePost from './CreatePost';
+import PollPopup from './CreatePoll';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
     const [posts, setPosts] = useState([]);
+
+    const navigate = useNavigate();
+
+    const openPollPopup = () => {
+        setShowPopup(true);
+    };
+
+    const ClosePollPopup = () => {
+        setShowPopup(false);
+    };
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     useEffect(() => {
 
@@ -17,15 +41,9 @@ const Dashboard = () => {
             const querySnapshot = await getDocs(collectionRef);
             const documentsData = [];
             querySnapshot.forEach((doc) => {
-              documentsData.push({ id: doc.id, ...doc.data() });
+                documentsData.push({ id: doc.id, ...doc.data() });
             });
             setPosts(documentsData);
-            
-            documentsData.forEach((data) => {
-                // const collectionData = document.getElementById(data.id);
-                // console.log(collectionData.data);
-            });
-
         };
         fetchPosts();
 
@@ -34,17 +52,16 @@ const Dashboard = () => {
                 const userDocRef = doc(db, "users", user.email);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
-                    setUserDetails({ id: userDoc.id, ...userDoc.data() }); // Include the document ID in the user data
-                    // Update a single field in the document
+                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
                     try {
                         await updateDoc(userDocRef, {
                             loggedIn: true
                         });
                         window.status = true;
                         console.log("Document successfully updated!");
-                        } catch (error) {
+                    } catch (error) {
                         console.error("Error updating document: ", error);
-                        }
+                    }
                 } else {
                     console.log("No such document!");
                 }
@@ -52,6 +69,8 @@ const Dashboard = () => {
                 console.log("No user is signed in");
             }
         });
+
+        return () => unsubscribe(); // Unsubscribe from the observer on component unmount
     }, [auth, db]);
 
     return (

@@ -92,13 +92,13 @@ const Login = (props) => {
                 <button type="submit" onClick={handleSubmit}>Log In</button>
                 <button className="link-btn" onClick={() => navigate("/register")}>Don't have an account? Register here.</button>
                 <Link to="/passwordrecovery">Forgot Password?</Link>
-                <Link to="/CreatePost">Create Post</Link>
+                <Link to="/CreatePoll">CreatePoll</Link>
             </form>
 
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            {error && <p style={{color: 'crimson'}}>{error}</p>}
         </div>
         </div>
     </>
