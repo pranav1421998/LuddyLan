@@ -4,8 +4,8 @@
     grid-template-columns: repeat(1, 1fr);
     margin-left: 20vw;
     gap: 16px;
-    padding-left: 3vw;
-    padding-top: 10vh;
+    padding-left: 2vw;
+    padding-top: 15vh;
   }
   
   .card {
@@ -15,6 +15,10 @@
     height: 50vh;
     width: 50vh;
     border-radius: 5%;
+  }
+
+  .p-color {
+    color: black;
   }
   
   /* Media queries for responsiveness */

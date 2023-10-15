@@ -107,7 +107,7 @@ const GridCards = ({ data }) => {
                     <div className="profile-picture">
                         {/* Display the profile picture */}
                     </div>
-                    <p>{item.name}</p>
+                    <p className="p-color">{item.name}</p>
                     <div>
                         <a>{getIcons(item)}</a>
                         <span className="icon-gap"></span>
