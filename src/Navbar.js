@@ -1,7 +1,6 @@
 // src/components/Navbar.js
 
 import './Navbar.css'
-import icon from './Images/icon.png';
 import React, { useEffect } from "react";
 import { auth, db } from "./firebaseConfig"; 
 import { doc, getDoc, updateDoc} from 'firebase/firestore';

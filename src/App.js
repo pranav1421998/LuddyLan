@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { UserProvider } from './UserContext'; // Import the UserProvider
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
