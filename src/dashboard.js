@@ -81,7 +81,6 @@ const Dashboard = () => {
             
     <section className="main">
         <div className="post-container">
-
         <button className="button" onClick={handleOpenModal}>Create Post</button>
         <button className="button" onClick={openPollPopup}>Create Poll</button>
         {showModal && (
