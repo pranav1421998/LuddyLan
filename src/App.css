@@ -1,62 +1,115 @@
 .App {
+
   text-align: center;
+
   /* display: flex; */
+
   /* min-height: 100vh; */
+
   align-items: center;
+
   justify-content: center;
+
   color:#9b0303;
+
 }
+
+ 
 
 label {
+
   text-align: left;
+
   padding: 0.25rem 0;
+
 }
+
+ 
 
 input {
+
   margin: 0.5rem 0;
+
   padding: 8px;
+
   border: 1px solid black;
+
   border-radius: 10px;
+
   border-color: BLACK;
+
 }
+
+ 
 
 button {
+
   border: none;
+
   background-color:#9b0303;
+
   padding: 10px;
+
   border-radius: 10px;
+
   cursor: pointer;
+
   color:white;
+
 }
+
+ 
 
 .auth-form-container{
+
   display: flex;
+
   flex-direction: column;
+
   margin:auto;
+
 }
+
+ 
 
 .login-form, .register-form, .register-container, .createpassword-form {
+
   display: flex;
+
   flex-direction: column;
+
   margin:auto;
+
 }
+
+ 
 
 @media screen and (min-width: 600px) {
+
   .auth-form-container {
+
       padding: 5rem;
+
       /* height: 60vh; */
+
       /* width: 50vw; */
+
   }
+
 }
+
+ 
 
 select {
-  margin: 0.5rem 0;
-  padding: 8px;
-  border: 1px solid black;
-  border-radius: 10px;
-  border-color: BLACK;
-}
 
-.component {
-  margin-top: 10vh;
+  margin: 0.5rem 0;
+
+  padding: 8px;
+
+  border: 1px solid black;
+
+  border-radius: 10px;
+
+  border-color: BLACK;
+
 }
