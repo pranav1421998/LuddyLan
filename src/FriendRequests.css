@@ -11,6 +11,7 @@
 }
 
 .heading {
+    margin-top: 10vh;
     position: fixed;
     width: 100%;
 }
