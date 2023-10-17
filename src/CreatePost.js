@@ -108,7 +108,7 @@ function FileUpload({ onClose }) {
         Describe Image/Video
         <input type="text" value={description} onChange={handleDescriptionChange} />
       </label>
-      <button onClick={handleUpload}>Upload</button>
+      <button  className="button" onClick={handleUpload}>Upload</button>
       {uploadTask && (
         <div className="progress-bar">
           Upload Progress: {uploadProgress.toFixed(2)}%

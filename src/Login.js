@@ -89,9 +89,9 @@ const Login = (props) => {
                 <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Username" />
                 {/* <label htmlFor="password">Password</label> */}
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password" id="password" name="Password" />
-                <button type="submit" onClick={handleSubmit}>Log In</button>
-                <button className="link-btn" onClick={() => navigate("/register")}>Don't have an account? Register here.</button>
-                <Link to="/passwordrecovery">Forgot Password?</Link>
+                <button className="login-btn" type="submit" onClick={handleSubmit}>Log In</button>
+                <Link className="link-btn" to="/register">Don't have an account? Register here.</Link>
+                <Link className="link-btn" to="/passwordrecovery">Forgot Password?</Link>
             </form>
 
             <div className="google-btn">

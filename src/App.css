@@ -20,14 +20,14 @@ input {
   border-color: BLACK;
 }
 
-button {
+/* button {
   border: none;
-  background-color:#9b0303;
+  background-color: #9b0303;
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
   color:white;
-}
+} */
 
 .auth-form-container{
   display: flex;

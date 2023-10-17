@@ -118,9 +118,9 @@ const Dashboard = () => {
                 </div>
                 {/* post buttons */}
                 <div className="detail-interactions">
-                    <button className="btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>&nbsp;|&nbsp;
-                    <button className="btn"><FontAwesomeIcon icon={faComment}/> Comment</button>&nbsp;|&nbsp;
-                    <button className="btn"><FontAwesomeIcon icon={faShare}/> Share</button>
+                    <button className="interact-btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>|
+                    <button className="interact-btn"><FontAwesomeIcon icon={faComment}/> Comment</button>|
+                    <button className="interact-btn"><FontAwesomeIcon icon={faShare}/> Share</button>
                 </div>   
             </div>
                 

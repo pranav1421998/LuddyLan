@@ -62,15 +62,18 @@
     font-size: 16px;
   }
 
-  .btn {
+  .nav-btn {
     font-size: 16px;
+    text-align: center;
+    border: none;
     color: white;
     background: none;
     display: flex;
     opacity: 50%;
   }
 
-  .btn:hover {
+  .nav-btn:hover {
     background: none;
     opacity: 100%;
+    cursor: pointer;
   }
