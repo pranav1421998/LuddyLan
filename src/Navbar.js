@@ -22,11 +22,11 @@ const Navbar = () => {
         </div>
         {/* other webpage links */}
         <div className="pages">
-          <button className='btn' onClick={() => navigate('/dashboard')}><FontAwesomeIcon icon={faHome}/> Home</button>
-          <button className='btn' onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/> Friends</button>
-          <button className='btn' onClick={() => navigate('/chat')}><FontAwesomeIcon icon={faComment}/> Chat</button>
-          <button className='btn' onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/> Profile</button>
-          <button className='btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/> Settings</button>
+          <button className='btn' onClick={() => navigate('/dashboard')}><FontAwesomeIcon icon={faHome}/>&nbsp;Home</button>
+          <button className='btn' onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/>&nbsp;Friends</button>
+          <button className='btn' onClick={() => navigate('/chat')}><FontAwesomeIcon icon={faComment}/>&nbsp;Chat</button>
+          <button className='btn' onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/>&nbsp;Profile</button>
+          <button className='btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/>&nbsp;Settings</button>
         </div>
         {/* log out */}
         <div className="login">
