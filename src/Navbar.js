@@ -22,11 +22,11 @@ const Navbar = () => {
         </div>
         {/* other webpage links */}
         <div className="pages">
-          <p onClick={() => navigate('/dashboard')}><FontAwesomeIcon icon={faHome}/> Home</p>
-          <p onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/> Friends</p>
-          <p onClick={() => navigate('/chat')}><FontAwesomeIcon icon={faComment}/> Chat</p>
-          <p onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/> Profile</p>
-          <p onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/> Settings</p>
+          <button className='btn' onClick={() => navigate('/dashboard')}><FontAwesomeIcon icon={faHome}/> Home</button>
+          <button className='btn' onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/> Friends</button>
+          <button className='btn' onClick={() => navigate('/chat')}><FontAwesomeIcon icon={faComment}/> Chat</button>
+          <button className='btn' onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/> Profile</button>
+          <button className='btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/> Settings</button>
         </div>
         {/* log out */}
         <div className="login">
