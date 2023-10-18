@@ -106,10 +106,27 @@ ul {
     border: 1px solid #999;
 }
 
-.post-header .username {
-    font-size: 0.9rem;
-    font-weight: 600;
+.username {
+    margin: 0px;
     color: black;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.date {
+    margin: 0px;
+    color: black;
+    font-size: 14px;
+    margin-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.head {
+    align-items: left;
 }
 
 .post-feed {

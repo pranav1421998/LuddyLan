@@ -43,7 +43,9 @@
   }
   
   .login {
-    margin-top: 10px;
+    color: white;
+    margin-top: 20px;
+    position: relative;
     align-items: center;
     font-size: 16px;
     opacity: 50%;

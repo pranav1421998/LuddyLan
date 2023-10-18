@@ -30,7 +30,7 @@ const Navbar = () => {
         </div>
         {/* log out */}
         <div className="login">
-          <p onClick={() => navigate('/')}><FontAwesomeIcon icon={faSignOut}/> Log out</p>
+          <button className='nav-btn' onClick={() => navigate('/')}><FontAwesomeIcon icon={faSignOut}/>&nbsp;Log out</button>
         </div>
       </nav>
     );

@@ -4,7 +4,7 @@ import PollPopup from './CreatePoll';
 import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { doc, getDoc, getDocs, updateDoc, collection } from "firebase/firestore";
+import { doc, getDoc, getDocs, updateDoc, orderBy, query, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
@@ -36,19 +36,14 @@ const Dashboard = () => {
     useEffect(() => {
 
         const fetchPosts = async () => {
-            const collectionRef = collection(db, 'posts');
-            const querySnapshot = await getDocs(collectionRef);
-            const documentsData = [];
+            const collectionRef = collection(db, "posts");
+            const q = query(collectionRef, orderBy("uploadedDate", "desc")); // Order by "uploadedDate" in descending order (most recent to least recent)
+            const querySnapshot = await getDocs(q);
+            const postArray = [];
             querySnapshot.forEach((doc) => {
-              documentsData.push({ id: doc.id, ...doc.data() });
+              postArray.push({ id: doc.id, ...doc.data() });
             });
-            setPosts(documentsData);
-            
-            documentsData.forEach((data) => {
-                // const collectionData = document.getElementById(data.id);
-                // console.log(collectionData.data);
-            });
-
+            setPosts(postArray);
         };
         fetchPosts();
 
@@ -76,6 +71,13 @@ const Dashboard = () => {
             }
         });
     }, [auth, db]);
+
+    // Function to format a date  as a more readable string
+    const formatTimestamp = (timestamp) => {
+        const date = timestamp.toDate();
+        const options = { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+        return date.toLocaleString(undefined, options);
+      };
 
     return (
             
@@ -107,8 +109,11 @@ const Dashboard = () => {
             <div className="post">
                 {/* post header */}
                 <div className="post-header">
-                    <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
-                <p className= "username">{post.ownerId}</p> 
+                <p className="user-icon"><FontAwesomeIcon icon={faUser}/></p>
+                    <div className="head">
+                        <p className= "username">{post.ownerId}</p>
+                        <p className="date">{formatTimestamp(post.uploadedDate)}</p>
+                    </div>
                 </div>
                 {/* post caption */}
                 <div className="post-detail">
