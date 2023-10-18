@@ -26,8 +26,7 @@
     color: #fff;
     position: relative;
     align-items: center;
-    margin-left: -5vh;
-    margin-right: auto;
+    margin-left: -14vh;
     gap: 75px;
   }
   
@@ -44,10 +43,14 @@
   }
   
   .login {
-    margin-right: 20px;
     margin-top: 10px;
     align-items: center;
     font-size: 16px;
+    opacity: 50%;
+  }
+  .login:hover {
+    opacity: 100%;
+    cursor: pointer;
   }
   
   .login a {

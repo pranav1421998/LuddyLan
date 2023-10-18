@@ -56,6 +56,15 @@ ul {
     z-index: 0;
 }
 
+.top-btn {
+    margin-left: 300px;
+    margin-top: -50px;
+    position: fixed;
+    z-index: 3;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 .post {
     width: 100%;
     border: 2px solid #999;
@@ -192,11 +201,18 @@ ul {
 }
 
 /* Style the button that triggers the modal (Create Post button) */
-.button {
+.modal-btn {
     background-color: #0074d9;
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    opacity: 50%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.modal-btn:hover {
+    opacity: 100%;
 }
