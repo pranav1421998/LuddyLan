@@ -1,7 +1,7 @@
 // Register
 import React, { useState, useEffect } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification} from "firebase/auth";
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 import './Register.css';
@@ -132,6 +132,14 @@ export const Register = () => {
                 setLoading(false);
                 navigate('/');
             }, 5000);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            console.log('User registered:', userCredential.user);
+
+            // Send email verification link to the user
+            await sendEmailVerification(auth.currentUser);
+
+            // This will trigger an email with a confirmation link.
+
         } catch (error) {
             
                 if (error.code === 'auth/email-already-in-use') {
