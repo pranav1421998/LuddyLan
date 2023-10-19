@@ -73,7 +73,7 @@ function FileUpload({ onClose }) {
     setDescription(event.target.value);
   };
 
-  const saveToFirestore = (downloadURL) => {
+  const saveToFirestore = async (downloadURL) => {
     if (user) {
       const postsCollection = collection(db, 'posts');
       const newPost = {
@@ -82,13 +82,18 @@ function FileUpload({ onClose }) {
         ownerId: user.email,
         uploadedDate: Timestamp.fromDate(new Date()),
       };
-      addDoc(postsCollection, newPost)
-        .then(() => {
-          alert('Succesfully created a post');
-        })
-        .catch((error) => {
-          console.error('Error adding post to Firestore: ', error);
-        });
+  
+      // Add a new post to the "posts" collection
+      const newPostRef = await addDoc(postsCollection, newPost);
+  
+      // Create nested collections for likes, comments, and shares under the new post
+      const likesCollection = collection(newPostRef, 'likes');
+      const commentsCollection = collection(newPostRef, 'comments');
+      const sharesCollection = collection(newPostRef, 'shares');
+  
+      // You can add documents to these nested collections if needed
+  
+      alert('Successfully created a post');
     }
   };
 
