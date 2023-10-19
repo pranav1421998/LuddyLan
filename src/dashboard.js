@@ -125,7 +125,8 @@ const Dashboard = () => {
                 </div>
                 {/* post buttons */}
                 <div className="detail-interactions">
-                    <button className="interact-btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>|
+                    {/* create functions that take in a post.id to fetch nested collections and update them */}
+                    <button className="interact-btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>| 
                     <button className="interact-btn"><FontAwesomeIcon icon={faComment}/> Comment</button>|
                     <button className="interact-btn"><FontAwesomeIcon icon={faShare}/> Share</button>
                 </div>   
