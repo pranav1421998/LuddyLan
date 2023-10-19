@@ -91,7 +91,7 @@ const Login = (props) => {
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password" id="password" name="Password" />
                 <button className="login-btn" type="submit" onClick={handleSubmit}>Log In</button>
                 <Link className="link-btn" to="/register">Don't have an account? Register here.</Link>
-                <Link className="link-btn" to="/passwordrecovery">Forgot Password?</Link>
+                <Link className="link-btn" to="/passwordrecovery">Forgot password?</Link>
             </form>
 
             <div className="google-btn">

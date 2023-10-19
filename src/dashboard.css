@@ -51,7 +51,7 @@ ul {
     width: 100%;
     position: relative;
     display: flex;
-    padding: 20vh 10vw 100px;
+    padding: 20vh;
     gap: 50px;
     z-index: 0;
 }
