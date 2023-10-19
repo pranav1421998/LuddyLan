@@ -172,13 +172,17 @@ ul {
     margin-left: 20px;
     margin-right: 20px;
     opacity: 50%;
-  }
+}
 
-  .interact-btn:hover {
-    background: lightgrey;
+.interact-btn:hover {
+    color: black;
     opacity: 100%;
     cursor: pointer;
-  }
+}
+
+.interact-btn:active {
+    color: black;
+}
 
 .caption {
     margin-top: 0px;
