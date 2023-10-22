@@ -91,15 +91,15 @@ function FileUpload({ onClose }) {
 
           // Create 'likes' collection for the post
           const likesCollection = collection(db, 'posts', postID, 'likes');
-          addDoc(likesCollection, { count: 0 }); // Initialize likes count to 0
+          //addDoc(likesCollection, { count: 0 }); // Initialize likes count to 0
 
           // Create 'comments' collection for the post
           const commentsCollection = collection(db, 'posts', postID, 'comments');
-          addDoc(commentsCollection, { count: 0 }); // Initialize comments count to 0
+          //addDoc(commentsCollection, { ownerId: postID.ownerId, comment: "" }); // Initialize a blank comment
 
           // Create 'shares' collection for the post
           const sharesCollection = collection(db, 'posts', postID, 'shares');
-          addDoc(sharesCollection, { count: 0 }); // Initialize shares count to 0
+          //addDoc(sharesCollection, { count: 0 }); // Initialize shares count to 0
 
           alert('Your post has been uploaded, please refresh the page.');
         })
