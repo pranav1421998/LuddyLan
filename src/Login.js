@@ -18,6 +18,7 @@ const Login = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        Cookies.remove('userDetails');
         const fetchData = async () => {
             const userEmail = auth.currentUser ? auth.currentUser.email : null;
             if(userEmail){

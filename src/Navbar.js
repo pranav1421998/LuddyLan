@@ -46,7 +46,7 @@ if (isLoggedIn) {
     </nav>
   );
 } else {
-  Cookies.remove('userDetails')
+  Cookies.remove('userDetails');
   // logged out navbar
   return (
     <nav className="navbar2">

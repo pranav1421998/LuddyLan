@@ -87,7 +87,6 @@ const Dashboard = () => {
     return (
             
     <section className="main">
-        <p>email from cookies :{user_email}</p>
         <div className="post-container">
             <div className="top-btn">
                 <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
