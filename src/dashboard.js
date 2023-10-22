@@ -1,17 +1,19 @@
 import './dashboard.css';
-import CreatePost from './CreatePost';
 import PollPopup from './CreatePoll'; 
+import CreatePost from './CreatePost';
 import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { doc, getDoc, getDocs, updateDoc, orderBy, query, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { doc, getDoc, getDocs, setDoc, addDoc, deleteDoc, updateDoc, orderBy, query, collection } from "firebase/firestore";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [posts, setPosts] = useState([]);
+    const [postComments, setPostComments] = useState({}); // State to store comments for each post
+    const [newCommentText, setNewCommentText] = useState("");
 
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -34,15 +36,20 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-
         const fetchPosts = async () => {
             const collectionRef = collection(db, "posts");
             const q = query(collectionRef, orderBy("uploadedDate", "desc")); // Order by "uploadedDate" in descending order (most recent to least recent)
             const querySnapshot = await getDocs(q);
             const postArray = [];
-            querySnapshot.forEach((doc) => {
-              postArray.push({ id: doc.id, ...doc.data() });
-            });
+            
+            // Fetch and add like count for each post
+            for (const doc of querySnapshot.docs) {
+                const postId = doc.id;
+                const postData = doc.data();
+                const likeCount = await fetchLikeCount(postId);
+                postArray.push({ id: postId, ...postData, likeCount });
+            }
+
             setPosts(postArray);
         };
         fetchPosts();
@@ -79,8 +86,56 @@ const Dashboard = () => {
         return date.toLocaleString(undefined, options);
       };
 
-    return (
-            
+    const addLikeToPost = (postId, userId) => {
+        const likesCollection = collection(db, 'posts', postId, 'likes');
+        // Check if the user has already liked the post
+        const likeDocRef = doc(likesCollection, userId);
+        getDoc(likeDocRef)
+            .then((docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    // The user has already liked the post, you may want to handle this case
+                    console.log('User has already liked this post.');
+                } else {
+                    // The user hasn't liked the post, so add their ID to the 'likes' collection
+                    setDoc(likeDocRef, { liked: true })
+                    .then(() => {console.log('User liked the post.');})
+                    .catch((error) => {console.error('Error adding like to Firestore: ', error);});
+                }
+            })
+            .catch((error) => {console.error('Error checking like status in Firestore: ', error);});
+    };
+    
+    const fetchLikeCount = async (postId) => {
+        const likesCollection = collection(db, "posts", postId, "likes");
+        const querySnapshot = await getDocs(likesCollection);
+        return querySnapshot.size; // Returns the number of likes for the post
+    };
+
+    // Function that allows user to like or unlike a post 
+    const toggleLike = async (postId) => {
+        const likesCollection = collection(db, "posts", postId, "likes");
+        const likeDocRef = doc(likesCollection, userDetails.id);
+    
+        try {
+            const docSnapshot = await getDoc(likeDocRef);
+    
+            if (docSnapshot.exists()) {
+                // User has already liked the post, so "unlike" it
+                await deleteDoc(likeDocRef); // Remove the user's ID from the "likes" collection
+            } else {
+                // User hasn't liked the post, so "like" it
+                await setDoc(likeDocRef, { liked: true });
+            }
+    
+            // Update the like count for the post
+            const likeCount = await fetchLikeCount(postId);
+            return likeCount;
+        } catch (error) {
+            console.error("Error toggling like status: ", error);
+        }
+    };   
+
+    return (    
     <section className="main">
         <div className="post-container">
             <div className="top-btn">
@@ -125,9 +180,24 @@ const Dashboard = () => {
                 </div>
                 {/* post buttons */}
                 <div className="detail-interactions">
-                    <button className="interact-btn"><FontAwesomeIcon icon={faThumbsUp}/> Like</button>|
-                    <button className="interact-btn"><FontAwesomeIcon icon={faComment}/> Comment</button>|
-                    <button className="interact-btn"><FontAwesomeIcon icon={faShare}/> Share</button>
+                    <button className={`interact-btn like-button ${post.likedByUser ? "liked" : ""}`}
+                        onClick={async () => {
+                            const newLikeCount = await toggleLike(post.id);
+                            // Update the like count and likedByUser status for the post
+                            post.likeCount = newLikeCount;
+                            post.likedByUser = !post.likedByUser;
+                            setPosts([...posts]); // Update the state
+                        }}>
+                        <FontAwesomeIcon icon={faThumbsUp} /> {post.likeCount - 1}
+                </button>|
+                    
+                    <button className="interact-btn">
+                        <FontAwesomeIcon icon={faComment}/> Comment
+                    </button>|
+
+                    <button className="interact-btn">
+                        <FontAwesomeIcon icon={faShare}/> Share
+                    </button>
                 </div>   
             </div>
                 
@@ -136,7 +206,6 @@ const Dashboard = () => {
             </ul>
         </div>
     </section>
-
     );
 };
 

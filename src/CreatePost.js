@@ -3,7 +3,7 @@ import { auth, db, provider } from "./firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { storage } from './firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { doc, collection, addDoc, setDoc, Timestamp } from 'firebase/firestore';
 import './FileUpload.css';
 import { v4 } from 'uuid';
 
@@ -72,30 +72,42 @@ function FileUpload({ onClose }) {
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-
-  const saveToFirestore = async (downloadURL) => {
+  
+  const saveToFirestore = (downloadURL) => {
     if (user) {
       const postsCollection = collection(db, 'posts');
       const newPost = {
         caption: description,
         media: downloadURL,
-        ownerId: user.email,
+        ownerId: user.email, // or user.uid, whichever you prefer
         uploadedDate: Timestamp.fromDate(new Date()),
       };
-  
-      // Add a new post to the "posts" collection
-      const newPostRef = await addDoc(postsCollection, newPost);
-  
-      // Create nested collections for likes, comments, and shares under the new post
-      const likesCollection = collection(newPostRef, 'likes');
-      const commentsCollection = collection(newPostRef, 'comments');
-      const sharesCollection = collection(newPostRef, 'shares');
-  
-      // You can add documents to these nested collections if needed
-  
-      alert('Successfully created a post');
+
+      // Add the new post to the 'posts' collection
+      addDoc(postsCollection, newPost)
+        .then((postRef) => {
+          // After successfully adding the post, create nested collections
+          const postID = postRef.id;
+
+          // Create 'likes' collection for the post
+          const likesCollection = collection(db, 'posts', postID, 'likes');
+          addDoc(likesCollection, { count: 0 }); // Initialize likes count to 0
+
+          // Create 'comments' collection for the post
+          const commentsCollection = collection(db, 'posts', postID, 'comments');
+          addDoc(commentsCollection, { count: 0 }); // Initialize comments count to 0
+
+          // Create 'shares' collection for the post
+          const sharesCollection = collection(db, 'posts', postID, 'shares');
+          addDoc(sharesCollection, { count: 0 }); // Initialize shares count to 0
+
+          alert('Your post has been uploaded, please refresh the page.');
+        })
+        .catch((error) => {
+          console.error('Error adding post to Firestore: ', error);
+        });
     }
-  };
+  };   
 
   return (
     <div className="container">
