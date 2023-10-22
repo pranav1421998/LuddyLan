@@ -19,7 +19,6 @@ const Login = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // your async logic here
             const userEmail = auth.currentUser ? auth.currentUser.email : null;
             if(userEmail){
                 const ref = doc(db, 'users', userEmail);
@@ -37,15 +36,24 @@ const Login = (props) => {
         };
         fetchData();
     }, []);
-
+///////////////// For setting cookies during login /////////////
+        const setCookies  = (user_email) => {
+        const userDetails = {
+            email: user_email
+        };
+        Cookies.set('userDetails', JSON.stringify(userDetails), { expires: 1 });
+        Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
+        
+    }
+//////////////////
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             console.log('User logged in:', userCredential.user);
             const user_email = e.user.email;
-            const userDocRef = doc(db, 'users', user_email); 
-            Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
+            //const userDocRef = doc(db, 'users', user_email); 
+            setCookies(user_email);
             navigate('/dashboard'); // successful login
         } catch (error) {
             console.error('Error during sign-in:', error);
@@ -75,7 +83,7 @@ const Login = (props) => {
                     navigate('/register', { state: { email: user_email } });
                 }else {
                   // User found, redirect to Dashboard
-                  Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
+                  setCookies(user_email);
                   navigate('/dashboard');
                 }
         

@@ -3,8 +3,6 @@
 import './Navbar.css'
 import icon from './Images/icon.png';
 import React, { useEffect } from "react";
-import { auth, db } from "./firebaseConfig"; 
-import { doc, getDoc, updateDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faUsers, faComment, faGear, faSignOut, faSignIn  } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +16,7 @@ const Navbar = () => {
 
   const handleLogout =  () => {
     Cookies.remove('isLoggedIn');
+    Cookies.remove('userDetails')
     navigate('/');    
   };
 /////////////////////
@@ -47,6 +46,7 @@ if (isLoggedIn) {
     </nav>
   );
 } else {
+  Cookies.remove('userDetails')
   // logged out navbar
   return (
     <nav className="navbar2">

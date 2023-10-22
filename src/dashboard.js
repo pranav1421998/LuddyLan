@@ -8,6 +8,8 @@ import { doc, getDoc, getDocs, updateDoc, orderBy, query, collection } from "fir
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+//cookies
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -16,6 +18,9 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+
+    /// fetch user details from cookies
+    const user_email = Cookies.get('userDetails');
 
     const openPollPopup = () => {
         setShowPopup(true);
@@ -82,6 +87,7 @@ const Dashboard = () => {
     return (
             
     <section className="main">
+        <p>email from cookies :{user_email}</p>
         <div className="post-container">
             <div className="top-btn">
                 <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
