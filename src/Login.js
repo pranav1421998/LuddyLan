@@ -6,6 +6,10 @@ import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
 import { useNavigate,Link } from "react-router-dom";
 import './Login.css';
 
+//cookies
+import Cookies from 'js-cookie';
+
+
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -41,7 +45,8 @@ const Login = (props) => {
             console.log('User logged in:', userCredential.user);
             const user_email = e.user.email;
             const userDocRef = doc(db, 'users', user_email); 
-            navigate('/dashboard'); // Replace with the route you want to navigate to upon successful login
+            Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
+            navigate('/dashboard'); // successful login
         } catch (error) {
             console.error('Error during sign-in:', error);
             if (error.code === 'auth/wrong-password') {
@@ -70,6 +75,7 @@ const Login = (props) => {
                     navigate('/register', { state: { email: user_email } });
                 }else {
                   // User found, redirect to Dashboard
+                  Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
                   navigate('/dashboard');
                 }
         
