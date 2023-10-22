@@ -1,4 +1,4 @@
-.home-banner-container {
+/* .home-banner-container {
     position: relative;
     display: flex;
     padding-top: 3rem;
@@ -87,3 +87,122 @@
     background-repeat: no-repeat; 
     background-attachment: fixed; 
   }
+
+  .header-image {
+    height: 20px;
+    width: 100%;
+    
+  } */
+
+  /* Reset some default styles for a cleaner look */
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply a background color to the entire page */
+body {
+  background-color: #f0f0f0; /* Set your desired background color */
+  font-family: Arial, sans-serif;
+}
+
+/* Style the home container to achieve the desired layout */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%; /* Set the container height to 100% of the viewport height */
+  background-color: white; /* Set your desired background color */
+  padding-bottom: 10vh;
+}
+
+/* This rule adds a margin of 10vh after the Navbar */
+.home-container .header-image {
+  margin-top: 10vh;
+}
+
+/* Style the header image to take up the top 30% of the screen */
+.header-image {
+  flex: 0 0 30%; /* Set the image to take up 30% of the container height */
+  width: 100%;
+  height: 40vh;
+  overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.header-image img {
+  width: 100%;
+  /* height: 100%; */
+  object-fit: fill; /* Change object-fit to contain */
+}
+
+
+/* Style the home text section to center the text in the remaining space */
+.home-text-section {
+  flex: 1; /* Let the text section take up the remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 10vh;
+}
+
+/* Add any additional styling you need for your text elements */
+.primary-heading {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.primary-text {
+  font-size: 2rem;
+  /* margin: 20px 0; */
+  margin-bottom: 5vh;
+  color: black;
+}
+
+.secondary-button {
+  /* margin-left: 13rem; */
+  padding: 1rem 1.0rem;
+  background-color:  #9b0303;
+  outline: none;
+  border: none;
+  border-radius: 5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.secondary-button svg {
+  margin-left: 1.0rem;
+  font-size: 1.5rem;
+}
+.secondary-button:hover {
+  background-color:crimson;
+}
+.about-us-container {
+  background-color: #9b0303;
+  display: flex;
+  justify-content: space-between;
+  /* padding: 10vh; */
+  width: 100%;
+  /* padding: 20px; */
+  gap: 5vw;
+  /* justify-items: center; */
+}
+.padding-img {
+  height: 30vh;
+  width: 25vw;
+  padding: 1%;
+}
+
+.footer {
+  background-color: #9b0303;
+  width: 100%;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
