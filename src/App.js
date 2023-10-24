@@ -16,8 +16,9 @@ import FriendRequests from "./FriendRequests.js";
 import AllUsers from "./AllUsers.js";
 import MyFriends from "./MyFriends";
 import './App.css';
+import LandingPage from "./LandingPage";
 import PollForm from "./CreatePoll.js"
-
+import PollList from "./PollList";
 function App() {
   const auth = getAuth(); // Initialize the auth instance
   const [currentForm, setCurrentForm] = React.useState("login");
@@ -40,8 +41,8 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
-            <Route path="/" element={<Login />} />
             <Route path="/password" element={<Password />} />
+            <Route path="/PollForm" element={<PollForm />} />
             <Route path="/register" element={<Register />} />
             <Route path="/passwordrecovery" element={<PasswordRecovery />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -51,6 +52,9 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profileSettings" element={<ProfileSettings />} />
             <Route path="/myFriends" element={<MyFriends />} />
+            <Route path="/" element={< LandingPage/>} />
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/PollList" element={< PollList/>} />
           </Routes>
         </div>
       </Router>

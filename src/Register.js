@@ -127,7 +127,8 @@ export const Register = () => {
                 phone: phone,
                 securityQuestion: secQues,
                 securityAnswer: secAns,
-                loggedIn: false
+                loggedIn: false,
+                isProfilePublic: true 
             });
     
             setTimeout(() => {
