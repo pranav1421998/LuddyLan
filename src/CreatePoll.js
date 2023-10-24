@@ -32,12 +32,15 @@ function PollPopup({ onClose, onPollCreated }) {
         console.error('User is not authenticated.');
         return;
       }
+      const endTimeDate = new Date(endTime);
 
+    // Create a Firestore Timestamp from the JavaScript Date
+    const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
       const pollData = {
         question,
         options,
         ownerId: user.email,
-        endTime, // Include the poll end time
+        endTime: endTimeTimestamp,
       };
 
       const docRef = await addDoc(collection(db, 'polls'), pollData);

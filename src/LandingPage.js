@@ -1,10 +1,16 @@
 import React from "react";
+import ImageSlider from "./ImageSlider";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
 import BannerBackground from './Images/home-banner-background.png';
 import BannerImage from './Images/LuddySocial.jpg';
-import BackdropImage from './Images/luddy.png';
+import BackdropImage from './Images/color.jpg';
+import image1 from './Images/1.png';
+import image2 from './Images/2.png';
+import image3 from './Images/3.png';
+import image4 from './Images/4.png';
+import image5 from './Images/5.png';
 import './LandingPage.css';
 const LandingPage = () => {
   const backdropStyle = {
@@ -33,6 +39,28 @@ const LandingPage = () => {
           <img src={BannerImage} alt="" />
         </div>
       </div>
+      <div class="slider">
+        <div class="slide-track">
+          <div class="slide">
+            <img src={image1} alt=""/>
+          </div>
+          <div class="slide">
+            <img src={image2} alt=""/>
+          </div>
+          <div class="slide">
+            <img src={image3} alt=""/>
+          </div>
+          <div class="slide">
+            <img src={image4} alt=""/>
+          </div>
+          <div class="slide">
+            <img src={image5} alt=""/>
+          </div>
+        </div>
+      </div>
+      <footer className="footer">
+      <p> Contact Us: <a className="contact-info" href="mailto:luddy@iu.edu">luddy@iu.edu</a></p>
+    </footer>
     </div>
   );
 };

@@ -237,3 +237,16 @@ ul {
 .modal-btn:hover {
     opacity: 100%;
 }
+.post-header .user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #999;
+    overflow: hidden; /* Hide overflow to ensure the image fits within the circle */
+}
+
+.post-header .user-icon img {
+    width: 100%; /* Make the image cover the entire circle */
+    height: 100%; /* Make the image cover the entire circle */
+    object-fit: cover; /* Ensure the image fits within the circle and maintains its aspect ratio */
+}

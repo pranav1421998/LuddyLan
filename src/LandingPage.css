@@ -3,9 +3,16 @@
     display: flex;
     padding-top: 3rem;
   }
+  .containerStyles{
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;
+    margin-top: 15%;
+  }
   .img {
     max-width: 100%;
     height: auto;
+    transition: transform 1s;
   }
   .home-bannerImage-container {
     position: absolute;
@@ -36,10 +43,10 @@
     font-size: clamp(1.5rem, 3vw, 1.5rem);
     max-width: 500px;
     margin: 2.0rem 6.0rem;
-    background: linear-gradient(45deg,yellow,orange); 
+    /*background: linear-gradient(45deg,yellow,orange); 
   background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+  -webkit-background-clip: text;*/
+  color: black;
   font-weight: bold;
   font-size: 1.7rem;
   }
@@ -86,4 +93,70 @@
     height: 102vh; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
+  }
+  .slider{
+    height: 50%;
+    margin: auto;
+    margin-top: 2%;
+    position: relative;
+    width: 99%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .slide-track{
+    display: flex;
+    width: calc(250px*5);
+    animation: scroll 40s linear infinite;
+  }
+  .slide-track:hover{
+    animation-play-state: paused;
+  }
+  .slide{
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1%;
+  }
+  .slider::before,
+  .slider::after{
+    background: linear-gradient(to right, rgba(255,255,255,1)0%,rgba(255,255,255,0));
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 15%;
+    z-index: 2;
+  }
+  .slider::before{
+    left: 0;
+    top: 0;
+  }
+  .slider::after{
+    right: 0;
+    top: 0;
+    transform: rotateZ(180deg);
+  }
+  img:hover{
+    transform: translateZ(20px);
+  }
+  @keyframes scroll {
+    0%{
+      transform: translateX(0);
+    }
+    100%{
+      transform: translateX(calc(-250px*5));
+    }
+  }
+  .footer {
+    margin-top: 0.2%;
+    background-color:#9b0303; /* Change the background color as needed */
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    padding: 1rem;
+  }
+  .footer p,a.contact-info{
+    color: white;
   }
