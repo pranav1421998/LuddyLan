@@ -28,10 +28,9 @@ const Comments = ({ postId, onClose }) => {
         } catch (error) {
         console.error("Error adding comment: ", error);
         }
+        fetchComments();
     };
 
-  useEffect(() => {
-    // Fetch comments for the selected post
     const fetchComments = async () => {
       const commentsCollection = collection(db, "posts", postId, "comments");
       const q = query(commentsCollection, orderBy("timestamp"));
@@ -42,6 +41,9 @@ const Comments = ({ postId, onClose }) => {
       });
       setComments(commentsArray);
     };
+
+  useEffect(() => {
+    // Fetch comments for the selected post
     fetchComments();
   }, [postId]);
 
