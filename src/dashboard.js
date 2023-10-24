@@ -2,10 +2,8 @@ import './dashboard.css';
 import Comments from './Comments';
 import PollPopup from './CreatePoll';
 import CreatePost from './CreatePost';
-import PollPopup from './CreatePoll';
 import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -54,24 +52,24 @@ const Dashboard = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const collectionRef = collection(db, "posts");
-      const q = query(collectionRef, orderBy("uploadedDate", "desc"));
-      const querySnapshot = await getDocs(q);
-      const postArray = [];
+//   useEffect(() => {
+//     const fetchPosts = async () => {
+//       const collectionRef = collection(db, "posts");
+//       const q = query(collectionRef, orderBy("uploadedDate", "desc"));
+//       const querySnapshot = await getDocs(q);
+//       const postArray = [];
 
-      // Fetch and add like count for each post
-      for (const doc of querySnapshot.docs) {
-        const postId = doc.id;
-        const postData = doc.data();
-        const likeCount = await fetchLikeCount(postId);
-        postArray.push({ id: postId, ...postData, likeCount });
-      }
+//       // Fetch and add like count for each post
+//       for (const doc of querySnapshot.docs) {
+//         const postId = doc.id;
+//         const postData = doc.data();
+//         const likeCount = await fetchLikeCount(postId);
+//         postArray.push({ id: postId, ...postData, likeCount });
+//       }
 
-      setPosts(postArray);
-    };
-    fetchPosts();
+//       setPosts(postArray);
+//     };
+//     fetchPosts();
 
   // Function to format a date as a more readable string
   const formatTimestamp = (timestamp) => {
@@ -188,7 +186,7 @@ const Dashboard = () => {
                 console.log("No user is signed in");
             }
         };
-        const unsubscribe = onAuthStateChanged(auth, fetchData);     
+        const unsubscribe = onAuthStateChanged(auth, fetchData);    
         return () => unsubscribe();
     }, [auth, db]);
 
@@ -270,6 +268,8 @@ const Dashboard = () => {
             </div>
         </section>
     );
+
+
 };
 
 export default Dashboard;
