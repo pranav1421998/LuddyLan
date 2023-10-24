@@ -175,13 +175,18 @@ ul {
 }
 
 .interact-btn:hover {
-    color: black;
+    /* color: black; */
     opacity: 100%;
     cursor: pointer;
 }
 
-.interact-btn:active {
-    color: black;
+.like-button {
+    color: grey; /* Default color (unliked) */
+}
+
+.like-button.liked {
+    color: blue; /* Liked color */
+    opacity: 100%;
 }
 
 .caption {

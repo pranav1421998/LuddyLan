@@ -3,7 +3,7 @@ import { auth, db, provider } from "./firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { storage } from './firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { doc, collection, addDoc, setDoc, Timestamp } from 'firebase/firestore';
 import './FileUpload.css';
 import { v4 } from 'uuid';
 
@@ -72,25 +72,42 @@ function FileUpload({ onClose }) {
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-
+  
   const saveToFirestore = (downloadURL) => {
     if (user) {
       const postsCollection = collection(db, 'posts');
       const newPost = {
         caption: description,
         media: downloadURL,
-        ownerId: user.email,
+        ownerId: user.email, // or user.uid, whichever you prefer
         uploadedDate: Timestamp.fromDate(new Date()),
       };
+
+      // Add the new post to the 'posts' collection
       addDoc(postsCollection, newPost)
-        .then(() => {
-          alert('Succesfully created a post');
+        .then((postRef) => {
+          // After successfully adding the post, create nested collections
+          const postID = postRef.id;
+
+          // Create 'likes' collection for the post
+          const likesCollection = collection(db, 'posts', postID, 'likes');
+          //addDoc(likesCollection, { count: 0 }); // Initialize likes count to 0
+
+          // Create 'comments' collection for the post
+          const commentsCollection = collection(db, 'posts', postID, 'comments');
+          //addDoc(commentsCollection, { ownerId: postID.ownerId, comment: "" }); // Initialize a blank comment
+
+          // Create 'shares' collection for the post
+          const sharesCollection = collection(db, 'posts', postID, 'shares');
+          //addDoc(sharesCollection, { count: 0 }); // Initialize shares count to 0
+
+          alert('Your post has been uploaded, please refresh the page.');
         })
         .catch((error) => {
           console.error('Error adding post to Firestore: ', error);
         });
     }
-  };
+  };   
 
   return (
     <div className="container">
