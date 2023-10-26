@@ -16,7 +16,7 @@ const FriendRequests = () => {
             try {
                 // Assuming you have a "friends" collection
                 const friendsRef = collection(db, 'friends');
-                const q = query(friendsRef, where('user_email', '==', user?.email), where('is_accepted', '==', false));
+                const q = query(friendsRef, where('follower_email', '==', user?.email), where('is_accepted', '==', false));
                 const friendSnapshot = await getDocs(q);
 
                 const friendDataArray = friendSnapshot.docs.map(doc => doc.data());
@@ -78,18 +78,37 @@ const FriendRequests = () => {
         email: user.id,
     }));
 
+    // return (
+    //     <div>
+    //         <SidebarFriends></SidebarFriends>
+    //         <div className="component">
+    //                 <div className='title'><h2 className='heading'>Friend Requests</h2></div>
+                    // {data.length === 0 ? (
+                    //     <h4 style={{paddingTop: '25vh'}}>No friend requests</h4>
+                    // ) : (
+                    //     <GridCards data={data} />
+                    // )}
+    //         </div>
+    //     </div>
+    // );
+
     return (
-        <div className="component">
-            <SidebarFriends></SidebarFriends>
-            <div>
-                <h2 className='heading'>Friend Requests</h2>
-                {data.length === 0 ? (
-                    <h4 style={{paddingTop: '25vh'}}>No friend requests</h4>
-                ) : (
-                    <GridCards data={data} />
-                )}
-            </div>
+        <div>
+    <SidebarFriends></SidebarFriends>
+    <div className="component">
+        <div className='title'>
+            <h2 className='heading'>Friend Requests</h2>
         </div>
+        {data.length > 0 ? ( // Check if data has items
+            <div>
+                <GridCards data={data} />
+            </div>
+        ) : (
+            <div>No friend requests</div> // Display a message if there are no friend requests
+        )}
+    </div>
+</div>
+
     );
 };
 

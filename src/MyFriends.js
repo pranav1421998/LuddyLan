@@ -81,11 +81,7 @@ const MyFriends = () => {
             <SidebarFriends></SidebarFriends>
             <div>
             <h2 className='heading'>My Friends</h2>
-            {data.length === 0 ? (
-                    <h4 style={{paddingTop: '25vh'}}>No friends</h4>
-                ) : (
-                    <GridCards data={data} />
-                )}
+                <GridCards data={data} />
             </div>
         </div>
     );
