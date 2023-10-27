@@ -16,6 +16,7 @@ const FriendRequests = () => {
             try {
                 // Assuming you have a "friends" collection
                 const friendsRef = collection(db, 'friends');
+                console.log(user);
                 const q = query(friendsRef, where('follower_email', '==', user?.email), where('is_accepted', '==', false));
                 const friendSnapshot = await getDocs(q);
 
