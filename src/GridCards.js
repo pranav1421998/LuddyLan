@@ -11,7 +11,6 @@ const GridCards = ({ data }) => {
 
     const handleConnectClick = async (itemEmail, action) => {
         try {
-            console.log(itemEmail,'llllllllllllllllll');
             if (action === 'connect') {
                 const friendsCollection = collection(db, 'friends');
                 const newFriend = {
@@ -29,19 +28,15 @@ const GridCards = ({ data }) => {
                 const userDocRef = doc(db, 'users', user.email);
                 const friendsCollectionRef = collection(userDocRef, 'Friends');
                 const friendDocRef = doc(friendsCollectionRef, itemEmail); // Replace itemEmail with the specific email you want to remove
-                console.log(friendDocRef,'kkkkkkkkkkkkkkkk');
                 try {
                     await deleteDoc(friendDocRef);
                     console.log(`Successfully unfollowed user with email: ${itemEmail}`);
                 } catch (error) {
                     console.error(`Error unfollowing user with email ${itemEmail}:`, error);
                 }
-                console.log('999999999999999999999999');
                 const userDocumentRef = doc(db, 'users', itemEmail);
-                console.log('222222222222222222');
                 const friendsCollRef = collection(userDocumentRef, 'Friends');
                 const friendDocumentRef = doc(friendsCollRef, user.email); // Replace itemEmail with the specific email you want to remove
-                console.log(friendDocumentRef,'kkkkkkkkkkkkkkkk');
                 try {
                     await deleteDoc(friendDocumentRef);
                     console.log(`Successfully unfollowed user with email: ${user.email}`);
@@ -51,17 +46,46 @@ const GridCards = ({ data }) => {
             
             }
             else if (action === 'acceptRequest') {
-                // Fetch the specific document
-                const q = query(collection(db, 'friends'), where('user_email', '==', user.email), where('follower_email', '==', itemEmail));
-                const querySnapshot = await getDocs(q);
+                const userDocRef = doc(db, 'users', user.email);
+                const friendData = {
+                is_accepted: true,
+                };
+                const friendsCollectionRef = collection(userDocRef, 'Friends');
+                const friendDocRef = doc(friendsCollectionRef, itemEmail);
+                await setDoc(friendDocRef, friendData);
+                console.log('Friend added successfully');
 
-                if (!querySnapshot.empty) {
-                    // Retrieve the first matching document
-                    const friendDoc = querySnapshot.docs[0];
-                    // Update the is_accepted value to true
-                    await setDoc(friendDoc.ref, { is_accepted: true }, { merge: true });
-                    console.log('Friend request accepted successfully');
+                const userDocumentRef = doc(db, 'users', itemEmail);
+                const friendDataDoc = {
+                is_accepted: true,
+                };
+                const friendsColRef = collection(userDocumentRef, 'Friends');
+                const friendDocumentRef = doc(friendsColRef, user.email);
+                await setDoc(friendDocumentRef, friendDataDoc);
+                console.log('Friend added successfully');
+
+                const userDocuRef = doc(db, 'users', user.email);
+                const requestsCollRef = collection(userDocuRef, 'Requests');
+                const reqDocRef = doc(requestsCollRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(reqDocRef);
+                    console.log(`Successfully removed user with email: ${itemEmail}`);
                     window.location.reload();
+                } catch (error) {
+                    console.error(`Error removed user with email ${itemEmail}:`, error);
+                }
+            }
+            else if (action === 'declineRequest') {
+                
+                const userDocuRef = doc(db, 'users', user.email);
+                const requestsCollRef = collection(userDocuRef, 'Requests');
+                const reqDocRef = doc(requestsCollRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(reqDocRef);
+                    console.log(`Successfully removed user with email: ${itemEmail}`);
+                    window.location.reload();
+                } catch (error) {
+                    console.error(`Error removed user with email ${itemEmail}:`, error);
                 }
             }
         } catch (error) {
@@ -94,8 +118,8 @@ const GridCards = ({ data }) => {
             case 'FriendRequests':
                 return (
                     <>
-                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px' }} onClick={() => handleConnectClick(item.email, 'acceptRequest')}/>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#9b0303', fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px', cursor:"pointer" }} onClick={() => handleConnectClick(item.email, 'acceptRequest')}/>
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#9b0303', fontSize: '24px', cursor:"pointer" }} onClick={() => handleConnectClick(item.email, 'declineRequest')} />
                     </>
                 );
             case 'MyFriends':
