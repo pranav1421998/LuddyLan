@@ -94,12 +94,15 @@ const AllUsers = () => {
     return (
         <div>
             <SidebarFriends></SidebarFriends>
-            <div className="component">
-                <div className='title'><h2 className='heading'>All Users</h2></div>
+            <div className='modal-container'>
+                <div className="component">
+                    <div className='title'>
+                        <h2>All Users</h2>
+                    </div>
                 <div>
                     <GridCards data={data} />
                 </div>
-
+            </div>
             </div>
         </div>
     );

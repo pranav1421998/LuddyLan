@@ -130,6 +130,10 @@ export const Register = () => {
                 loggedIn: false,
                 isProfilePublic: true 
             });
+
+        const friendsCollection = collection(userDocRef, "friends");
+        const requestsCollection = collection(userDocRef, "requests");
+
     
             setTimeout(() => {
                 setLoading(false);

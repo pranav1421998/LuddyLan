@@ -11,11 +11,12 @@ const GridCards = ({ data }) => {
 
     const handleConnectClick = async (itemEmail, action) => {
         try {
+            console.log(itemEmail,'llllllllllllllllll');
             if (action === 'connect') {
                 const friendsCollection = collection(db, 'friends');
                 const newFriend = {
-                    user_email: user.email, // Current user's email
-                    follower_email: itemEmail, // Email of the user to connect with
+                    user_email: user.email,
+                    follower_email: itemEmail,
                     is_accepted: false,
                 };
 
@@ -25,21 +26,29 @@ const GridCards = ({ data }) => {
             } else if (action === 'unfollow') {
                 console.log(user);
                 console.log(itemEmail);
-                // Query to find the specific document to delete
-                const q = query(collection(db, 'friends'), where('user_email', '==', user.email), where('follower_email', '==', itemEmail));
-
-                // Execute the query to get the document reference
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot.empty) {
-                    console.log('Friend not found in the "friends" collection');
-                } else {
-                    // Delete the document
-                    const friendDoc = doc(db, 'friends', querySnapshot.docs[0].id);
-                    await deleteDoc(friendDoc);
-                    console.log('Friend unfollowed successfully');
-                    window.location.reload();
+                const userDocRef = doc(db, 'users', user.email);
+                const friendsCollectionRef = collection(userDocRef, 'Friends');
+                const friendDocRef = doc(friendsCollectionRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                console.log(friendDocRef,'kkkkkkkkkkkkkkkk');
+                try {
+                    await deleteDoc(friendDocRef);
+                    console.log(`Successfully unfollowed user with email: ${itemEmail}`);
+                } catch (error) {
+                    console.error(`Error unfollowing user with email ${itemEmail}:`, error);
                 }
+                console.log('999999999999999999999999');
+                const userDocumentRef = doc(db, 'users', itemEmail);
+                console.log('222222222222222222');
+                const friendsCollRef = collection(userDocumentRef, 'Friends');
+                const friendDocumentRef = doc(friendsCollRef, user.email); // Replace itemEmail with the specific email you want to remove
+                console.log(friendDocumentRef,'kkkkkkkkkkkkkkkk');
+                try {
+                    await deleteDoc(friendDocumentRef);
+                    console.log(`Successfully unfollowed user with email: ${user.email}`);
+                } catch (error) {
+                    console.error(`Error unfollowing user with email ${user.email}:`, error);
+                }    
+            
             }
             else if (action === 'acceptRequest') {
                 // Fetch the specific document
@@ -105,7 +114,9 @@ const GridCards = ({ data }) => {
             {data.map((item, index) => (
                 <div className="card" key={index}>
                     <div className="profile-picture">
-                        {/* Display the profile picture */}
+                    {item.profilePicture && (
+                    <img className="profile-picture" src={item.profilePicture} alt="User Profile Picture" />
+                    )}
                     </div>
                     <p className="p-color">{item.name}</p>
                     <div>
