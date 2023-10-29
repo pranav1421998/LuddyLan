@@ -12,16 +12,15 @@ const GridCards = ({ data }) => {
     const handleConnectClick = async (itemEmail, action) => {
         try {
             if (action === 'connect') {
-                const friendsCollection = collection(db, 'friends');
-                const newFriend = {
-                    user_email: user.email,
-                    follower_email: itemEmail,
-                    is_accepted: false,
+                const userDocRef = doc(db, 'users', itemEmail);
+                const requestData = {
+                requestDate: new Date().toISOString(),
                 };
-
-                await addDoc(friendsCollection, newFriend);
-                console.log('Friend added successfully');
+                const requestsCollectionRef = collection(userDocRef, 'Requests');
+                await setDoc(doc(requestsCollectionRef, user.email), requestData);
+                console.log(`Request document added successfully to ${itemEmail}`);
                 window.location.reload();
+
             } else if (action === 'unfollow') {
                 console.log(user);
                 console.log(itemEmail);
@@ -96,21 +95,21 @@ const GridCards = ({ data }) => {
     const getIcons = (item) => {
         switch (item.condition) {
             case 'AllUsers':
-                if (item.connected === 'following') {
+                if (item.connected === 'Following') {
                     return (
-                        <button className="connect-button" disabled={true} style={{ backgroundColor: '#9b0303' }}>
+                        <button className="connect-button" disabled={true} style={{ backgroundColor: '#9b0303', cursor: "pointer" }}>
                             Following
                         </button>
                     );
-                } else if (item.connected === 'requested') {
+                } else if (item.connected === 'Requested') {
                     return (
-                        <button className="connect-button" style={{ backgroundColor: '#9b0303' }}>
+                        <button className="connect-button" style={{ backgroundColor: '#9b0303', cursor: "pointer" }}>
                             Requested
                         </button>
                     );
                 } else {
                     return (
-                        <button className="connect-button" style={{ backgroundColor: '#9b0303' }} onClick={() => handleConnectClick(item.email, 'connect')}>
+                        <button className="connect-button" style={{ backgroundColor: '#9b0303', cursor: "pointer" }} onClick={() => handleConnectClick(item.email, 'connect')}>
                             Connect
                         </button>
                     );
@@ -138,9 +137,11 @@ const GridCards = ({ data }) => {
             {data.map((item, index) => (
                 <div className="card" key={index}>
                     <div className="profile-picture">
-                    {item.profilePicture && (
-                    <img className="profile-picture" src={item.profilePicture} alt="User Profile Picture" />
-                    )}
+                        {item.profilePicture ? (
+                            <img className="profile-picture" src={item.profilePicture} alt="User Profile Picture" />
+                        ) : (
+                            <img className="profile-picture" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCEaf1Lxm0Dw_VDH4m_3SP1C0L_JtzWF9XPQ&usqp=CAU" alt="Default Profile Picture" />
+                        )}
                     </div>
                     <p className="p-color">{item.name}</p>
                     <div>

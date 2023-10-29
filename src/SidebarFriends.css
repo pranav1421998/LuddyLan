@@ -4,6 +4,7 @@
   position: fixed;
   margin-top: 10vh;
   background-color: #9b0303;
+  z-index: 1;
 }
 
 .sidebar {
