@@ -19,6 +19,7 @@ import './App.css';
 import LandingPage from "./LandingPage";
 import PollForm from "./CreatePoll.js"
 import PollList from "./PollList";
+import SearchResults from "./searchResults";
 function App() {
   const auth = getAuth(); // Initialize the auth instance
   const [currentForm, setCurrentForm] = React.useState("login");
@@ -55,6 +56,7 @@ function App() {
             <Route path="/" element={< LandingPage/>} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/PollList" element={< PollList/>} />
+            <Route path="/searchResults" element={<SearchResults/>} />
           </Routes>
         </div>
       </Router>
