@@ -1,79 +1,175 @@
 import React, { useEffect, useState } from 'react';
-import { db } from './firebaseConfig';
-import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
-import { doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { db, auth } from './firebaseConfig';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  Timestamp,
+  updateDoc,
+  doc,
+  getDoc, // Import getDoc function
+} from 'firebase/firestore';
+import Sidebar2 from './Sidebar2';
+import PollPopup from './CreatePoll';
+import './pollList.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
-function PollList({ user }) {
+function PollsPage() {
   const [polls, setPolls] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [showPopup, setShowPopup] = useState(false);
+  const [userProfilePictures, setUserProfilePictures] = useState({});
+
+  const openPollPopup = () => {
+    setShowPopup(true);
+  };
+
+  const ClosePollPopup = () => {
+    setShowPopup(false);
+  };
+
+  const user = auth.currentUser;
 
   useEffect(() => {
     const fetchPolls = async () => {
-      const pollQuery = query(collection(db, 'polls'), where('endTime', '>=', Timestamp.now()));
-      const pollSnapshot = await getDocs(pollQuery);
+      try {
+        const now = Timestamp.now(); // Current time
+        const pollQuery = query(
+          collection(db, 'polls'),
+          where('endTime', '>', now)
+        );
 
-      const pollData = [];
-      pollSnapshot.forEach((doc) => {
-        pollData.push({ id: doc.id, ...doc.data() });
-      });
+        const querySnapshot = await getDocs(pollQuery);
+        const pollList = [];
 
-      setPolls(pollData);
+        const userProfilePictures = {}; // Store user profile pictures
+
+        for (const docSnapshot of querySnapshot.docs) {
+          const pollData = docSnapshot.data();
+          const ownerId = pollData.ownerId;
+          const userDocRef = doc(db, 'users', ownerId); // Assuming you have a 'users' collection
+          const userSnapshot = await getDoc(userDocRef);
+          const userData = userSnapshot.data();
+
+          if (userData && userData.profilePicture) {
+            userProfilePictures[ownerId] = userData.profilePicture;
+          }
+
+          pollList.push({ id: docSnapshot.id, ...pollData });
+        }
+
+        setPolls(pollList);
+        setUserProfilePictures(userProfilePictures);
+      } catch (error) {
+        console.error('Error fetching polls:', error);
+      }
     };
 
     fetchPolls();
   }, []);
 
-  const hasEndTimePassed = (endTime) => {
-    const currentTime = Timestamp.now().toDate();
-    return currentTime > endTime.toDate();
-  };
+  const voteForOption = async (pollId, optionIndex) => {
+    if (selectedOptions[pollId] !== optionIndex) {
+      try {
+        const pollRef = doc(db, 'polls', pollId);
+        const updatedOptions = [...polls.find((poll) => poll.id === pollId).options];
 
-  const voteForOption = async (pollId, option) => {
-    if (!user) {
-      alert('Please sign in to vote.');
-      return;
+        // Decrease the vote count for the previously selected option
+        if (selectedOptions[pollId] !== undefined) {
+          updatedOptions[selectedOptions[pollId]].votes -= 1;
+        }
+
+        // Increase the vote count for the newly selected option
+        updatedOptions[optionIndex].votes += 1;
+
+        // Calculate the new percentages for all options
+        const totalVotes = updatedOptions.reduce((total, option) => total + option.votes, 0);
+        updatedOptions.forEach((option) => {
+          option.percentage = ((option.votes / totalVotes) * 100).toFixed(2);
+        });
+
+        await updateDoc(pollRef, {
+          options: updatedOptions,
+        });
+
+        // Update the state to show the user's vote
+        setSelectedOptions({
+          ...selectedOptions,
+          [pollId]: optionIndex,
+        });
+      } catch (error) {
+        console.error('Error recording vote:', error);
+      }
     }
-
-    const pollRef = doc(db, 'polls', pollId);
-
-    // Check if the user has already voted
-    if (pollRef.data().voters && pollRef.data().voters.includes(user.uid)) {
-      alert('You have already voted in this poll.');
-      return;
-    }
-
-    // Update the poll with the user's vote
-    await updateDoc(pollRef, {
-      options: { [option]: arrayUnion(user.uid) },
-      voters: arrayUnion(user.uid),
-    });
   };
 
   return (
-    <div>
-      <h2>Polls</h2>
-      {polls.map((poll) => (
-        <div key={poll.id}>
-          <h3>{poll.question}</h3>
-          <p>End Time: {poll.endTime.toDate().toLocaleString()}</p>
-          {hasEndTimePassed(poll.endTime) ? (
-            <p>Poll has ended.</p>
-          ) : (
-            <div>
-              <h4>Options:</h4>
-              {poll.options.map((option, index) => (
-                <div key={index}>
-                  <label>
-                    <input type="radio" name={`poll${poll.id}`} onChange={() => voteForOption(poll.id, index)} />
-                    {option} - Votes: {option.length}
-                  </label>
-                </div>
-              ))}
-            </div>
-          )}
+    <section className="main">
+      <Sidebar2 />
+      <div className="post-container">
+        <div className="top-btn">
+          <button className="modal-btn" onClick={openPollPopup}>
+            Create Poll
+          </button>
         </div>
-      ))}
-    </div>
+        {showPopup && (
+          <div className="modal">
+            <div className="modal-content">
+              <PollPopup onClose={ClosePollPopup} onPollCreated={ClosePollPopup} />
+            </div>
+          </div>
+        )}
+        <div className="wrapper">
+          {polls.map((poll) => (
+            <div key={poll.id} className='poll-area poll-container'>
+              <div className="post-header">
+                <p className="user-icon">
+                  {userProfilePictures[poll.ownerId] ? (
+                    <img
+                      src={userProfilePictures[poll.ownerId]}
+                      alt="Owner Profile"
+                      className="profile-picture"
+                    />
+                  ) : (
+                    <FontAwesomeIcon icon={faUser} />
+                  )}
+                </p>
+                <div className="head">
+                  <p className="username">{poll.ownerId}</p>
+                </div>
+              </div>
+              <header>{poll.question}</header>
+              <ul>
+                {poll.options.map((option, optionIndex) => (
+                  <li key={optionIndex}>
+                    <input
+                      type="radio"
+                      name={`option-${poll.id}`}
+                      onClick={() => voteForOption(poll.id, optionIndex)}
+                      checked={selectedOptions[poll.id] === optionIndex}
+                    />
+                    <span className="option-text">{option.text}</span>
+                    {selectedOptions[poll.id] !== undefined && (
+                      <div className="progress-bar">
+                        <div
+                          className="progress"
+                          style={{ width: `${option.percentage}%` }}
+                        >
+                          <span className="percentage">{option.percentage}%</span>
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
-export default PollList;
+export default PollsPage;
