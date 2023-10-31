@@ -16,7 +16,11 @@ const Navbar = () => {
   
   const navigate = useNavigate();   
   const isLoggedIn = Cookies.get('isLoggedIn');
-  const [searchResults, setSearchResults] = useState([]);
+  const [queryTextg, setqueryTextg] = useState('');
+  const [searchResults, setSearchResults] = useState({
+    users: [],
+    posts: []
+    });
 
   const handleLogout =  () => {
     Cookies.remove('isLoggedIn');
@@ -25,7 +29,7 @@ const Navbar = () => {
   };
 
   const handleSearch = async (queryText) => {
-    setSearchResults([]);
+    setqueryTextg(queryText);
     
     if (queryText) {
         const usersCollection = collection(db, 'users');
@@ -39,8 +43,32 @@ const Navbar = () => {
                 user.firstName.toLowerCase().includes(queryText.toLowerCase()) || 
                 user.lastName.toLowerCase().includes(queryText.toLowerCase())
             );
+
+        // For posts
+        const postsCollection = collection(db, 'posts');
         
-        setSearchResults(users);
+        // Fetch all posts
+        const allPostsSnapshot = await getDocs(postsCollection);
+        
+        // Filter posts based on the presence of queryText in the caption, case-insensitively
+        const posts = allPostsSnapshot.docs.map(doc => doc.data())
+            .filter(post => 
+                post.caption.toLowerCase().includes(queryText.toLowerCase())
+            );
+        
+        setSearchResults({
+            users: users, 
+            posts: posts
+        });
+        // console.log(posts);
+        // console.log(users);
+        //console.log(searchResults);
+    }
+    else{
+      setSearchResults({
+        users: [], 
+        posts: []
+    });
     }
 };
 
@@ -63,20 +91,29 @@ if (isLoggedIn) {
               placeholder="Search"
               onChange={(e) => handleSearch(e.target.value)} 
           />
-          {searchResults.length > 0 && (
+          {(searchResults.users.length>0 ||searchResults.posts.length >0) && (
               <div className="search-dropdown">
-                  {searchResults.map((user, index) => (
+                  <h5>Users</h5>
+                  {searchResults.users.map((user, index) => (
                       <div key={index} className="search-dropdown-item">
                           {user.firstName} {user.lastName}
-                          {/* You can also add more user details or a link to the user's profile here */}
+                          {/* more user details or a link to the user's profile here */}
                       </div>
                   ))}
+                  <h5>Posts</h5>
+                  {searchResults.posts.map((post, index) => (
+                      <div key={index} className="search-dropdown-item">
+                          {post.caption}
+                          {/* more user details or a link to the post here */}
+                      </div>
+                    ))}
               </div>
           )}
+
           <FontAwesomeIcon 
           icon={faSearch} 
           className="search-icon"
-          onClick={() => navigate('/searchResults')}
+          onClick={() => navigate(`/searchResults?query=${queryTextg}`)}
         />
       </div>
       {/* other webpage links */}

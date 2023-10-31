@@ -1,90 +1,29 @@
 import './dashboard.css';
-
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { doc, getDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
+import Cookies from 'js-cookie';
 import Comments from './Comments';
-
 import PollPopup from './CreatePoll';
-
 import CreatePost from './CreatePost';
-
 import { db, auth } from "./firebaseConfig";
 
-import React, { useEffect, useState } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
-
-import { onAuthStateChanged } from "firebase/auth";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
-
-import { doc, getDoc, getDocs, setDoc, addDoc, deleteDoc, updateDoc, orderBy, query, where, collection } from "firebase/firestore";
-
-//cookies
-
-import Cookies from 'js-cookie';
-
- 
-
 const Dashboard = () => {
+    const [userDetails, setUserDetails] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [commentWindows, setCommentWindows] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const navigate = useNavigate();
+    const user_email = Cookies.get('userDetails');
 
-  const [userDetails, setUserDetails] = useState(null);
-
-  const [posts, setPosts] = useState([]);
-
-  const [postComments, setPostComments] = useState({});
-
-  const [newCommentText, setNewCommentText] = useState("");
-
- 
-
-  // Create an object to store the comment window state for each post
-
-  const [commentWindows, setCommentWindows] = useState({});
-
- 
-
-  const navigate = useNavigate();
-
-  const [showModal, setShowModal] = useState(false);
-
-  const [showPopup, setShowPopup] = useState(false);
-
-  /// fetch user details from cookies
-
-  const user_email = Cookies.get('userDetails');
-
- 
-
-  const openPollPopup = () => {
-
-    setShowPopup(true);
-
-  };
-
- 
-
-  const ClosePollPopup = () => {
-
-    setShowPopup(false);
-
-  };
-
- 
-
-  const handleOpenModal = () => {
-
-    setShowModal(true);
-
-  };
-
- 
-
-  const handleCloseModal = () => {
-
-    setShowModal(false);
-
-  };
+    const openPollPopup = () => { setShowPopup(true); };
+    const ClosePollPopup = () => { setShowPopup(false); };
+    const handleOpenModal = () => { setShowModal(true); };
+    const handleCloseModal = () => { setShowModal(false); };
 
  
 
