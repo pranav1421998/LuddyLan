@@ -30,6 +30,8 @@ const GridCards = ({ data }) => {
                 try {
                     await deleteDoc(friendDocRef);
                     console.log(`Successfully unfollowed user with email: ${itemEmail}`);
+                    window.location.reload();
+
                 } catch (error) {
                     console.error(`Error unfollowing user with email ${itemEmail}:`, error);
                 }
