@@ -118,8 +118,7 @@ p {
 }
 
   .search-icon {
-    position: relative;
-    left: 1vw;
+    position: sticky;
+    left: 100vw;
     cursor: pointer;
-    
   }

@@ -65,7 +65,7 @@ const SearchResults = ({ users, posts }) => {
     };
 
     return (
-        <div className='main'>
+        <div className='base-container'>
           <div>
             <h1>Search Results</h1>
             <input 
@@ -79,8 +79,9 @@ const SearchResults = ({ users, posts }) => {
               onClick={() => handleSearch}
             />
             </div>
+            <div className='tab-container'>
 
-            <div className="tabs">
+            <div className="tabs-search">
                 <button onClick={() => setActiveTab('users')}>Users</button>
                 <button onClick={() => setActiveTab('posts')}>Posts</button>
             </div>
@@ -110,6 +111,7 @@ const SearchResults = ({ users, posts }) => {
                         ))}
                   </div>
               )}
+              </div>
         </div>
     );
 };

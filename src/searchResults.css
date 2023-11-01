@@ -1,16 +1,24 @@
 /* searchResults.css */
 
-.main {
+.base-container {
     padding: 100px;
 }
-
-.tabs {
+.tab-container{
+    position: relative;
     display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    flex-direction: column;
+    background-color: #9b0303;
+    padding: 1vw;
 }
 
-.tabs button {
+.tabs-search {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    /* flex-direction: row; */
+}
+
+.tabs-search button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -44,15 +52,6 @@
 .user-results div:last-child,
 .post-results div:last-child {
     margin-bottom: 0;
-}
-
-a {
-    text-decoration: none;
-    color: #3498db;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 .search-icon-1 {
