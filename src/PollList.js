@@ -83,7 +83,7 @@ function PollsPage() {
 
         // Increase the vote count for the newly selected option
         updatedOptions[optionIndex].votes += 1;
-
+        updatedOptions[optionIndex].voters+=user.email+",";
         // Calculate the new percentages for all options
         const totalVotes = updatedOptions.reduce((total, option) => total + option.votes, 0);
         updatedOptions.forEach((option) => {
