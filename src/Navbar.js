@@ -28,21 +28,21 @@ const Navbar = () => {
     setSearchResults([]);
     
     if (queryText) {
-      const usersCollection = collection(db, 'users');
-      
-      // Fetch users with matching firstName
-      const firstNameQuery = query(usersCollection, where('firstName', '==', queryText));
-      const firstNameSnapshot = await getDocs(firstNameQuery);
-      
-      // Fetch users with matching lastName
-      const lastNameQuery = query(usersCollection, where('lastName', '==', queryText));
-      const lastNameSnapshot = await getDocs(lastNameQuery);
-      
-      // Merge and set the results
-      const users = [...firstNameSnapshot.docs, ...lastNameSnapshot.docs].map(doc => doc.data());
-      setSearchResults(users);
+        const usersCollection = collection(db, 'users');
+        
+        // Fetch all users
+        const allUsersSnapshot = await getDocs(usersCollection);
+        
+        // Filter users based on the presence of queryText in firstName or lastName, case-insensitively
+        const users = allUsersSnapshot.docs.map(doc => doc.data())
+            .filter(user => 
+                user.firstName.toLowerCase().includes(queryText.toLowerCase()) || 
+                user.lastName.toLowerCase().includes(queryText.toLowerCase())
+            );
+        
+        setSearchResults(users);
     }
-  };
+};
 
 /////////////////////
 ///////returns///////
@@ -58,24 +58,21 @@ if (isLoggedIn) {
       </div>
       {/* Search bar */}
       <div className="search-container">
-      <input
-          type="text"
-          className="search-bar"
-          placeholder="Search users and posts"
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-      {/* Search results dropdown */}
-      {searchResults.length > 0 && (
-          <div className="search-dropdown">
-            {searchResults.map((result, index) => (
-              <div key={index} className="search-result">
-                {/* Customize the display of users and posts here */}
-                {result.firstName ? `${result.firstName} ${result.lastName}` : result.caption}
+          <input 
+              type="text" 
+              placeholder="Search"
+              onChange={(e) => handleSearch(e.target.value)} 
+          />
+          {searchResults.length > 0 && (
+              <div className="search-dropdown">
+                  {searchResults.map((user, index) => (
+                      <div key={index} className="search-dropdown-item">
+                          {user.firstName} {user.lastName}
+                          {/* You can also add more user details or a link to the user's profile here */}
+                      </div>
+                  ))}
               </div>
-            ))}
-          </div>
-        )}
-
+          )}
       </div>
       {/* other webpage links */}
       <div className="pages">

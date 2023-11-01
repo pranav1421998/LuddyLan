@@ -4,7 +4,7 @@
     color: white;
     position: fixed;
     width: 100%;
-    gap: 10vw;
+    gap: 2vw;
     z-index: 2;
   }
 
@@ -49,6 +49,9 @@
     align-items: center;
     font-size: 16px;
     opacity: 50%;
+    float:right;
+    margin-top: 1.66vw;
+    margin-left:4vw ;
   }
   .login:hover {
     opacity: 100%;
@@ -60,6 +63,7 @@
     align-items: center;
     font-size: 16px;
     color: #fff;
+    margin-right: 2vw;
   }
 
   p {
@@ -82,3 +86,28 @@
     opacity: 100%;
     cursor: pointer;
   }
+
+  .search-container {
+    width: 20vw;
+    margin-right: 10vw;
+    padding-top: 0.5vw;
+
+
+  }
+  .search-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #000000;
+    width: 20vw;
+    z-index: 1;
+}
+
+.search-dropdown-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #000000;
+}
+
+.search-dropdown-item:hover {
+    background-color: #f1f1f1;
+}
