@@ -96,10 +96,9 @@ const Login = (props) => {
 
   return (
     <>
-    <div className="background">
-    <div className="auth-form-container">
-            <h1>LOGIN</h1>
+    <div className="auth-container-login">
             <form className="login-form" onSubmit={handleSubmit}>
+                <h1>LOGIN</h1>
                 {/* <label htmlFor="email">Username</label> */}
                 <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Username" />
                 {/* <label htmlFor="password">Password</label> */}
@@ -107,13 +106,13 @@ const Login = (props) => {
                 <button className="login-btn" type="submit" onClick={handleSubmit}>Log In</button>
                 <Link className="link-btn" to="/register">Don't have an account? Register here.</Link>
                 <Link className="link-btn" to="/passwordrecovery">Forgot password?</Link>
+                <div className="google-btn">
+                <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
+                </div>
             </form>
 
-            <div className="google-btn">
-            <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
-            </div>
+            
             {error && <p style={{color: 'red'}}>{error}</p>}
-        </div>
         </div>
     </>
   );

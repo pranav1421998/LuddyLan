@@ -26,7 +26,7 @@ input {
   margin: auto;
 }
 
-.login-form, .register-form, .register-container, .createpassword-form {
+ .register-form, .register-container, .createpassword-form {
   display: flex;
   flex-direction: column;
   margin: auto;
