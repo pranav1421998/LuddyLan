@@ -1,10 +1,4 @@
-.background {
-    background-image: url('./Images/luddy.png');
-    background-size: cover;
-    padding-bottom: 50px;
-    padding-top: 50px;
-}
-  
+
   .link-btn {
     background: none;
     color: black;
@@ -37,3 +31,24 @@
     border-radius: 10px;
     cursor: pointer;
   }
+  .auth-container-login {
+    background-image: url('./Images/luddy.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 100px;
+    height: 50vw;
+    display: flex;
+    flex-direction: column;
+    /* margin: auto; */
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10vw;
+  border: 1.5px solid black;
+  border-radius: 10px;
+  padding: 1vw;
+  box-shadow: 4px 1px 1px 2px rgba(0, 0, 0, 0.3);
+}

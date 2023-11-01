@@ -11,6 +11,7 @@ import Comments from './Comments';
 import PollPopup from './CreatePoll';
 import CreatePost from './CreatePost';
 import { db, auth } from "./firebaseConfig";
+import Sidebar2 from './Sidebar2';
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
