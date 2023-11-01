@@ -12,47 +12,81 @@ const GridCards = ({ data }) => {
     const handleConnectClick = async (itemEmail, action) => {
         try {
             if (action === 'connect') {
-                const friendsCollection = collection(db, 'friends');
-                const newFriend = {
-                    user_email: user.email, // Current user's email
-                    follower_email: itemEmail, // Email of the user to connect with
-                    is_accepted: false,
+                const userDocRef = doc(db, 'users', itemEmail);
+                const requestData = {
+                requestDate: new Date().toISOString(),
                 };
-
-                await addDoc(friendsCollection, newFriend);
-                console.log('Friend added successfully');
+                const requestsCollectionRef = collection(userDocRef, 'Requests');
+                await setDoc(doc(requestsCollectionRef, user.email), requestData);
+                console.log(`Request document added successfully to ${itemEmail}`);
                 window.location.reload();
+
             } else if (action === 'unfollow') {
                 console.log(user);
                 console.log(itemEmail);
-                // Query to find the specific document to delete
-                const q = query(collection(db, 'friends'), where('user_email', '==', user.email), where('follower_email', '==', itemEmail));
-
-                // Execute the query to get the document reference
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot.empty) {
-                    console.log('Friend not found in the "friends" collection');
-                } else {
-                    // Delete the document
-                    const friendDoc = doc(db, 'friends', querySnapshot.docs[0].id);
-                    await deleteDoc(friendDoc);
-                    console.log('Friend unfollowed successfully');
+                const userDocRef = doc(db, 'users', user.email);
+                const friendsCollectionRef = collection(userDocRef, 'Friends');
+                const friendDocRef = doc(friendsCollectionRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(friendDocRef);
+                    console.log(`Successfully unfollowed user with email: ${itemEmail}`);
                     window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error unfollowing user with email ${itemEmail}:`, error);
                 }
+                const userDocumentRef = doc(db, 'users', itemEmail);
+                const friendsCollRef = collection(userDocumentRef, 'Friends');
+                const friendDocumentRef = doc(friendsCollRef, user.email); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(friendDocumentRef);
+                    console.log(`Successfully unfollowed user with email: ${user.email}`);
+                } catch (error) {
+                    console.error(`Error unfollowing user with email ${user.email}:`, error);
+                }    
+            
             }
             else if (action === 'acceptRequest') {
-                // Fetch the specific document
-                const q = query(collection(db, 'friends'), where('user_email', '==', user.email), where('follower_email', '==', itemEmail));
-                const querySnapshot = await getDocs(q);
+                const userDocRef = doc(db, 'users', user.email);
+                const friendData = {
+                is_accepted: true,
+                };
+                const friendsCollectionRef = collection(userDocRef, 'Friends');
+                const friendDocRef = doc(friendsCollectionRef, itemEmail);
+                await setDoc(friendDocRef, friendData);
+                console.log('Friend added successfully');
 
-                if (!querySnapshot.empty) {
-                    // Retrieve the first matching document
-                    const friendDoc = querySnapshot.docs[0];
-                    // Update the is_accepted value to true
-                    await setDoc(friendDoc.ref, { is_accepted: true }, { merge: true });
-                    console.log('Friend request accepted successfully');
+                const userDocumentRef = doc(db, 'users', itemEmail);
+                const friendDataDoc = {
+                is_accepted: true,
+                };
+                const friendsColRef = collection(userDocumentRef, 'Friends');
+                const friendDocumentRef = doc(friendsColRef, user.email);
+                await setDoc(friendDocumentRef, friendDataDoc);
+                console.log('Friend added successfully');
+
+                const userDocuRef = doc(db, 'users', user.email);
+                const requestsCollRef = collection(userDocuRef, 'Requests');
+                const reqDocRef = doc(requestsCollRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(reqDocRef);
+                    console.log(`Successfully removed user with email: ${itemEmail}`);
                     window.location.reload();
+                } catch (error) {
+                    console.error(`Error removed user with email ${itemEmail}:`, error);
+                }
+            }
+            else if (action === 'declineRequest') {
+                
+                const userDocuRef = doc(db, 'users', user.email);
+                const requestsCollRef = collection(userDocuRef, 'Requests');
+                const reqDocRef = doc(requestsCollRef, itemEmail); // Replace itemEmail with the specific email you want to remove
+                try {
+                    await deleteDoc(reqDocRef);
+                    console.log(`Successfully removed user with email: ${itemEmail}`);
+                    window.location.reload();
+                } catch (error) {
+                    console.error(`Error removed user with email ${itemEmail}:`, error);
                 }
             }
         } catch (error) {
@@ -63,21 +97,21 @@ const GridCards = ({ data }) => {
     const getIcons = (item) => {
         switch (item.condition) {
             case 'AllUsers':
-                if (item.connected === 'following') {
+                if (item.connected === 'Following') {
                     return (
-                        <button className="connect-button" disabled={true} style={{ backgroundColor: '#9b0303' }}>
+                        <button className="connect-button" disabled={true} style={{ backgroundColor: '#9b0303', cursor: "pointer" }}>
                             Following
                         </button>
                     );
-                } else if (item.connected === 'requested') {
+                } else if (item.connected === 'Requested') {
                     return (
-                        <button className="connect-button" style={{ backgroundColor: '#9b0303' }}>
+                        <button className="connect-button" style={{ backgroundColor: '#9b0303', cursor: "pointer" }}>
                             Requested
                         </button>
                     );
                 } else {
                     return (
-                        <button className="connect-button" style={{ backgroundColor: '#9b0303' }} onClick={() => handleConnectClick(item.email, 'connect')}>
+                        <button className="connect-button" style={{ backgroundColor: '#9b0303', cursor: "pointer" }} onClick={() => handleConnectClick(item.email, 'connect')}>
                             Connect
                         </button>
                     );
@@ -85,8 +119,8 @@ const GridCards = ({ data }) => {
             case 'FriendRequests':
                 return (
                     <>
-                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px' }} onClick={() => handleConnectClick(item.email, 'acceptRequest')}/>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#9b0303', fontSize: '24px' }} />
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'green', fontSize: '24px', cursor:"pointer" }} onClick={() => handleConnectClick(item.email, 'acceptRequest')}/>
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#9b0303', fontSize: '24px', cursor:"pointer" }} onClick={() => handleConnectClick(item.email, 'declineRequest')} />
                     </>
                 );
             case 'MyFriends':
@@ -105,7 +139,11 @@ const GridCards = ({ data }) => {
             {data.map((item, index) => (
                 <div className="card" key={index}>
                     <div className="profile-picture">
-                        {/* Display the profile picture */}
+                        {item.profilePicture ? (
+                            <img className="profile-picture" src={item.profilePicture} alt="User Profile Picture" />
+                        ) : (
+                            <img className="profile-picture" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCEaf1Lxm0Dw_VDH4m_3SP1C0L_JtzWF9XPQ&usqp=CAU" alt="Default Profile Picture" />
+                        )}
                     </div>
                     <p className="p-color">{item.name}</p>
                     <div>

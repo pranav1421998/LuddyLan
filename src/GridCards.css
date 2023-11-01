@@ -2,19 +2,22 @@
 .grid-cards {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    margin-left: 20vw;
+    /* margin-left: 20vw; */
     gap: 16px;
     padding-left: 2vw;
-    padding-top: 15vh;
+    padding-top: 25vh;
+    padding-left: 4vw;
   }
   
   .card {
     background-color: #fff;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 50vh;
-    width: 50vh;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    height: 40vh;
+    width: 40vh;
     border-radius: 5%;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0.3, 0, 0.3);
+
   }
 
   .p-color {
@@ -35,9 +38,9 @@
   }
 
 .profile-picture {
-    background-image: url('Images/user.jpg');
-    height: 35vh;
-    width: 50vh;
+    /* background-image: url('Images/user.jpg'); */
+    height: 25vh;
+    width: 40vh;
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
     object-fit: cover;
@@ -45,6 +48,9 @@
 }
 .connect-button {
   margin-bottom: 10px;
+  color: white;
+  padding: 5px;
+  border-radius: 10%;
 }
 
 .heading {
