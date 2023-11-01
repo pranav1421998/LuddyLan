@@ -119,6 +119,31 @@ p {
 
   .search-icon {
     position: sticky;
-    left: 100vw;
+    left: 100vw;  
     cursor: pointer;
   }
+
+  .search-container {
+    width: 20vw;
+    margin-right: 10vw;
+    padding-top: 0.5vw;
+
+
+  }
+  .search-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #000000;
+    width: 20vw;
+    z-index: 1;
+}
+
+.search-dropdown-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #000000;
+}
+
+.search-dropdown-item:hover {
+    background-color: #f1f1f1;
+}

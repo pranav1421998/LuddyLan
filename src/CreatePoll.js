@@ -32,13 +32,22 @@ function PollPopup({ onClose, onPollCreated }) {
         console.error('User is not authenticated.');
         return;
       }
-      const endTimeDate = new Date(endTime);
 
-    // Create a Firestore Timestamp from the JavaScript Date
-    const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
+      const endTimeDate = new Date(endTime);
+      // Create a Firestore Timestamp from the JavaScript Date
+      const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
+
+      // Initialize votes and percentages to 0 for each option
+      const initializedOptions = options.map((option) => ({
+        text: option,
+        votes: 0,
+        percentage: 0,
+        voters:[],
+      }));
+
       const pollData = {
         question,
-        options,
+        options: initializedOptions, // Use initialized options
         ownerId: user.email,
         endTime: endTimeTimestamp,
       };

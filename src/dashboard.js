@@ -1,4 +1,5 @@
 import './dashboard.css';
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -24,6 +25,7 @@ const Dashboard = () => {
     const ClosePollPopup = () => { setShowPopup(false); };
     const handleOpenModal = () => { setShowModal(true); };
     const handleCloseModal = () => { setShowModal(false); };
+
 
  
 
@@ -234,11 +236,10 @@ const Dashboard = () => {
                         querySnapshot.forEach((doc) => {
 
                             friendsArray.push({ id: doc.id, ...doc.data() });
-
                         });
 
                         const friendEmails = friendsArray.map((friend) => friend.follower_email);
-
+                        friendEmails.push(userEmailAddress);
                         const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
 
                         const postQuerySnapshot = await getDocs(postQuery);
@@ -279,7 +280,7 @@ const Dashboard = () => {
 
         };
 
-        const unsubscribe = onAuthStateChanged(auth, fetchData);     
+        const unsubscribe = onAuthStateChanged(auth, fetchData);    
 
         return () => unsubscribe();
 
@@ -287,161 +288,143 @@ const Dashboard = () => {
 
  
 
-    return (
+return (
 
-        <section className="main">
+    <section className="main">
 
-            <div className="post-container">
+        <Sidebar2 />
 
-                <div className="top-btn">
+        <div className="post-container">
 
-                    <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
+            <div className="top-btn">
 
-                    <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
-
-                    <Link to="/pollList">Poll</Link>
-
-                </div>
-
-                {showModal && (
-
-                    <div className="modal">
-
-                        <div className="modal-content">
-
-                            <span className="close" onClick={handleCloseModal}>close</span>
-
-                            <CreatePost onClose={handleCloseModal} />
-
-                        </div>
-
-                    </div>
-
-                )}
-
-                {showPopup && (
-
-                    <div className="modal">
-
-                        <div className="modal-content">
-
-                            <PollPopup onClose={ClosePollPopup} onPollCreated={ClosePollPopup} />
-
-                        </div>
-
-                    </div>
-
-                )}
-
- 
-
-                <ul>
-
-                    {posts.map((post) => (
-
-                        <li key={post.id}>
-
-                            <div className="post">
-
-                                <div className="post-header">
-
-                                    <p className="user-icon">
-
-                                        {post.friendProfilePicture ? (
-
-                                            <img
-
-                                                src={post.friendProfilePicture}
-
-                                                alt="Profile"
-
-                                                className="profile-picture"
-
-                                            />
-
-                                        ) : (
-
-                                            <FontAwesomeIcon icon={faUser} />
-
-                                        )}
-
-                                    </p>
-
-                                    <div className="head">
-
-                                        <p className="username">{post.ownerId}</p>
-
-                                        <p className="date">{formatTimestamp(post.uploadedDate)}</p>
-
-                                    </div>
-
-                                </div>
-
-                                <div className="post-detail">
-
-                                    <p style={{ color: 'black' }}>{post.caption}</p>
-
-                                </div>
-
-                                <div className="post-feed">
-
-                                    <img src={post.media} className="image-container" alt="Image" />
-
-                                </div>
-
-                                 <div className="detail-interactions">
-
-                                    <button className={`interact-btn like-button ${post.likedByUser ? "liked" : ""}`}
-
-                                      onClick={async () => {
-
-                                        const newLikeCount = await toggleLike(post.id);
-
-                                        post.likeCount = newLikeCount;
-
-                                        post.likedByUser = !post.likedByUser;
-
-                                        setPosts([...posts]);
-
-                                      }}>
-
-                                      <FontAwesomeIcon icon={faThumbsUp} /> {post.likeCount}
-
-                                    </button>|
-
-                                    <button className="interact-btn" onClick={() => openCommentWindow(post.id)}>
-
-                                      <FontAwesomeIcon icon={faComment} /> Comment
-
-                                    </button>|
-
-                                    <button className="interact-btn">
-
-                                      <FontAwesomeIcon icon={faShare} /> Share
-
-                                    </button>
-
-                                  </div>
-
-                                  {commentWindows[post.id] && (  // Use the commentWindows state to conditionally render the Comments component
-
-                                    <Comments postId={post.id} onClose={() => openCommentWindow(post.id)} />
-
-                                  )}
-
-                            </div>
-
-                        </li>
-
-                    ))}
-
-                </ul>
+                <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
 
             </div>
 
-        </section>
+            {showModal && (
 
-    );
+                <div className="modal">
+
+                    <div className="modal-content">
+
+                        <span className="close" onClick={handleCloseModal}>close</span>
+
+                        <CreatePost onClose={handleCloseModal} />
+
+                    </div>
+
+                </div>
+
+            )}
+
+            <ul>
+
+                {posts.map((post) => (
+
+                    <li key={post.id}>
+
+                        <div className="post">
+
+                            <div className="post-header">
+
+                                <p className="user-icon">
+
+                                    {post.friendProfilePicture ? (
+
+                                        <img
+
+                                            src={post.friendProfilePicture}
+
+                                            alt="Profile"
+
+                                            className="profile-picture"
+
+                                        />
+
+                                    ) : (
+
+                                        <FontAwesomeIcon icon={faUser} />
+
+                                    )}
+
+                                </p>
+
+                                <div className="head">
+
+                                    <p className="username">{post.ownerId}</p>
+
+                                    <p className="date">{formatTimestamp(post.uploadedDate)}</p>
+
+                                </div>
+
+                            </div>
+
+                            <div className="post-detail">
+
+                                <p style={{ color: 'black' }}>{post.caption}</p>
+
+                            </div>
+
+                            <div className="post-feed">
+
+                                <img src={post.media} className="image-container" alt="Image" />
+
+                            </div>
+
+                              <div className="detail-interactions">
+
+                                <button className={`interact-btn like-button ${post.likedByUser ? "liked" : ""}`}
+
+                                  onClick={async () => {
+
+                                    const newLikeCount = await toggleLike(post.id);
+
+                                    post.likeCount = newLikeCount;
+
+                                    post.likedByUser = !post.likedByUser;
+
+                                    setPosts([...posts]);
+
+                                  }}>
+
+                                  <FontAwesomeIcon icon={faThumbsUp} /> {post.likeCount}
+
+                                </button>|
+
+                                <button className="interact-btn" onClick={() => openCommentWindow(post.id)}>
+
+                                  <FontAwesomeIcon icon={faComment} /> Comment
+
+                                </button>|
+
+                                <button className="interact-btn">
+
+                                  <FontAwesomeIcon icon={faShare} /> Share
+
+                                </button>
+
+                              </div>
+
+                              {commentWindows[post.id] && (  // Use the commentWindows state to conditionally render the Comments component
+
+                                <Comments postId={post.id} onClose={() => openCommentWindow(post.id)} />
+
+                              )}
+
+                        </div>
+
+                    </li>
+
+                ))}
+
+            </ul>
+
+        </div>
+
+    </section>
+
+  );
 
 };
 

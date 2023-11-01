@@ -70,6 +70,7 @@ const Navbar = () => {
         posts: []
     });
     }
+
 };
 
 /////////////////////
@@ -91,6 +92,7 @@ if (isLoggedIn) {
               placeholder="Search"
               onChange={(e) => handleSearch(e.target.value)} 
           />
+
           {(searchResults.users.length>0 ||searchResults.posts.length >0) && (
               <div className="search-dropdown">
                   <h5>Users</h5>
