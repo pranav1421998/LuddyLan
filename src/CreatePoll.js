@@ -42,6 +42,7 @@ function PollPopup({ onClose, onPollCreated }) {
         text: option,
         votes: 0,
         percentage: 0,
+        voters:[],
       }));
 
       const pollData = {
