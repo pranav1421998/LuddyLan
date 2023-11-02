@@ -4,7 +4,6 @@
   color: white;
   position: fixed;
   width: 100%;
-  gap: 2vw;
   z-index: 2;
 }
 
@@ -26,36 +25,39 @@
   color: #fff;
   position: relative;
   align-items: center;
-  margin-left: -14vh;
-  gap: 75px;
+  margin-left: 9vw;
+  margin-right: auto;
+  opacity: 70%;
+  gap: 5vw;
 }
 
 .logo {
+  width: 15vw;
+  height: 10vh;
   display: flex;
   align-items: center;
-  margin-right: 0px;
 }
 
 .logo img {
+  margin-right: 0px;
+  padding-right: 0px;
   width: 15vh;
   height: 10vh;
-  margin-right: 0px;
 }
 
 .login {
+  display: flex;
+  gap: 2vw;
   color: white;
-  margin-top: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
   position: relative;
   align-items: center;
   font-size: 16px;
-  opacity: 50%;
-  float:right;
-  margin-top: 1.66vw;
-  margin-left:4vw ;
-}
-.login:hover {
-  opacity: 100%;
-  cursor: pointer;
+  opacity: 70%;
+  float: right;
+  margin-right: 2vw;
+  padding-left: 15%;
 }
 
 .login a {
@@ -88,12 +90,11 @@ p {
 }
 
 .search-container {
-  width: 20vw;
-  margin-right: 10vw;
-  padding-top: 0.5vw;
-
-
+  margin-left: -8vw;
+  padding-top: 0.5vh;
+  width: 14vw;
 }
+
 .search-dropdown {
   position: absolute;
   background-color: white;
@@ -102,10 +103,9 @@ p {
   z-index: 1;
 }
 
-.search-dropdown h5{
+.search-dropdown h5 {
   color: #000000;
 }
-
 
 .search-dropdown-item {
   padding: 8px 16px;
@@ -123,13 +123,6 @@ p {
     cursor: pointer;
   }
 
-  .search-container {
-    width: 20vw;
-    margin-right: 10vw;
-    padding-top: 0.5vw;
-
-
-  }
   .search-dropdown {
     position: absolute;
     background-color: white;

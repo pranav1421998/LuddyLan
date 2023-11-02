@@ -61,40 +61,32 @@ if (isLoggedIn) {
     <nav className="navbar">
       {/* logo */}
       <div className="logo">
-        <img src={icon} alt="Logo" />
+        <img src={icon} alt="Logo"/>
       </div>
       {/* Search bar */}
       <div className="search-container">
-          <input 
-              type="text" 
-              placeholder="Search"
-              onChange={(e) => handleSearch(e.target.value)} 
-          />
+          <input type="text" placeholder="Search" onChange={(e) => handleSearch(e.target.value)}/>
 
           {(searchResults.users.length>0 ||searchResults.posts.length >0) && (
-              <div className="search-dropdown">
-                  <h5>Users</h5>
-                  {searchResults.users.map((user, index) => (
-                      <div key={index} className="search-dropdown-item">
-                          {user.firstName} {user.lastName}
-                          {/* more user details or a link to the user's profile here */}
-                      </div>
-                  ))}
-                  <h5>Posts</h5>
-                  {searchResults.posts.map((post, index) => (
-                      <div key={index} className="search-dropdown-item">
-                          {post.caption}
-                          {/* more user details or a link to the post here */}
-                      </div>
-                    ))}
-              </div>
+          <div className="search-dropdown">
+              <h5>Users</h5>
+              {searchResults.users.map((user, index) => (
+                  <div key={index} className="search-dropdown-item">
+                      {user.firstName} {user.lastName}
+                      {/* more user details or a link to the user's profile here */}
+                  </div>
+              ))}
+              <h5>Posts</h5>
+              {searchResults.posts.map((post, index) => (
+                  <div key={index} className="search-dropdown-item">
+                      {post.caption}
+                      {/* more user details or a link to the post here */}
+                  </div>
+                ))}
+          </div>
           )}
 
-          <FontAwesomeIcon 
-          icon={faSearch} 
-          className="search-icon"
-          onClick={() => navigate(`/searchResults?query=${queryTextg}`)}
-        />
+          <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={() => navigate(`/searchResults?query=${queryTextg}`)}/>
       </div>
       {/* other webpage links */}
       <div className="pages">
@@ -102,10 +94,10 @@ if (isLoggedIn) {
         <button className='nav-btn' onClick={() => navigate('/FriendRequests')}><FontAwesomeIcon icon={faUsers}/>&nbsp;Friends</button>
         <button className='nav-btn' onClick={() => navigate('/Chat')}><FontAwesomeIcon icon={faComment}/>&nbsp;Chat</button>
         <button className='nav-btn' onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser}/>&nbsp;Profile</button>
-        <button className='nav-btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/>&nbsp;Settings</button>
       </div>
       {/* log out */}
       <div className="login">
+      <button className='nav-btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/></button>
         <button className='nav-btn' onClick={handleLogout}><FontAwesomeIcon icon={faSignOut}/>&nbsp;Log out</button>
       </div>
     </nav>
