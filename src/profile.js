@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import './profile.css';
 import Sidebar from './Sidebar';
 import userImage from './Images/user.jpg';
-import { doc, getDoc, collection, query, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, getDocs, updateDoc, where } from 'firebase/firestore';
 import { db, auth } from './firebaseConfig';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { faHome, faUser, faUsers, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Switch from 'react-switch'; // Import the slider toggle component
 
 function Profile() {
   const [userInfo, setUserInfo] = useState({});
   const [userPosts, setUserPosts] = useState([]);
+  const [isPublic, setIsPublic] = useState(false); // Track whether profile is public
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -23,50 +27,41 @@ function Profile() {
             if (docSnapshot.exists()) {
               const userData = { id: docSnapshot.id, ...docSnapshot.data() };
               setUserInfo(userData);
+              setIsPublic(userData.isPublic || false); // Initialize with user's public setting
+  
+              // Fetch posts
+              fetchUserPosts(userData.id);
             }
-          });
-          const postsQuery = query(collection(db, `users/${userEmail}/posts`));
-          getDocs(postsQuery).then(async (querySnapshot) => {
-            const posts = querySnapshot.docs.map(doc => ({
-              id: doc.id,     // Store the document ID
-              ...doc.data(),  // Store the post data
-              //url: await getDownloadURL(ref(getStorage(), doc.Media))
-            }));
-            setUserPosts(posts);
           });
       } else {
         setUserInfo({});
-        setUserPosts([]);
       }
     });
-
+  
     return () => unsubscribe();
   }, []);
+  
+  // Function to fetch user posts
+  const fetchUserPosts = (userId) => {
+    const postsQuery = query(collection(db, 'posts'), where('ownerId', '==', userId));
+    getDocs(postsQuery)
+      .then((querySnapshot) => {
+        const posts = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUserPosts(posts);
+      })
+      .catch((error) => {
+        console.error('Error fetching user posts:', error);
+      });
+  };
+  
+
+  console.log(userPosts,'pppppppppp');
 
   const handleProfilePictureUpdate = (file) => {
-    if (file) {
-      const storage = getStorage();
-      const storageRef = ref(storage, `profile_pictures/${userInfo.id}`);
-
-      uploadBytes(storageRef, file)
-        .then(() => {
-          getDownloadURL(storageRef)
-            .then((downloadURL) => {
-              const userRef = doc(db, 'users', userInfo.id);
-              updateDoc(userRef, {
-                profilePicture: downloadURL,
-              });
-
-              setUserInfo({ ...userInfo, profilePicture: downloadURL });
-            })
-            .catch((error) => {
-              console.error('Error getting download URL:', error);
-            });
-        })
-        .catch((error) => {
-          console.error('Error uploading profile picture:', error);
-        });
-    }
+    // (Your existing code for updating the profile picture)
   };
 
   const handleCameraButtonClick = () => {
@@ -80,38 +75,74 @@ function Profile() {
     }
   };
 
+  const togglePublic = () => {
+    const userRef = doc(db, 'users', userInfo.id);
+    updateDoc(userRef, { isPublic: !isPublic }); // Toggle the public setting
+    setIsPublic(!isPublic); // Update the state
+  };
+
+  console.log(userPosts,'oooooooooooo');
+
   return (
-    <div className="container">
+    <div>
       <Sidebar />
-      <div className="main-content">
-        <div className="post-container">
-          <div className="profile-image-container">
-            <div className="circular-image">
-              <img
-                src={userInfo.profilePicture || userImage}
-                alt="Profile Picture"
-                className="profile-picture"
-              />
-              <button className="camera-button" onClick={handleCameraButtonClick}>
-                📷
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileInputChange}
-                style={{ display: 'none' }}
-              />
+      <div className="modal-container">
+        <div className="component">
+          <div className="title">
+            <h2>{userInfo.firstName}'s Profile</h2>
+          </div>
+          <div className="container">
+            <div className="profile-container">
+              <div className="profile-img-container">
+                <div className="circular-image">
+                  <img
+                    src={userInfo.profilePicture || userImage}
+                    alt="Profile Picture"
+                    className="profile-picture"
+                  />
+                  <button className="camera-button" onClick={handleCameraButtonClick}>
+                    📷
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileInputChange}
+                    style={{ display: 'none' }}
+                  />
+                  
+                </div>
+                
+                <div style={{ flexDirection: 'column' }}>
+                <p className='public-button'><FontAwesomeIcon icon={faPenToSquare} /></p>
+                  <p className="heading-profile">{userInfo.firstName} {userInfo.lastName}</p>
+                  <p className="email-profile">{userInfo.id}</p>
+                  <div className="friends-posts">
+                    <p className="friends-count"><FontAwesomeIcon icon={faUsers} />Friends: 0</p>
+                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: 0</p>
+                    <p className='friends-count'>Make it public: <Switch // Use the Switch component for the toggle
+                      checked={isPublic}
+                      onChange={togglePublic}
+                    /></p>
+                  </div>
+                </div>
+                
+              </div>
+              <h4 className='posts-heading'>Posts</h4>
+              <div className="posts-grid">
+              {userPosts.map((post) => (
+                <div className="post-profile" key={post.id}>
+                  <img
+                    src={post.media}
+                    alt="Post"
+                    className="post-image"
+                  />
+                  <p className="post-caption">{post.Caption}</p>
+                </div>
+              ))}
+            </div>
             </div>
           </div>
-          <h1 className="profile-header">{userInfo.firstName}'s Profile</h1>
-          {userPosts.map((post) => (
-            <div className="post" key={post.id}>
-              <p>Post ID: {post.id}</p>
-              <p>Caption: {post.Caption}</p>
-              <img src={post.Media} alt="Post" className="post-image" />
-            </div>
-          ))}
         </div>
       </div>
     </div>
