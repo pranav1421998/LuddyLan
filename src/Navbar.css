@@ -38,6 +38,10 @@
   align-items: center;
 }
 
+.logo:hover {
+  cursor: pointer;
+}
+
 .logo img {
   margin-right: 0px;
   padding-right: 0px;
@@ -46,18 +50,17 @@
 }
 
 .login {
-  display: flex;
   gap: 2vw;
+  display: flex;
   color: white;
   margin-top: auto;
   margin-bottom: auto;
   position: relative;
   align-items: center;
+  margin-right: 2vw;
   font-size: 16px;
   opacity: 70%;
   float: right;
-  margin-right: 2vw;
-  padding-left: 15%;
 }
 
 .login a {

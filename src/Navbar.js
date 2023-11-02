@@ -61,7 +61,7 @@ if (isLoggedIn) {
     <nav className="navbar">
       {/* logo */}
       <div className="logo">
-        <img src={icon} alt="Logo"/>
+        <img src={icon} alt="Logo" onClick={handleLogout}/>
       </div>
       {/* Search bar */}
       <div className="search-container">
@@ -108,10 +108,10 @@ if (isLoggedIn) {
   return (
     <nav className="navbar2">
       <div className="logo">
-        <img src={icon} alt="Logo" />
+        <img src={icon} alt="Logo" onClick={handleLogout}/>
       </div>
       <div className="login">
-      <a href="/"> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
+      <a href="/Login"> <FontAwesomeIcon icon={faSignIn}/> Sign in</a>
       </div>
     </nav>
   );
