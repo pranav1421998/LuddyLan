@@ -15,8 +15,11 @@ const Sidebar2 = () => {
         setActiveTab(pathTabMap[currentPath] || ''); // Set active tab based on current path
     }, [location.pathname]); // Dependence on pathname ensures effect runs on route change
     const handleTabClick = (tab) => {
-        setActiveTab(tab);
+        if (activeTab !== tab) {
+            setActiveTab(tab);
+        }
     };
+    
 
     return (
         <div className="sidebar">
