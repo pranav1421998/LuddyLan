@@ -4,9 +4,10 @@ import './searchResults.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faSearch  } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
+import defimg from './Images/user.jpg';
 //firebase
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from './firebaseConfig';
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 //cookies
 import Cookies from 'js-cookie';
 
@@ -19,6 +20,30 @@ const SearchResults = ({ users, posts }) => {
       const location = useLocation();
       const searchParams = new URLSearchParams(location.search);
       const queryTextg = searchParams.get('query');
+
+      const formatTimestamp = (timestamp) => {
+        const date = timestamp.toDate();
+        const options = { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+        return date.toLocaleString(undefined, options);
+      };
+
+      const getFriendProfilePicture = async (friendEmail) => {
+        try {
+            const friendUserDocRef = doc(db, "users", friendEmail);
+            const friendUserDoc = await getDoc(friendUserDocRef);
+            if (friendUserDoc.exists()) {
+                const friendUserData = friendUserDoc.data();
+                return friendUserData.profilePicture || null;
+            } else {
+                console.error("No such document for friend user:", friendEmail);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching friend's profile picture:", error);
+            return null;
+        }
+      };
+      
 
 
     const handleSearch = async (queryText) => {
@@ -54,7 +79,7 @@ const SearchResults = ({ users, posts }) => {
             });
             // console.log(posts);
             // console.log(users);
-            console.log(searchResults);
+            // console.log(searchResults);
         }
         else{
           setSearchResults({
@@ -89,24 +114,39 @@ const SearchResults = ({ users, posts }) => {
             {activeTab === 'users' && searchResults.users && (
                   <div className="user-results">
                       {/* Map over the users and display them */}
-                      <h5>Users</h5>
+                      <h2 className='h-searchr'>Users</h2>
                       {searchResults.users.map((user, index) => (
+                      <div className='search-user-container'>
+                      <img src={user.profilePicture || defimg} alt="Profile" className="search-profile-picture"/>
                       <div key={index} className="search-item">
                           {user.firstName} {user.lastName}
                           {/* more user details or a link to the user's profile here */}
+                      </div>
                       </div>
                   ))}
                   </div>
               )}
 
               {activeTab === 'posts' && searchResults.posts && (
+
                   <div className="post-results">
                       {/* Map over the posts and display them */}
-                      <h5>Posts</h5>
+                      
+                      <h2 className='h-searchr'>Posts</h2>
                       {searchResults.posts.map((post, index) => (
-                          <div key={index} className="search-dropdown-item">
-                              {post.caption}
-                              {/* more user details or a link to the post here */}
+                          <div key={index} className="search-post-item">
+                              <div className="search-post-header">
+                                <img src={defimg} alt="Profile" className="search-profile-picture"/>
+                                <div className="post-info">
+                                  <p className="username">{post.ownerId}</p>
+                                  <p className="date">{formatTimestamp(post.uploadedDate)}</p>
+                                  <p className="search-caption">{post.caption}</p>
+                                  {/* more details */}
+                                </div>
+                              </div>
+                              <div className="post-body">
+                                <img src={post.media} alt="Post" className="post-image"/>
+                              </div>
                           </div>
                         ))}
                   </div>

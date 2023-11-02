@@ -42,9 +42,13 @@
     background-color: #f9f9f9;
     border-radius: 5px;
     color: black;
+    display: flex;
+    flex-direction: column;
 }
 
-.user-results div,
+.user-results div {
+    text-align: left;
+}
 .post-results div {
     margin-bottom: 15px;
 }
@@ -61,3 +65,37 @@
     color: #000;
     
   }
+  .post-image {
+    padding-top: 1vw;
+    width: 500px;
+    height: auto;
+    float: left;
+  }
+  .h-searchr{
+    text-align: left;
+    width: 100%; 
+    color: #000;
+  }
+
+  .search-caption {
+    color:#000;
+    float:left;
+  }
+  .search-post-header {
+    vertical-align: top;
+    display: flex;
+    flex-direction: row;
+  }
+  .search-profile-picture {
+    width: 50px;
+    height: 50px;
+    margin-right: 1vw;
+    margin-bottom: 0.5vw;
+    border-radius: 40%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  .search-user-container{
+    display: flex;
+    flex-direction: row;
+  }
+ 
