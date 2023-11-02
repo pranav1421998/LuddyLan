@@ -57,19 +57,17 @@ ul {
 }
 
 .top-btn {
-    margin-left: 300px;
-    margin-top: -50px;
+    width: 100%;
     position: fixed;
-    z-index: 3;
-    padding-left: 20px;
-    padding-right: 20px;
+    z-index: 5;
+    padding: 1vh;
 }
 
 .post {
     width: 100%;
     border: 2px solid #999;
     background: #fff;
-    margin-top: 30px;
+    margin-top: 8vh;
     margin-left: auto;
     margin-right: auto;
 }
