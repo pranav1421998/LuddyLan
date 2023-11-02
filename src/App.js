@@ -1,40 +1,37 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { UserProvider } from './UserContext'; // Import the UserProvider
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-import { Register } from "./Register.js";
-import Login from "./Login.js";
-import Dashboard from "./dashboard";
-import Profile from "./profile.js";
-import ProfileSettings from "./profileSettings.js";
-import Password from "./password";
-import PasswordRecovery from "./passwordRecovery.js";
-import Navbar from "./Navbar.js";
-import FileUpload from "./CreatePost.js";
-import FriendRequests from "./FriendRequests.js";
-import AllUsers from "./AllUsers.js";
-import MyFriends from "./MyFriends";
 import './App.css';
-import LandingPage from "./LandingPage";
-import PollForm from "./CreatePoll.js"
+import Chat from "./Chat";
+import React from "react";
+import Login from "./Login.js";
+import Navbar from "./Navbar.js";
 import PollList from "./PollList";
+import Password from "./password";
+import Profile from "./profile.js";
+import Dashboard from "./dashboard";
+import MyFriends from "./MyFriends";
+import AllUsers from "./AllUsers.js";
+import PollForm from "./CreatePoll.js";
+import LandingPage from "./LandingPage";
+import { Register } from "./Register.js";
+import FileUpload from "./CreatePost.js";
 import SearchResults from "./searchResults";
+import { UserProvider } from './UserContext';
+import FriendRequests from "./FriendRequests.js";
+import ProfileSettings from "./profileSettings.js";
+import PasswordRecovery from "./passwordRecovery.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 function App() {
   const auth = getAuth(); // Initialize the auth instance
   const [currentForm, setCurrentForm] = React.useState("login");
 
-
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in
-      console.log("(From App) User signed in:", user.displayName);
+      console.log("(From App) User signed in:", user.displayName); // User is signed in
     } else {
-      // User is signed out
-      console.log("(From App) User is signed out.");
+      console.log("(From App) User is signed out."); // User is signed out
     }
   });
-
 
   return (
     <UserProvider > {/* Wrap your app with the UserProvider */}
@@ -57,6 +54,7 @@ function App() {
             <Route path="/login" element={<Login/>}/>
             <Route path="/PollList" element={< PollList/>} />
             <Route path="/searchResults" element={<SearchResults/>} />
+            <Route path="/Chat" element={<Chat/>} />
           </Routes>
         </div>
       </Router>

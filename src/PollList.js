@@ -3,9 +3,9 @@ import Sidebar2 from './Sidebar2';
 import PollPopup from './CreatePoll';
 import { db, auth } from './firebaseConfig';
 import React, { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, Timestamp, updateDoc, doc, getDoc } from 'firebase/firestore';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { collection, query, where, getDocs, Timestamp, updateDoc, doc, getDoc } from 'firebase/firestore';
 
 function PollsPage() {
   const [polls, setPolls] = useState([]);
@@ -93,10 +93,10 @@ function PollsPage() {
   return (
     <section className="main">
       <Sidebar2 />
-      <div className="post-container">
-        <div className="top-btn">
+      <div className="top-btn">
           <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
-        </div>
+      </div>
+      <div className="post-container">
         {showPopup && (
           <div className="modal">
             <div className="modal-content">
