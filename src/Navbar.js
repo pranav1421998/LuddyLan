@@ -2,7 +2,7 @@
 
 import './Navbar.css';
 import Cookies from 'js-cookie';
-import icon from './Images/icon.png';
+import icon from './Images/3-cream+black.png';
 import { db } from './firebaseConfig';
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";

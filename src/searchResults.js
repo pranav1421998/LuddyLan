@@ -20,6 +20,7 @@ const SearchResults = ({ users, posts }) => {
       const location = useLocation();
       const searchParams = new URLSearchParams(location.search);
       const queryTextg = searchParams.get('query');
+      // const [profilePictureURL, setProfilePictureURL] = useState('');
 
       const formatTimestamp = (timestamp) => {
         const date = timestamp.toDate();
@@ -27,23 +28,24 @@ const SearchResults = ({ users, posts }) => {
         return date.toLocaleString(undefined, options);
       };
 
-      const getFriendProfilePicture = async (friendEmail) => {
+      const setPictureURL = async (email) => {
         try {
-            const friendUserDocRef = doc(db, "users", friendEmail);
+            const friendUserDocRef = doc(db, "users", email);
             const friendUserDoc = await getDoc(friendUserDocRef);
             if (friendUserDoc.exists()) {
                 const friendUserData = friendUserDoc.data();
-                return friendUserData.profilePicture || null;
+                // console.log(friendUserData.profilePicture);
+                // setProfilePictureURL(friendUserData.profilePicture);
+                return friendUserData.profilePicture || defimg;
             } else {
-                console.error("No such document for friend user:", friendEmail);
-                return null;
+                console.error("No such document for friend user:", email);
+                return defimg;
             }
         } catch (error) {
             console.error("Error fetching friend's profile picture:", error);
-            return null;
+            return defimg;
         }
       };
-      
 
 
     const handleSearch = async (queryText) => {
@@ -72,14 +74,19 @@ const SearchResults = ({ users, posts }) => {
               .filter(post => 
                   post.caption.toLowerCase().includes(queryText.toLowerCase())
               );
+
+              const postsWithPictures = await Promise.all(posts.map(async (post) => {
+                const profilePicture = await setPictureURL(post.ownerId);
+                return {
+                  ...post,
+                  profilePicture, // this is the URL you fetched
+                };
+              }));
           
             setSearchResults({
                 users: users, 
-                posts: posts
+                posts: postsWithPictures
             });
-            // console.log(posts);
-            // console.log(users);
-            // console.log(searchResults);
         }
         else{
           setSearchResults({
@@ -90,7 +97,7 @@ const SearchResults = ({ users, posts }) => {
     };
 
     return (
-        <div className='base-container'>
+        <div className='base-container'>          
           <div>
             <h1>Search Results</h1>
             <input 
@@ -136,7 +143,8 @@ const SearchResults = ({ users, posts }) => {
                       {searchResults.posts.map((post, index) => (
                           <div key={index} className="search-post-item">
                               <div className="search-post-header">
-                                <img src={defimg} alt="Profile" className="search-profile-picture"/>
+                                {/* fetch dp */}
+                                <img src={post.profilePicture} alt="Profile" className="search-profile-picture"/>
                                 <div className="post-info">
                                   <p className="username">{post.ownerId}</p>
                                   <p className="date">{formatTimestamp(post.uploadedDate)}</p>
