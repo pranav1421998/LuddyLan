@@ -140,10 +140,11 @@ const Dashboard = () => {
 return (
     <section className="main">
         <Sidebar2 />
+        <div className="top-btn">
+            <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
+        </div>
         <div className="post-container">
-            <div className="top-btn">
-                <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
-            </div>
+            
             {showModal && (
                 <div className="modal">
                     <div className="modal-content">

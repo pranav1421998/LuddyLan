@@ -4,15 +4,17 @@
   box-sizing:border-box;
   font-family: 'Poppins',sans-serif;
 }
-.poll-container {
+
+.poll-container{
   border: 1px solid grey; 
   padding: 10px;
   margin-bottom: 20px;
 }
 
 .modal-btn{
- margin-left: 25vh;
+  margin-left: 25vh;
 }
+
 .wrapper{
   background:white;
   border-radius: 15px;
@@ -23,10 +25,12 @@
   margin-left: auto;
   margin-right: auto;
 }
+
 .wrapper header{
   font-size: 22px;
   font-weight: 600;
 }
+
 .wrapper .poll-area{
   margin: 20px 0 15px 0;
 }
@@ -37,16 +41,18 @@
   padding: 8px 20px;
   border: 2px solid lightblue;
 }
+
 li .input{
   display: flex;
   justify-content: space-between;
 }
-.progress-bar {
+
+.progress-bar{
     width: 100%;
     background-color:whitesmoke;
   }
   
-  .progress {
+  .progress{
     height: 20px;
     width: 0;
     background-color: #4caf50; /* Green color for progress */
