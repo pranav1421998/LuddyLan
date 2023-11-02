@@ -228,6 +228,7 @@ ul {
 
 /* Style the button that triggers the modal (Create Post button) */
 .modal-btn {
+    align-items: center;
     background-color: #0074d9;
     color: #fff;
     border: none;
