@@ -28,11 +28,9 @@ h1 {
     position: relative;
 }
 
-
 .logo {
-    width: 200px; /* Set the width of the logo */
-    height: auto; /* Maintain aspect ratio */
-
+    width: 200px;
+    height: auto;
 }
 
 p {
@@ -53,9 +51,18 @@ ul {
     width: 100%;
     position: relative;
     display: flex;
-    padding: 20vh 10vw 100px;
+    padding: 20vh;
     gap: 50px;
-    z-index: -1;
+    z-index: 0;
+}
+
+.top-btn {
+    margin-left: 300px;
+    margin-top: -50px;
+    position: fixed;
+    z-index: 3;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .post {
@@ -67,17 +74,17 @@ ul {
 }
 
 .post-container {
-    width: 50%;
+    width: 50%; 
 }
 
 .image-container {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: hidden; 
     border: 1px solid #999;
 }
 
-.image-container img{
+.image-container img {
     min-width: 100%;
     height: 100%;
     object-fit: cover;
@@ -99,17 +106,34 @@ ul {
     border: 1px solid #999;
 }
 
-.post-header .username {
-    font-size: 0.9rem;
-    font-weight: 600;
+.username {
+    margin: 0px;
     color: black;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.date {
+    margin: 0px;
+    color: black;
+    font-size: 14px;
+    margin-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.head {
+    align-items: left;
 }
 
 .post-feed {
     width: 100%;
     height: 500px;
     position: relative;
-}
+} 
 
 .post-detail {
     color: black;
@@ -122,12 +146,13 @@ ul {
 .detail-interactions {
     gap: 50px;
     display: block;
+    color: black;
     margin-left: auto;
     margin-right: auto;
     padding: 1.2rem;
 }
 
-.detail-interactions img{
+.detail-interactions img {
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -138,9 +163,30 @@ ul {
     color: black;
 }
 
-.btn {
-    background-color: white;
-    color: #555;
+.interact-btn {
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background: none;
+    /* padding: 5px; */
+    margin-left: 20px;
+    margin-right: 20px;
+    opacity: 50%;
+}
+
+.interact-btn:hover {
+    /* color: black; */
+    opacity: 100%;
+    cursor: pointer;
+}
+
+.like-button {
+    color: grey; /* Default color (unliked) */
+}
+
+.like-button.liked {
+    color: blue; /* Liked color */
+    opacity: 100%;
 }
 
 .caption {
@@ -148,30 +194,17 @@ ul {
     color: black;
 }
 
-.like-btn {
-
-}
-
-.comment-btn {
-
-}
-
-.share-btn {
-
-}
-
-/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure the modal is above everything else */
+    z-index: 3;
 }
 
 /* Modal */
@@ -181,7 +214,7 @@ ul {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 100%;
-    z-index: 1001; /* Ensure the modal is above the overlay */
+    z-index: 4;
 }
 
 /* Close button for the modal */
@@ -194,11 +227,31 @@ ul {
 }
 
 /* Style the button that triggers the modal (Create Post button) */
-.user-details button {
+.modal-btn {
     background-color: #0074d9;
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    opacity: 50%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.modal-btn:hover {
+    opacity: 100%;
+}
+.post-header .user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #999;
+    overflow: hidden; /* Hide overflow to ensure the image fits within the circle */
+}
+
+.post-header .user-icon img {
+    width: 100%; /* Make the image cover the entire circle */
+    height: 100%; /* Make the image cover the entire circle */
+    object-fit: cover; /* Ensure the image fits within the circle and maintains its aspect ratio */
 }

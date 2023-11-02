@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { UserProvider } from './UserContext'; // Import the UserProvider
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -7,20 +8,18 @@ import Login from "./Login.js";
 import Dashboard from "./dashboard";
 import Profile from "./profile.js";
 import ProfileSettings from "./profileSettings.js";
-
-// routing
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Password from './password'; 
-import PasswordRecovery from './passwordRecovery.js';
-import Navbar from './Navbar.js';
-import Navbar2 from './Navbar2.js';
-import FileUpload from './CreatePost.js';
-import FriendRequests from './FriendRequests.js';
+import Password from "./password";
+import PasswordRecovery from "./passwordRecovery.js";
+import Navbar from "./Navbar.js";
+import FileUpload from "./CreatePost.js";
+import FriendRequests from "./FriendRequests.js";
 import AllUsers from "./AllUsers.js";
 import MyFriends from "./MyFriends";
 import './App.css';
+import LandingPage from "./LandingPage";
 import PollForm from "./CreatePoll.js"
-
+import PollList from "./PollList";
+import SearchResults from "./searchResults";
 function App() {
   const auth = getAuth(); // Initialize the auth instance
   const [currentForm, setCurrentForm] = React.useState("login");
@@ -43,8 +42,8 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
-            <Route path="/" element={<Login />} />
             <Route path="/password" element={<Password />} />
+            <Route path="/PollForm" element={<PollForm />} />
             <Route path="/register" element={<Register />} />
             <Route path="/passwordrecovery" element={<PasswordRecovery />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -54,6 +53,10 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profileSettings" element={<ProfileSettings />} />
             <Route path="/myFriends" element={<MyFriends />} />
+            <Route path="/" element={< LandingPage/>} />
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/PollList" element={< PollList/>} />
+            <Route path="/searchResults" element={<SearchResults/>} />
           </Routes>
         </div>
       </Router>

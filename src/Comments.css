@@ -1,0 +1,64 @@
+.comment {
+    background: #f2f2f2;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 2px 5px 2px 5px;
+    text-align: left; /* Left-align text within comments */
+}
+  
+.comments-popup {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px 20px 20px;
+    background: white;
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
+    text-align: left; /* Left-align text within the popup */
+  } 
+  
+.close-header {
+    margin-left: 81%;
+}
+  
+.comments-list {
+    padding: 0;
+}
+  
+.comment-user {
+    color: #555;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+  
+.add-comment {
+    /* margin-top: 10px; */
+}  
+  
+input[type="text"] {
+    width: 83%;
+    padding: 10px; /* Add padding to the input field */
+    border: 1px solid #ccc; /* Add a light border */
+    border-radius: 5px; /* Rounded input field */
+}
+  
+.send-btn {
+    padding: 10px 20px; /* Add padding to the buttons */
+    background: #007bff; /* Blue background color */
+    color: white; /* White text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded buttons */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    margin-left: 10px; /* Space between buttons */
+}
+
+.close-btn {
+    padding: 10px 20px; /* Add padding to the buttons */
+    background: none;
+    color:#9b0303;
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded buttons */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    top: 10px; /* Adjust the top position to suit your design */
+    right: 10px; /* Position to the right */
+    font-size: 14px;
+}
+  

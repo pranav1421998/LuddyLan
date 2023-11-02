@@ -11,5 +11,37 @@
 }
 
 .heading {
+    margin-top: 10vh;
     position: fixed;
+    width: 100%;
+}
+
+.title {
+    margin-top: 10vh;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    float: left;
+    box-shadow: 5px 5px 10px rgba(0.3, 0.3, 0.3, 0.3);
+}
+
+.grid {
+    padding-top: 50vh;
+}
+
+.p-color {
+    color: black;
+}
+
+.modal-container {
+    position: absolute;
+    left: 20vw; /* Set the left position to 20vw */
+    /* background-color: black; */
+    width: 80%;
+    /* border: 1px solid #000; */
+}
+
+h2 {
+    float: left;
+    padding-left: 4vw;
 }

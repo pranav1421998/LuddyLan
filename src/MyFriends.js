@@ -7,79 +7,71 @@ import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firesto
 import { useUser } from './UserContext';
 
 const MyFriends = () => {
-    const [userdata, setDocuments] = useState([]);
-    const [userData, setUserData] = useState([]); // State to store fetched user details
+    const [userRequests, setUserRequests] = useState([]);
+    const [userDetails, setUserDetails] = useState([]);
     const user = useUser();
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchRequests = async () => {
             try {
-                // Assuming you have a "friends" collection
-                const friendsRef = collection(db, 'friends');
-                const q = query(friendsRef, where('user_email', '==', user.email), where('is_accepted', '==', true));
-                const friendSnapshot = await getDocs(q);
-
-                const friendDataArray = friendSnapshot.docs.map(doc => doc.data());
-
-                // You now have an array of all friends where user_email is equal to the logged-in user's email and is_accepted is true
-                setDocuments(friendDataArray);
+                const userDocRef = doc(db, 'users', user.email);
+                const requestsCollectionRef = collection(userDocRef, 'Friends');
+                const requestQuery = query(requestsCollectionRef);
+                const requestSnapshot = await getDocs(requestQuery);
+                const requestDocumentIds = requestSnapshot.docs.map(doc => doc.id);
+                setUserRequests(requestDocumentIds);
             } catch (error) {
-                console.error("An error occurred while fetching friend requests:", error);
+                console.error("An error occurred while fetching request document IDs:", error);
             }
         };
 
-        fetchData();
+        fetchRequests();
     }, [user]);
 
     useEffect(() => {
-        const userEmail = userdata.map(ud => ud.follower_email);
-
         const fetchUserDetails = async () => {
             try {
-                // Create an array to store promises for fetching user details
-                const fetchPromises = userEmail.map(async (email) => {
-                    const userDocRef = doc(db, 'users', email); // Assuming email is the document ID
-                    const userSnapshot = await getDoc(userDocRef);
-
-                    if (userSnapshot.exists()) {
-                        // Fetch user details based on the document ID (email)
-                        const userDetails = userSnapshot.data();
-                        return userDetails;
-                    }
+                const userDetailsPromises = userRequests.map(async (documentId) => {
+                    const userDocRef = doc(db, 'users', documentId); // Assuming documentId is the user's ID
+                    const userDocSnapshot = await getDoc(userDocRef);
+                    const userData = userDocSnapshot.data();
+                    userData.id = documentId; // Add the document ID as 'id' in the user data object
+                    return userData;
                 });
-
-                // Use Promise.all to fetch all user details in parallel
-                const userDetails = await Promise.all(fetchPromises);
-
-                // Filter out any potential null values (failed fetches)
-                const filteredUserDetails = userDetails.filter(user => user !== null);
-
-                // Update the userData state with the fetched user details
-                setUserData(filteredUserDetails);
+    
+                const userDetailsData = await Promise.all(userDetailsPromises);
+    
+                setUserDetails(userDetailsData);
             } catch (error) {
                 console.error("An error occurred while fetching user details:", error);
             }
         };
+    
+        fetchUserDetails();
+    }, [userRequests]);
+    
 
-        // Fetch user details for all users in the userEmail list
-        if (userEmail.length > 0) {
-            fetchUserDetails();
-        }
-    }, [userdata]);
-
+    console.log(userDetails,'ffffffffffffffff');
     // Update the data array with user details
-    const data = userData.map(user => ({
+    const data = userDetails.map(user => ({
         name: user.firstName + ' ' + user.lastName, // Adjust this based on the field name in your "users" collection
         profilePicture: user.profilePicture, // Adjust this based on the field name in your "users" collection
         condition: "MyFriends",
+        email: user.id,
     }));
 
     return (
-        <div className="component">
+        <div>
             <SidebarFriends></SidebarFriends>
-            <div>
-            <h2 className='heading'>My Friends</h2>
-                <GridCards data={data} />
+            <div className='modal-container'>
+                <div className="component">
+                    <div className='title'>
+                        <h2>My Friends</h2>
+                    </div>
+                <div>
+                    <GridCards data={data} />
+                </div>
+            </div>
             </div>
         </div>
     );

@@ -17,3 +17,23 @@
    align-items: center;
    padding: 10px;
   }
+
+  .login-btn {
+    text-align: center;
+    color: white;
+    border: none;
+    background: #9b0303;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .link {
+    text-align: center;
+    color: black;
+    border: none;
+    background: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }

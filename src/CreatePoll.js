@@ -6,6 +6,8 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 function PollPopup({ onClose, onPollCreated }) {
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
+  const [endTime, setEndTime] = useState(''); // New state for poll end time
+
   const user = auth.currentUser;
 
   const addOption = () => {
@@ -31,10 +33,23 @@ function PollPopup({ onClose, onPollCreated }) {
         return;
       }
 
+      const endTimeDate = new Date(endTime);
+      // Create a Firestore Timestamp from the JavaScript Date
+      const endTimeTimestamp = Timestamp.fromDate(endTimeDate);
+
+      // Initialize votes and percentages to 0 for each option
+      const initializedOptions = options.map((option) => ({
+        text: option,
+        votes: 0,
+        percentage: 0,
+        voters:[],
+      }));
+
       const pollData = {
         question,
-        options,
+        options: initializedOptions, // Use initialized options
         ownerId: user.email,
+        endTime: endTimeTimestamp,
       };
 
       const docRef = await addDoc(collection(db, 'polls'), pollData);
@@ -54,7 +69,7 @@ function PollPopup({ onClose, onPollCreated }) {
           placeholder="Enter your question"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          className="question-input" // Add a CSS class for question input
+          className="question-input"
         />
         <h3>Options</h3>
         {options.map((option, index) => (
@@ -64,13 +79,17 @@ function PollPopup({ onClose, onPollCreated }) {
               placeholder={`Option ${index + 1}`}
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
-              className="option-input" // Add a CSS class for options input
-              
-            /><span className='close-icon'
-            onClick={()=>removeOption(index)}
-            >&times;</span>
+              className="option-input"
+            />
+            <span className='close-icon' onClick={() => removeOption(index)}>&times;</span>
           </div>
         ))}
+        <label>End Time: </label>
+        <input
+          type="datetime-local"
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        /><br></br>
         <button onClick={addOption}>Add Option</button>
         <button onClick={createPoll}>Create Poll</button>
         <button onClick={onClose}>Cancel</button>

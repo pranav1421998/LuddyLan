@@ -1,11 +1,19 @@
 .sidebar-container {
-  /* margin-top: 10vh; */
   display: flex;
   height: 100vh;
   position: fixed;
+  margin-top: 10vh;
+  background-color: #9b0303;
+  z-index: 1;
 }
 
 .sidebar {
-    background-color: white;
     padding: 0;
+    background-color: #9b0303 !important;
 }
+
+.custom-menu-item {
+  text-decoration: none !important;
+  color: white !important;
+}
+

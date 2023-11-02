@@ -126,8 +126,13 @@ export const Register = () => {
                 phone: phone,
                 securityQuestion: secQues,
                 securityAnswer: secAns,
-                loggedIn: false
+                loggedIn: false,
+                isProfilePublic: true 
             });
+
+        const friendsCollection = collection(userDocRef, "friends");
+        const requestsCollection = collection(userDocRef, "requests");
+
     
             setTimeout(() => {
                 setLoading(false);

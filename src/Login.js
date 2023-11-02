@@ -6,6 +6,10 @@ import { signInWithPopup, signInWithEmailAndPassword} from "firebase/auth";
 import { useNavigate,Link } from "react-router-dom";
 import './Login.css';
 
+//cookies
+import Cookies from 'js-cookie';
+
+
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -14,8 +18,8 @@ const Login = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        Cookies.remove('userDetails');
         const fetchData = async () => {
-            // your async logic here
             const userEmail = auth.currentUser ? auth.currentUser.email : null;
             if(userEmail){
                 const ref = doc(db, 'users', userEmail);
@@ -33,15 +37,25 @@ const Login = (props) => {
         };
         fetchData();
     }, []);
-
+///////////////// For setting cookies during login /////////////
+        const setCookies  = (user_email) => {
+        const userDetails = {
+            email: user_email
+        };
+        Cookies.set('userDetails', JSON.stringify(userDetails), { expires: 1 });
+        Cookies.set('isLoggedIn', 'true', { expires: 1 }); // Cookie expires in 1 day
+        
+    }
+//////////////////
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             console.log('User logged in:', userCredential.user);
             const user_email = e.user.email;
-            const userDocRef = doc(db, 'users', user_email); 
-            navigate('/dashboard'); // Replace with the route you want to navigate to upon successful login
+            //const userDocRef = doc(db, 'users', user_email); 
+            setCookies(user_email);
+            navigate('/dashboard'); // successful login
         } catch (error) {
             console.error('Error during sign-in:', error);
             if (error.code === 'auth/wrong-password') {
@@ -70,6 +84,7 @@ const Login = (props) => {
                     navigate('/register', { state: { email: user_email } });
                 }else {
                   // User found, redirect to Dashboard
+                  setCookies(user_email);
                   navigate('/dashboard');
                 }
         
@@ -89,15 +104,15 @@ const Login = (props) => {
                 <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="username@iu.edu" id="email" name="Username" />
                 {/* <label htmlFor="password">Password</label> */}
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password" id="password" name="Password" />
-                <button type="submit" onClick={handleSubmit}>Log In</button>
-                <button className="link-btn" onClick={() => navigate("/register")}>Don't have an account? Register here.</button>
-                <Link to="/passwordrecovery">Forgot Password?</Link>
+                <button className="login-btn" type="submit" onClick={handleSubmit}>Log In</button>
+                <Link className="link-btn" to="/register">Don't have an account? Register here.</Link>
+                <Link className="link-btn" to="/passwordrecovery">Forgot password?</Link>
             </form>
 
             <div className="google-btn">
             <GoogleButton onClick={handleGoogleSignIn}></GoogleButton>
             </div>
-            {error && <p style={{color: 'crimson'}}>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
         </div>
         </div>
     </>

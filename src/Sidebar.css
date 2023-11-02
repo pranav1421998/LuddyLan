@@ -1,58 +1,111 @@
-/* Sidebar.css */
-
 .sidebar {
+
   width: 250px;
+
   height: 100%;
-  background-color: #FFFDD0  !important;
+
+  background-color: #d56565  !important;
+
   color: #FFFDD0  !important;
+
   padding: 20px;
+
   position: fixed;
+
   left: 0;
+
   top: 60px;
+
   bottom: 0;
+
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+
+  z-index: 4;
+
 }
+
+ 
 
 .tabs {
+
   display: flex;
+
   flex-direction: column;
+
 }
+
+ 
 
 .tab {
+
   padding: 10px;
+
   cursor: pointer;
+
   transition: background-color 0.2s;
+
 }
+
+ 
 
 .tab:hover {
+
   background-color: #d56565;
+
 }
+
+ 
 
 .tab.active {
+
   background-color: #d56565;
+
 }
+
+ 
 
 .tab-content {
+
   margin-top: 10px;
+
   padding: 10px;
+
   background-color: #444;
+
   border-radius: 4px;
+
   color: crimson;
+
 }
+
+ 
 
 .main-content {
+
   margin-left: 250px; /* Width of the sidebar */
+
   padding: 20px;
+
 }
+
+ 
 
 @media (max-width: 768px) {
-  .sidebar {
-      width: 100%;
-      height: auto;
-  }
-  
-  .main-content {
-      margin-left: 250px;
-  }
-}
 
+  .sidebar {
+
+      width: 100%;
+
+      height: auto;
+
+  }
+
+ 
+
+  .main-content {
+
+      margin-left: 250px;
+
+  }
+
+}

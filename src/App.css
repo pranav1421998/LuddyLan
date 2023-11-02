@@ -20,25 +20,16 @@ input {
   border-color: BLACK;
 }
 
-button {
-  border: none;
-  background-color:#9b0303;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  color:white;
-}
-
 .auth-form-container{
   display: flex;
   flex-direction: column;
-  margin:auto;
+  margin: auto;
 }
 
 .login-form, .register-form, .register-container, .createpassword-form {
   display: flex;
   flex-direction: column;
-  margin:auto;
+  margin: auto;
 }
 
 @media screen and (min-width: 600px) {
@@ -58,5 +49,5 @@ select {
 }
 
 .component {
-  margin-top: 10vh;
+  /* margin-top: 10vh; */
 }
