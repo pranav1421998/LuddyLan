@@ -1,0 +1,13 @@
+.profile-modal-content{
+    height: relative;
+    width: relative;
+    background-color: white;
+    padding: 5vh;
+    border-radius: 5vh;
+}
+
+.close-button {
+    float: right;
+    background-color: #9b0303 !important;
+    color: white;
+}
