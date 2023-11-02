@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { db, auth } from './firebaseConfig';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  Timestamp,
-  updateDoc,
-  doc,
-  getDoc, // Import getDoc function
-} from 'firebase/firestore';
+import './pollList.css';
 import Sidebar2 from './Sidebar2';
 import PollPopup from './CreatePoll';
-import './pollList.css';
+import { db, auth } from './firebaseConfig';
+import React, { useEffect, useState } from 'react';
+import { collection, query, where, getDocs, Timestamp, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,13 +13,8 @@ function PollsPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [userProfilePictures, setUserProfilePictures] = useState({});
 
-  const openPollPopup = () => {
-    setShowPopup(true);
-  };
-
-  const ClosePollPopup = () => {
-    setShowPopup(false);
-  };
+  const openPollPopup = () => { setShowPopup(true); };
+  const ClosePollPopup = () => { setShowPopup(false); };
 
   const user = auth.currentUser;
 
@@ -66,7 +52,6 @@ function PollsPage() {
         console.error('Error fetching polls:', error);
       }
     };
-
     fetchPolls();
   }, []);
 
@@ -110,9 +95,7 @@ function PollsPage() {
       <Sidebar2 />
       <div className="post-container">
         <div className="top-btn">
-          <button className="modal-btn" onClick={openPollPopup}>
-            Create Poll
-          </button>
+          <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
         </div>
         {showPopup && (
           <div className="modal">
@@ -127,14 +110,8 @@ function PollsPage() {
               <div className="post-header">
                 <p className="user-icon">
                   {userProfilePictures[poll.ownerId] ? (
-                    <img
-                      src={userProfilePictures[poll.ownerId]}
-                      alt="Owner Profile"
-                      className="profile-picture"
-                    />
-                  ) : (
-                    <FontAwesomeIcon icon={faUser} />
-                  )}
+                    <img src={userProfilePictures[poll.ownerId]} alt="Owner Profile" className="profile-picture"/>) : 
+                    ( <FontAwesomeIcon icon={faUser} /> )}
                 </p>
                 <div className="head">
                   <p className="username">{poll.ownerId}</p>

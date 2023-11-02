@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -10,7 +10,6 @@ const Sidebar = () => {
     useEffect(() => {
 
         const currentPath = location.pathname; // Get current path
-
         const pathTabMap = { // Map paths to tab names
             '/profile': 'profile',
             '/profileSettings': 'settings',
@@ -20,15 +19,9 @@ const Sidebar = () => {
         setActiveTab(pathTabMap[currentPath] || ''); // Set active tab based on current path
     }, [location.pathname]); // Dependence on pathname ensures effect runs on route change
 
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-
-    };
-
-
+    const handleTabClick = (tab) => { setActiveTab(tab); };
 
     return (
-
         <div className="sidebar">
             <div className="tabs">
                 <div
@@ -54,7 +47,6 @@ const Sidebar = () => {
             {/* You can add more content for each tab as needed */}
         </div>
     );
-
 };
 
 export default Sidebar;

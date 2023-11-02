@@ -1,26 +1,21 @@
 // src/components/Navbar.js
 
-import './Navbar.css'
-import icon from './Images/icon.png';
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faUsers, faComment, faGear, faSignOut, faSignIn, faSearch  } from '@fortawesome/free-solid-svg-icons';
-//firebase
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from './firebaseConfig';
-//cookies
+import './Navbar.css';
 import Cookies from 'js-cookie';
+import icon from './Images/icon.png';
+import { db } from './firebaseConfig';
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { faHome, faUser, faUsers, faComment, faGear, faSignOut, faSignIn, faSearch  } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   
   const navigate = useNavigate();   
   const isLoggedIn = Cookies.get('isLoggedIn');
   const [queryTextg, setqueryTextg] = useState('');
-  const [searchResults, setSearchResults] = useState({
-    users: [],
-    posts: []
-    });
+  const [searchResults, setSearchResults] = useState({ users: [], posts: [] });
 
   const handleLogout =  () => {
     Cookies.remove('isLoggedIn');
@@ -33,53 +28,36 @@ const Navbar = () => {
     
     if (queryText) {
         const usersCollection = collection(db, 'users');
-        
         // Fetch all users
         const allUsersSnapshot = await getDocs(usersCollection);
-        
         // Filter users based on the presence of queryText in firstName or lastName, case-insensitively
         const users = allUsersSnapshot.docs.map(doc => doc.data())
             .filter(user => 
                 user.firstName.toLowerCase().includes(queryText.toLowerCase()) || 
                 user.lastName.toLowerCase().includes(queryText.toLowerCase())
             );
-
         // For posts
-        const postsCollection = collection(db, 'posts');
-        
+        const postsCollection = collection(db, 'posts'); 
         // Fetch all posts
-        const allPostsSnapshot = await getDocs(postsCollection);
-        
+        const allPostsSnapshot = await getDocs(postsCollection); 
         // Filter posts based on the presence of queryText in the caption, case-insensitively
         const posts = allPostsSnapshot.docs.map(doc => doc.data())
             .filter(post => 
                 post.caption.toLowerCase().includes(queryText.toLowerCase())
-            );
-        
-        setSearchResults({
-            users: users, 
-            posts: posts
-        });
+            ); 
+        setSearchResults({ users: users, posts: posts });
         // console.log(posts);
         // console.log(users);
         //console.log(searchResults);
     }
-    else{
-      setSearchResults({
-        users: [], 
-        posts: []
-    });
+    else {
+      setSearchResults({ users: [], posts: [] });
     }
-
 };
 
-/////////////////////
-///////returns///////
-/////////////////////
 if (isLoggedIn) {
   //logged in navbar
   return (
-
     <nav className="navbar">
       {/* logo */}
       <div className="logo">
@@ -146,7 +124,6 @@ if (isLoggedIn) {
     </nav>
   );
 }
-
 };
 
 export default Navbar;
