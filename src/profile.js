@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './profile.css';
-import Sidebar from './Sidebar';
+import SidebarProfile from './SidebarProfile';
 import userImage from './Images/user.jpg';
 import { doc, getDoc, collection, query, getDocs, updateDoc, where } from 'firebase/firestore';
 import { db, auth } from './firebaseConfig';
@@ -15,10 +15,20 @@ import EditModal from './EditModal';
 function Profile() {
   const [userInfo, setUserInfo] = useState({});
   const [userPosts, setUserPosts] = useState([]);
-  const [isPublic, setIsPublic] = useState(false); // Track whether profile is public
+  const [isPublic, setIsPublic] = useState(false); 
   const fileInputRef = useRef(null);
-  const [friendsCollection, setFriendsCollection] = useState([]); // Variable to store friends collection
+  const [friendsCollection, setFriendsCollection] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
+  const handleEditButtonClick = () => {
+    setIsEditModalOpen(true);
+  };
+  
+  const handleSaveEditedData = (editedData) => {
+    setIsEditModalOpen(false);
+    setUserInfo(editedData);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -97,26 +107,10 @@ function Profile() {
     setIsPublic(!isPublic); // Update the state
   };
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  // ... Rest of your code ...
-
-  const handleEditButtonClick = () => {
-    setIsEditModalOpen(true);
-  };
-
-  const handleSaveEditedData = (editedData) => {
-    // Implement the code to save the edited user data
-    // For example, you can update the user's data in the Firestore database
-    // Remember to update the state with the new data
-    // You can also add validation and error handling as needed
-    setIsEditModalOpen(false);
-    setUserInfo(editedData);
-  };
 
   return (
     <div>
-      <Sidebar />
+      <SidebarProfile />
       <div className="modal-container">
         <div className="component">
           <div className="title">
@@ -158,12 +152,14 @@ function Profile() {
                     /></p>
                   </div>
                 </div>
-                <EditModal
-                  userData={userInfo}
-                  isOpen={isEditModalOpen}
-                  onClose={() => setIsEditModalOpen(false)}
-                  onSave={handleSaveEditedData}
-                />
+                {isEditModalOpen && (
+                  <EditModal
+                    userData={userInfo}
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={handleSaveEditedData}
+                  />
+                )}
               </div>
               <h4 className='posts-heading'>Posts</h4>
               <div className="posts-grid">
