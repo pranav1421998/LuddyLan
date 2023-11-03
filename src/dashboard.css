@@ -221,7 +221,7 @@ ul {
 .modal button {
     background-color: #ccc;
     border: none;
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
     border-radius: 4px;
     cursor: pointer;
 }
@@ -254,4 +254,29 @@ ul {
     width: 100%; /* Make the image cover the entire circle */
     height: 100%; /* Make the image cover the entire circle */
     object-fit: cover; /* Ensure the image fits within the circle and maintains its aspect ratio */
+}
+
+.share-dropdown {
+    justify-content: center;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.text-share {
+    color: #990000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.share-btn {
+    background-color: white;
+    padding-left: 10px;
+    color: #990000;
+    font-size: 25px;
+    border: none;
+}
+
+.share-btn:hover {
+    cursor: pointer;
 }
