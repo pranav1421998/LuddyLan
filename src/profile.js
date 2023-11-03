@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './profile.css';
-import Sidebar from './Sidebar';
+import SidebarProfile from './SidebarProfile';
 import userImage from './Images/user.jpg';
 import { doc, getDoc, collection, query, getDocs, updateDoc, where } from 'firebase/firestore';
 import { db, auth } from './firebaseConfig';
@@ -10,12 +10,24 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { faHome, faUser, faUsers, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Switch from 'react-switch'; // Import the slider toggle component
+import EditModal from './EditModal';
 
 function Profile() {
   const [userInfo, setUserInfo] = useState({});
   const [userPosts, setUserPosts] = useState([]);
-  const [isPublic, setIsPublic] = useState(false); // Track whether profile is public
+  const [isPublic, setIsPublic] = useState(false); 
   const fileInputRef = useRef(null);
+  const [friendsCollection, setFriendsCollection] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  
+  const handleEditButtonClick = () => {
+    setIsEditModalOpen(true);
+  };
+  
+  const handleSaveEditedData = (editedData) => {
+    setIsEditModalOpen(false);
+    setUserInfo(editedData);
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -31,6 +43,7 @@ function Profile() {
   
               // Fetch posts
               fetchUserPosts(userData.id);
+              fetchFriendsCollection(userData.id);
             }
           });
       } else {
@@ -57,11 +70,24 @@ function Profile() {
       });
   };
   
-
-  console.log(userPosts,'pppppppppp');
+  const fetchFriendsCollection = (userId) => {
+    const userRef = doc(db, 'users', userId);
+    const friendsQuery = collection(userRef, 'Friends');
+    
+    getDocs(friendsQuery)
+      .then((querySnapshot) => {
+        const friendsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setFriendsCollection(friendsData);
+      })
+      .catch((error) => {
+        console.error('Error fetching friends collection:', error);
+      });
+  };
 
   const handleProfilePictureUpdate = (file) => {
-    // (Your existing code for updating the profile picture)
   };
 
   const handleCameraButtonClick = () => {
@@ -81,11 +107,10 @@ function Profile() {
     setIsPublic(!isPublic); // Update the state
   };
 
-  console.log(userPosts,'oooooooooooo');
 
   return (
     <div>
-      <Sidebar />
+      <SidebarProfile />
       <div className="modal-container">
         <div className="component">
           <div className="title">
@@ -114,19 +139,27 @@ function Profile() {
                 </div>
                 
                 <div style={{ flexDirection: 'column' }}>
-                <p className='public-button'><FontAwesomeIcon icon={faPenToSquare} /></p>
+                <p className='public-button'><FontAwesomeIcon icon={faPenToSquare} onClick={handleEditButtonClick} /></p>
                   <p className="heading-profile">{userInfo.firstName} {userInfo.lastName}</p>
                   <p className="email-profile">{userInfo.id}</p>
                   <div className="friends-posts">
-                    <p className="friends-count"><FontAwesomeIcon icon={faUsers} />Friends: 0</p>
-                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: 0</p>
-                    <p className='friends-count'>Make it public: <Switch // Use the Switch component for the toggle
+                    <p className="friends-count"><FontAwesomeIcon icon={faUsers} />Friends:{friendsCollection.length} </p>
+                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
+                    <p className='friends-count'>Make it public:   
+                    <Switch
                       checked={isPublic}
                       onChange={togglePublic}
                     /></p>
                   </div>
                 </div>
-                
+                {isEditModalOpen && (
+                  <EditModal
+                    userData={userInfo}
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={handleSaveEditedData}
+                  />
+                )}
               </div>
               <h4 className='posts-heading'>Posts</h4>
               <div className="posts-grid">

@@ -64,8 +64,6 @@
     min-height: 60vh; 
     border-radius: 5vh;
     margin-top: 15vh;
-
-
   }
  .profile-img-container {
     text-align: left;
@@ -77,10 +75,12 @@
  } 
  .heading-profile {
     font-size: 32px;
+    color: white;
     padding-left: 10vw;
  }
  .email-profile {
     font-size: 20px;
+    color: white;
     padding-left: 10vw;
  }
 
@@ -97,10 +97,12 @@
     margin-right: 3vw; /* Adjust the margin as needed */
     display: flex;
     align-items: center;
+    color: white;
   }
   .public-button {
     float: right;
     flex-direction: row;
+    color: white;
   }
 
   /* Your CSS stylesheet */
