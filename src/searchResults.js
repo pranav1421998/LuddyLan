@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './searchResults.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faSearch  } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
 import defimg from './Images/user.jpg';
+import { Link, useNavigate } from "react-router-dom";
 //firebase
 import { db } from './firebaseConfig';
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
@@ -18,6 +18,7 @@ const SearchResults = ({ users, posts }) => {
       posts: []
       });
       const location = useLocation();
+      const navigate = useNavigate();
       const searchParams = new URLSearchParams(location.search);
       const queryTextg = searchParams.get('query');
       // const [profilePictureURL, setProfilePictureURL] = useState('');
@@ -57,8 +58,13 @@ const SearchResults = ({ users, posts }) => {
           const allUsersSnapshot = await getDocs(usersCollection);
           
           // Filter users based on the presence of queryText in firstName or lastName, case-insensitively
-          const users = allUsersSnapshot.docs.map(doc => doc.data())
-              .filter(user => 
+          const users = allUsersSnapshot.docs.map(doc => {
+            const userData = doc.data();
+            return {
+                ...userData, // Spread the existing user data
+                email: doc.id, // Assuming the document ID is the email
+            };
+           }).filter(user => 
                   user.firstName.toLowerCase().includes(queryText.toLowerCase()) || 
                   user.lastName.toLowerCase().includes(queryText.toLowerCase())
               );
@@ -125,7 +131,7 @@ const SearchResults = ({ users, posts }) => {
                       {searchResults.users.map((user, index) => (
                       <div className='search-user-container'>
                       <img src={user.profilePicture || defimg} alt="Profile" className="search-profile-picture"/>
-                      <div key={index} className="search-item">
+                      <div key={index} className="user-search-item" onClick={() => navigate(`/profileGlobal?uid=${user.email}`) }>
                           {user.firstName} {user.lastName}
                           {/* more user details or a link to the user's profile here */}
                       </div>

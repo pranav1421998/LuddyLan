@@ -20,6 +20,7 @@ import ProfileSettings from "./profileSettings.js";
 import PasswordRecovery from "./passwordRecovery.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ProfileGlobal from './profileGlobal.js';
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
@@ -55,6 +56,7 @@ function App() {
             <Route path="/PollList" element={< PollList/>} />
             <Route path="/searchResults" element={<SearchResults/>} />
             <Route path="/Chat" element={<Chat/>} />
+            <Route path="/profileGlobal" element={<ProfileGlobal/>} />
           </Routes>
         </div>
       </Router>

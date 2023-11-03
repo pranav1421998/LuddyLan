@@ -24,10 +24,10 @@ const LandingPage = () => {
       <div className="home-banner-container">
         <div className="home-text-section">
           <h1 className="primary-heading">
-          Welcome to our Luddy Lan
+          Welcome to Luddy LAN
           </h1>
           <p className="primary-text">
-          Connect with friends, share your thoughts, and stay updated with the latest happenings.
+          Connect with friends, share your thoughts, and stay updated with all the latest happenings.
         </p>
         <Link to='/login'>
           <button className="secondary-button">
