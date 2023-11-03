@@ -94,7 +94,7 @@ function PollsPage() {
     <section className="main">
       <Sidebar2 />
       <div className="top-btn">
-          <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
+          <button className="modal-btn-poll" onClick={openPollPopup}>Create Poll</button>
       </div>
       <div className="post-container">
         {showPopup && (
