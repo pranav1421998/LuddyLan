@@ -83,7 +83,7 @@ function ProfileGlobal() {
 
   return (
     <div>
-      <Sidebar />
+      <Sidebar/>
       <div className="modal-container">
         <div className="component">
           <div className="title">
