@@ -2,6 +2,7 @@ import './App.css';
 import Chat from "./Chat";
 import React from "react";
 import Login from "./Login.js";
+import Posts from "./Posts.js";
 import Navbar from "./Navbar.js";
 import PollList from "./PollList";
 import Password from "./password";
@@ -55,6 +56,7 @@ function App() {
             <Route path="/PollList" element={< PollList/>} />
             <Route path="/searchResults" element={<SearchResults/>} />
             <Route path="/Chat" element={<Chat/>} />
+            <Route path="/Posts" element={<Posts />} />
           </Routes>
         </div>
       </Router>

@@ -57,9 +57,6 @@ function Profile() {
       });
   };
   
-
-  console.log(userPosts,'pppppppppp');
-
   const handleProfilePictureUpdate = (file) => {
     // (Your existing code for updating the profile picture)
   };
@@ -81,7 +78,6 @@ function Profile() {
     setIsPublic(!isPublic); // Update the state
   };
 
-  console.log(userPosts,'oooooooooooo');
 
   return (
     <div>
