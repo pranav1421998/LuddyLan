@@ -24,28 +24,32 @@ const SidebarChat = ({ onUserSelect }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const usersRef = collection(db, 'users');
-            const userSnapshot = await getDocs(usersRef);
-            const userDataArray = [];
-
-            userSnapshot.docs.forEach(doc => {
-                if (doc.id !== user.email) { 
-                    userDataArray.push({id:doc.id, ...doc.data()});
-                }
-            });
-
-            setDocuments(userDataArray);
-        } catch (error) {
-            console.error("An error occurred while fetching data:", error);
+      try {
+        if (!user) {
+          console.log("User is not logged in");
+          return; // Exit the function if there is no user logged in
         }
+        const usersRef = collection(db, 'users');
+        const userSnapshot = await getDocs(usersRef);
+        const userDataArray = [];
+  
+        userSnapshot.docs.forEach(doc => {
+          if (doc.id !== user.email) { // Make sure 'user' is not null
+            userDataArray.push({ id: doc.id, ...doc.data() });
+          }
+        });
+  
+        setDocuments(userDataArray);
+      } catch (error) {
+        console.error("An error occurred while fetching data:", error);
+      }
     };
-
+  
     fetchData();
-}, [user]);
+  }, [user]);
 
 const handleUserSelect = (user) => {
-    console.log(user);
+    //console.log(user);
     setSelectedItem(user.id);
     // Pass the selected user data to the parent component (Chat.js)
     onUserSelect(user);
