@@ -2,6 +2,7 @@ import './App.css';
 import Chat from "./Chat";
 import React from "react";
 import Login from "./Login.js";
+import Posts from "./Posts.js";
 import Navbar from "./Navbar.js";
 import PollList from "./PollList";
 import Password from "./password";
@@ -57,6 +58,7 @@ function App() {
             <Route path="/searchResults" element={<SearchResults/>} />
             <Route path="/Chat" element={<Chat/>} />
             <Route path="/profileGlobal" element={<ProfileGlobal/>} />
+            <Route path="/Posts" element={<Posts />} />
           </Routes>
         </div>
       </Router>
