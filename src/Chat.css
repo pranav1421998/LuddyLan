@@ -1,14 +1,31 @@
 .chat-container {
     padding-top: 10vh;
 }
-
-.chat-messages {
-
-}
-
 .chat-input {
     /* padding-top: 10vh; */
     width: 70%;
-    margin-left: auto;
-    margin-right: auto;
 }
+
+.chat-container{
+    background-color: aqua;
+    height: 75vh;
+    margin-top: 25vh;
+}
+.chat-input-bar {
+    display: flex;
+    align-items: center;
+    padding-left: 10vw;
+    position: absolute;
+    bottom: 10vh;
+    width: 80vw;
+    gap: inherit;
+    position: fixed;
+  }
+.input-chat{
+    width: 70vw;
+}
+.selected-item {
+    background-color: #9b0303; 
+    color: #fff;
+  }
+  
