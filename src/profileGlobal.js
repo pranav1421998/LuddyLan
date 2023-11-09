@@ -8,7 +8,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import {  faUsers,  faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Switch from 'react-switch'; // Import the slider toggle component
-import { Link, useNavigate,useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 function ProfileGlobal() {
   const [userInfo, setUserInfo] = useState({});
@@ -55,9 +55,6 @@ function ProfileGlobal() {
       });
   };
   
-
-  // console.log(userPosts,'pppppppppp');
-
   const handleProfilePictureUpdate = (file) => {
     // (Your existing code for updating the profile picture)
   };
@@ -78,8 +75,6 @@ function ProfileGlobal() {
     updateDoc(userRef, { isPublic: !isPublic }); // Toggle the public setting
     setIsPublic(!isPublic); // Update the state
   };
-
-  // console.log(userPosts,'oooooooooooo');
 
   return (
     <div>

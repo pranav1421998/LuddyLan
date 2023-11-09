@@ -16,12 +16,12 @@ import { Register } from "./Register.js";
 import FileUpload from "./CreatePost.js";
 import SearchResults from "./searchResults";
 import { UserProvider } from './UserContext';
+import ProfileGlobal from './profileGlobal.js';
 import FriendRequests from "./FriendRequests.js";
 import ProfileSettings from "./profileSettings.js";
 import PasswordRecovery from "./passwordRecovery.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProfileGlobal from './profileGlobal.js';
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
