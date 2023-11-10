@@ -138,6 +138,26 @@ const Posts = () => {
       return null;
     }
   }
+
+  async function getUserNamesByEmail(email) {
+    try {
+      const userDocRef = doc(db, 'users', email);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const firstName = userData.firstName;
+        const lastName = userData.lastName;
+        return { firstName, lastName };
+      } else {
+        console.log('No such document for user with email: ', email);
+        return null;
+      }
+    } catch (error) { 
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  }
   
     useEffect(() => {
         const fetchData = async () => {
@@ -160,6 +180,7 @@ const Posts = () => {
             if (postDoc.exists()) {
                 const postData = { id: postDoc.id, ...postDoc.data() };
                 postData.likeCount = await fetchLikeCount(postDoc.id);
+                postData.name = await getUserNamesByEmail(postData.ownerId);
                 setPost(postData);
                 // Getting profile picture for post
                 const pic = await getProfilePicByEmail(postData.ownerId);
@@ -189,7 +210,7 @@ const Posts = () => {
                             <img src={profilePicture} alt="Profile" className="profile-picture"/>                        
                         </p>
                         <div className="head">
-                            <p className="username">{post.ownerId}</p>
+                            <p className="username">{post.name.firstName} {post.name.lastName}</p>
                             <p className="date">{formatTimestamp(post.uploadedDate)}</p>
                         </div>
                     </div>

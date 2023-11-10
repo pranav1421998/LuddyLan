@@ -123,6 +123,26 @@ const Dashboard = () => {
     // Replace with actual URL after deploying!
     return `http://localhost:3000/Posts?pid=${postId}`;
   };
+
+  async function getUserNamesByEmail(email) {
+    try {
+      const userDocRef = doc(db, 'users', email);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const firstName = userData.firstName;
+        const lastName = userData.lastName;
+        return { firstName, lastName };
+      } else {
+        console.log('No such document for user with email: ', email);
+        return null;
+      }
+    } catch (error) { 
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  }
  
   useEffect(() => {
       const fetchData = async () => {
@@ -150,6 +170,7 @@ const Dashboard = () => {
                           const postData = { id: doc.id, ...doc.data() };
                           postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
                           postData.likeCount = await fetchLikeCount(doc.id);
+                          postData.name = await getUserNamesByEmail(postData.ownerId);
                           postArray.push(postData);
                       });
                       setPosts(postArray);
@@ -186,7 +207,7 @@ return (
                             ( <FontAwesomeIcon icon={faUser}/> )}
                         </p>
                         <div className="head">
-                            <p className="username">{post.ownerId}</p>
+                            <p className="username">{post.name.firstName} {post.name.lastName}</p>                            
                             <p className="date">{formatTimestamp(post.uploadedDate)}</p>
                         </div>
                     </div>
