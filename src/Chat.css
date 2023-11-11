@@ -1,6 +1,6 @@
-.chat-container {
+/* .chat-container {
     padding-top: 10vh;
-}
+} */
 .chat-input {
     /* padding-top: 10vh; */
     width: 70%;
@@ -8,13 +8,18 @@
 
 .chat-container{
     background-color: blanchedalmond;
-    height: 75vh;
-    margin-top: 25vh;
+    height: 80vh;
+    margin-top: 20vh;
 }
+
+.chat-section {
+    padding-right: 6vw;
+    padding-left: 6vw;
+}
+
 .chat-input-bar {
     display: flex;
     align-items: center;
-    padding-left: 10vw;
     position: absolute;
     bottom: 10vh;
     width: 80vw;
@@ -22,10 +27,37 @@
     position: fixed;
   }
 .input-chat{
-    width: 70vw;
+    width: 80vw;
 }
 .selected-item {
     background-color: #9b0303; 
     color: #fff;
   }
-  
+.chat-content {
+    /* background-color: aquamarine; */
+    width: fit-content;
+}
+.my-message {
+    background-color: #4CAF50; /* Green background for your messages */
+    color: aquamarine; /* White text for your messages */
+    /* Add any other styles you want for your messages */
+    width: fit-content;
+    padding: 1vh;
+    border-radius: 15%;
+    float: right;
+}
+
+.their-message {
+    background-color: #ddd; /* Light gray background for others' messages */
+    /* Add any other styles you want for others' messages */
+    width: fit-content;
+    padding: 1vh;
+    border-radius: 15%;
+}
+.user-title{
+    background-color: #9b0303;
+    color: white;
+    padding: 3vh;
+    align-items: left;
+    width: 80vw;
+}

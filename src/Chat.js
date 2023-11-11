@@ -11,20 +11,17 @@ function Chat() {
     const [selectedUser, setSelectedUser] = useState(null);
     const [messages, setMessages] = useState([]);
     const [chatDocId, setChatDocId] = useState(null);
-    const currentUser = useUser(); // Your custom hook to get the current user's information
-
+    const currentUser = useUser();
 
     useEffect(() => {
-        // This effect will run when 'selectedUser' changes
         if (selectedUser) {
           fetchMessages();
         }
     
-        // Cleanup listener on component unmount or when selected user changes
         return () => {
           if (chatDocId) {
             const messagesRef = collection(db, 'chats', chatDocId, 'messages');
-            onSnapshot(messagesRef, () => {}); // Passing an empty function to unsubscribe
+            onSnapshot(messagesRef, () => {});
           }
         };
       }, [selectedUser]);
@@ -36,7 +33,6 @@ function Chat() {
             const selectedUserEmail = selectedUser.id;
         
             const chatsRef = collection(db, 'chats');
-            // Query for chat documents where the 'users' array contains the current user's email
             const chatQuery = query(
             chatsRef,
             where('users', 'array-contains', currentUserEmail)
@@ -45,16 +41,14 @@ function Chat() {
             const querySnapshot = await getDocs(chatQuery);
             let chatDocRef = null;
         
-            // Iterate over each document to find the one where 'users' includes both emails
             querySnapshot.forEach((doc) => {
             if (doc.data().users.includes(selectedUserEmail)) {
                 chatDocRef = doc.ref;
-                setChatDocId(doc.id); // Save the chat document ID if needed for later use
+                setChatDocId(doc.id);
             }
             });
         
             if (chatDocRef) {
-            // Listen to the 'messages' sub-collection of the found chat document
             const messagesRef = collection(chatDocRef, 'messages');
             const messagesQuery = query(messagesRef, orderBy('send_timestamp', 'asc'));
             const unsubscribe = onSnapshot(messagesQuery, (querySnapshot) => {
@@ -65,12 +59,10 @@ function Chat() {
                 setMessages(newMessages);
             });
         
-            // You'll need to manage the unsubscribe function to stop listening to updates when needed
             return unsubscribe;
             }
         }
         else{
-            // console.log('currentUser or selectedUser is null', currentUser, selectedUser);
         }
       }
 
@@ -78,11 +70,6 @@ function Chat() {
         setSelectedUser(user);
         fetchMessages();
     };
-
-    // console.log(selectedUser,"selectedddd");
-    // console.log(currentUser,"currenttttt");
-    // console.log(messages, 'dddddddddddddddd');
-
     return (
         <div>
             <SidebarChat onUserSelect={handleUserSelect}></SidebarChat>
@@ -93,14 +80,16 @@ function Chat() {
                             <input type="text" placeholder="Type your message..." />
                             <button>Search</button>
                         </div>
-                        <h2>My Friends</h2>
+                        {/* <h2>My Friends</h2> */}
                     </div>
                     <div>
                     </div>
                 </div>
                 <div className='chat-container'>
-                    <h1>chat</h1>
-                    {selectedUser && <p>{selectedUser.firstName}</p>}
+                    <div className="user-title">
+                        {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
+                    </div>
+                    <div className='chat-section'>
                     <div className="chat-input-bar">
                         <input type="text" placeholder="Type your message..." className='input-chat' />
                         <FontAwesomeIcon icon={faArrowCircleRight} className="fa-2x" />
@@ -108,11 +97,13 @@ function Chat() {
                     <div className="chat-messages">
                         {messages.map((message) => (
                             <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
-                            {message.sender_email} {message.message_content} 
+                            <div className='chat-content'>
+                                {message.sender_email} {message.message_content}
+                                </div> 
                             </div>
                         ))}
                     </div>
-
+                            </div>
                 </div>
             </div>
         </div>
