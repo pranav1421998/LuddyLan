@@ -63,19 +63,21 @@ const Posts = () => {
  
   // Function that allows user to like or unlike a post
   const toggleLike = async (postId) => {
-    const likesCollection = collection(db, "posts", postId, "likes");
-    const likeDocRef = doc(likesCollection, userDetails.id);
-    try {
-      const docSnapshot = await getDoc(likeDocRef);
-      if (docSnapshot.exists()) {
-        await deleteDoc(likeDocRef);
-      } else {
-        await setDoc(likeDocRef, { liked: true });
-      }
-      const likeCount = await fetchLikeCount(postId);
-      return likeCount;
-    } catch (error) {
-      console.error("Error toggling like status: ", error);
+    if(postId) {
+        const likesCollection = collection(db, "posts", postId, "likes");
+        const likeDocRef = doc(likesCollection, userDetails.id);
+        try {
+        const docSnapshot = await getDoc(likeDocRef);
+        if (docSnapshot.exists()) {
+            await deleteDoc(likeDocRef);
+        } else {
+            await setDoc(likeDocRef, { liked: true });
+        }
+        const likeCount = await fetchLikeCount(postId);
+        return likeCount;
+        } catch (error) {
+        console.error("Error toggling like status: ", error);
+        }
     }
   };
  
