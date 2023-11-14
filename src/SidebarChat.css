@@ -3,14 +3,12 @@
     height: 100vh;
     position: fixed;
     margin-top: 10vh;
-    /* background-color: #9b0303 !important; */
-    /* background-color: #9b0303 !important; */
     z-index: 1;
+    background-color: white;
   }
   
   .sidebar {
       padding: 0;
-      /* background-color: #9b0303 !important; */
   }
   
   .custom-menu-item {
@@ -24,15 +22,9 @@
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 3;
-    /* background-color: rgb(249, 249, 249, 0.7); */
-  }
-  
-  Sidebar {
-    /* background-color: #9b0303; */
   }
   
   Menu {
-    /* background-color: #9b0303; */
     color: white;
   }
   
@@ -42,7 +34,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 3;
-    /* background-color: rgb(249, 249, 249, 0.7); */
   }
 
   .chat-profile-picture {

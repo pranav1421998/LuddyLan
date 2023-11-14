@@ -1,13 +1,9 @@
-/* .chat-container {
-    padding-top: 10vh;
-} */
 .chat-input {
-    /* padding-top: 10vh; */
     width: 70%;
 }
 
 .chat-container{
-    background-color: blanchedalmond;
+    background-color: floralwhite;
     height: 80vh;
     margin-top: 20vh;
 }
@@ -34,30 +30,42 @@
     color: #fff;
   }
 .chat-content {
-    /* background-color: aquamarine; */
     width: fit-content;
 }
 .my-message {
-    background-color: #4CAF50; /* Green background for your messages */
-    color: aquamarine; /* White text for your messages */
-    /* Add any other styles you want for your messages */
+    background-color: #4CAF50;
     width: fit-content;
-    padding: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
     border-radius: 15%;
     float: right;
-}
+    display: block;
+    margin: 1vh;
+    align-self: flex-end;
+  }
+  
 
 .their-message {
-    background-color: #ddd; /* Light gray background for others' messages */
-    /* Add any other styles you want for others' messages */
+    background-color: #ddd;
     width: fit-content;
-    padding: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
     border-radius: 15%;
+    align-self: flex-start;
+    margin: 1vh;
 }
-.user-title{
+.user-title {
     background-color: #9b0303;
     color: white;
     padding: 3vh;
-    align-items: left;
+    text-align: left;
     width: 80vw;
+  }
+  
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+}
+.time-stamp {
+    float: right;
 }
