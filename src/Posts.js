@@ -39,22 +39,6 @@ const Posts = () => {
     return date.toLocaleString(undefined, options);
   };
  
-  const addLikeToPost = (postId, userId) => {
-    const likesCollection = collection(db, 'posts', postId, 'likes');
-    const likeDocRef = doc(likesCollection, userId);
-    getDoc(likeDocRef)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          console.log('User has already liked this post.');
-        } else {
-          setDoc(likeDocRef, { liked: true })
-          .then(() => { console.log('User liked the post.'); })
-          .catch((error) => { console.error('Error adding like to Firestore: ', error); });
-        }
-      })
-      .catch((error) => { console.error('Error checking like status in Firestore: ', error); });
-  };
- 
   const fetchLikeCount = async (postId) => {
     const likesCollection = collection(db, "posts", postId, "likes");
     const querySnapshot = await getDocs(likesCollection);
@@ -63,7 +47,7 @@ const Posts = () => {
  
   // Function that allows user to like or unlike a post
   const toggleLike = async (postId) => {
-    if(postId && userDetails) {
+    if(postId && userDetails && userDetails.id) {
         const likesCollection = collection(db, "posts", postId, "likes");
         const likeDocRef = doc(likesCollection, userDetails.id);
         try {
@@ -78,23 +62,6 @@ const Posts = () => {
         } catch (error) {
         console.error("Error toggling like status: ", error);
         }
-    }
-  };
- 
-  const getFriendProfilePicture = async (friendEmail) => {
-    try {
-        const friendUserDocRef = doc(db, "users", friendEmail);
-        const friendUserDoc = await getDoc(friendUserDocRef);
-        if (friendUserDoc.exists()) {
-            const friendUserData = friendUserDoc.data();
-            return friendUserData.profilePicture || null;
-        } else {
-            console.error("No such document for friend user:", friendEmail);
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching friend's profile picture:", error);
-        return null;
     }
   };
 
@@ -194,11 +161,9 @@ const Posts = () => {
             console.error("Error fetching post:", error);
           }
         };
-    
         fetchData();
         fetchPost();
     }, [auth, db, postId]);
-
 
     return (
         <section className='main'>
