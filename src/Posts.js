@@ -63,7 +63,7 @@ const Posts = () => {
  
   // Function that allows user to like or unlike a post
   const toggleLike = async (postId) => {
-    if(postId) {
+    if(postId && userDetails) {
         const likesCollection = collection(db, "posts", postId, "likes");
         const likeDocRef = doc(likesCollection, userDetails.id);
         try {
