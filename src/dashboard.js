@@ -9,13 +9,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faThumbsUp, faComment, faShare, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { doc, getDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [commentWindows, setCommentWindows] = useState({});
+    const [commentWindows, setCommentWindows] = useState({}); // Comments window drop down
+    const [openShareDropdowns, setOpenShareDropdowns] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
@@ -98,6 +99,50 @@ const Dashboard = () => {
         return null;
     }
   };
+
+  const toggleShareDropdown = (postId) => {
+    setOpenShareDropdowns((prevOpenDropdowns) => ({
+      ...prevOpenDropdowns,
+      [postId]: !prevOpenDropdowns[postId],
+    }));
+  };  
+
+  // Function that copies text in textarea to user's clipboard
+  const copyToClipboard = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    alert("Copied to clipboard!");
+  };
+
+  // Function to generate the URL so the user can copy and share the post
+  const generatePostURL = (postId) => {
+    // Replace with actual URL after deploying!
+    return `http://localhost:3000/Posts?pid=${postId}`;
+  };
+
+  async function getUserNamesByEmail(email) {
+    try {
+      const userDocRef = doc(db, 'users', email);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const firstName = userData.firstName;
+        const lastName = userData.lastName;
+        return { firstName, lastName };
+      } else {
+        console.log('No such document for user with email: ', email);
+        return null;
+      }
+    } catch (error) { 
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  }
  
   useEffect(() => {
       const fetchData = async () => {
@@ -125,6 +170,7 @@ const Dashboard = () => {
                           const postData = { id: doc.id, ...doc.data() };
                           postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
                           postData.likeCount = await fetchLikeCount(doc.id);
+                          postData.name = await getUserNamesByEmail(postData.ownerId);
                           postArray.push(postData);
                       });
                       setPosts(postArray);
@@ -149,7 +195,7 @@ return (
                 <div className="modal">
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseModal}>close</span>
-                        <CreatePost onClose={handleCloseModal} />
+                        <CreatePost onClose={handleCloseModal}/>
                     </div>
                 </div>
             )}
@@ -158,10 +204,10 @@ return (
                     <div className="post-header">
                         <p className="user-icon">
                             {post.friendProfilePicture ? ( <img src={post.friendProfilePicture} alt="Profile" className="profile-picture"/> ) : 
-                            ( <FontAwesomeIcon icon={faUser} /> )}
+                            ( <FontAwesomeIcon icon={faUser}/> )}
                         </p>
                         <div className="head">
-                            <p className="username">{post.ownerId}</p>
+                            <p className="username">{post.name.firstName} {post.name.lastName}</p>                            
                             <p className="date">{formatTimestamp(post.uploadedDate)}</p>
                         </div>
                     </div>
@@ -179,17 +225,26 @@ return (
                             post.likedByUser = !post.likedByUser;
                             setPosts([...posts]);
                           }}>
-                          <FontAwesomeIcon icon={faThumbsUp} /> {post.likeCount}
+                          <FontAwesomeIcon icon={faThumbsUp}/> {post.likeCount}
                         </button>|
                         <button className="interact-btn" onClick={() => openCommentWindow(post.id)}>
-                          <FontAwesomeIcon icon={faComment} /> Comment
+                          <FontAwesomeIcon icon={faComment}/> Comment
                         </button>|
-                        <button className="interact-btn">
-                          <FontAwesomeIcon icon={faShare} /> Share
+                        <button className="interact-btn" onClick={() => toggleShareDropdown(post.id)}>
+                          <FontAwesomeIcon icon={faShare}/> Share
                         </button>
                       </div>
+                      {/* Comment window */}
                       {commentWindows[post.id] && (  // Use the commentWindows state to conditionally render the Comments component
-                        <Comments postId={post.id} onClose={() => openCommentWindow(post.id)} />
+                        <Comments postId={post.id} onClose={() => openCommentWindow(post.id)}/>
+                      )}
+                      {/* Share window */}
+                      {openShareDropdowns[post.id] && (
+                        <div className="share-dropdown">
+                          <p className="text-share">Share this post:</p>
+                          <input type="text" value={generatePostURL(post.id)} readOnly />
+                          <button className="share-btn" onClick={() => copyToClipboard(generatePostURL(post.id))}><FontAwesomeIcon icon={faClipboard}/></button>
+                        </div>
                       )}
                 </div>
             ))}
