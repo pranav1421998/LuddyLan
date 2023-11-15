@@ -138,12 +138,12 @@ function Chat() {
             <SidebarChat onUserSelect={handleUserSelect}></SidebarChat>
             <div className='modal-container'>
                 <div className="component">
-                    <div className='title'>
+                    {/* <div className='title'>
                         <div className="chat-input">
                             <input type="text" placeholder="Type your message..."  />
                             <button>Search</button>
                         </div>
-                    </div>
+                    </div> */}
                     <div>
                     </div>
                 </div>
