@@ -104,9 +104,9 @@ const SearchResults = ({ users, posts }) => {
 
     return (
         <div className='base-container'>          
-          <div>
-            <h1>Search Results</h1>
-            <input 
+          <div className='heading-searchr'>
+            <h1 >Search Results</h1>
+            <input
               type="text" 
               placeholder='search'
               onChange={(e) => handleSearch(e.target.value)} 

@@ -2,6 +2,7 @@ import './App.css';
 import Chat from "./Chat";
 import React from "react";
 import Login from "./Login.js";
+import Posts from "./Posts.js";
 import Navbar from "./Navbar.js";
 import PollList from "./PollList";
 import Password from "./password";
@@ -15,12 +16,12 @@ import { Register } from "./Register.js";
 import FileUpload from "./CreatePost.js";
 import SearchResults from "./searchResults";
 import { UserProvider } from './UserContext';
+import ProfileGlobal from './profileGlobal.js';
 import FriendRequests from "./FriendRequests.js";
 import ProfileSettings from "./profileSettings.js";
 import PasswordRecovery from "./passwordRecovery.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProfileGlobal from './profileGlobal.js';
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
@@ -57,6 +58,7 @@ function App() {
             <Route path="/searchResults" element={<SearchResults/>} />
             <Route path="/Chat" element={<Chat/>} />
             <Route path="/profileGlobal" element={<ProfileGlobal/>} />
+            <Route path="/Posts" element={<Posts />} />
           </Routes>
         </div>
       </Router>
