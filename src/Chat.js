@@ -166,8 +166,8 @@ function Chat() {
                         {messages.map((message) => (
                             <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
                             <div className='chat-content'>
-                                <p>{message.message_content}</p>
-                                <small className='time-stamp'>{renderTimestamp(message.send_timestamp)}</small>
+                                <p className='para-color'>{message.message_content}</p>
+                                <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
                             </div>
                             </div>
                         ))}
