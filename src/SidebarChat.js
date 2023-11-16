@@ -57,7 +57,7 @@ const handleUserSelect = (user) => {
 
   return (
     <div className="sidebar-chat-container">
-      <Sidebar>
+      <Sidebar backgroundColor='#fffaf0'>
         <Menu>
         <div className='chat-user'>
             {userdata.map((user) => (
