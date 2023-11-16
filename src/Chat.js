@@ -29,6 +29,15 @@ function Chat() {
           }
         };
       }, [selectedUser]);
+
+      useEffect(() => {
+        // Scroll to the bottom of the chat whenever the messages change
+        const chatContainer = document.querySelector('.chat-container');
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }, [messages]); // This will trigger every time the 'messages' state changes
+    
     
       async function fetchMessages(selectedUser) {
         if (currentUser && selectedUser) {
@@ -137,31 +146,13 @@ function Chat() {
         <div>
             <SidebarChat onUserSelect={handleUserSelect}></SidebarChat>
             <div className='modal-container'>
-                <div className="component">
-                    {/* <div className='title'>
-                        <div className="chat-input">
-                            <input type="text" placeholder="Type your message..."  />
-                            <button>Search</button>
+                        <div className="user-title">
+                            {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
                         </div>
-                    </div> */}
-                    <div>
-                    </div>
-                </div>
+                
                 <div className='chat-container'>
-                    <div className="user-title">
-                        {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
-                    </div>
+                    
                     <div className='chat-section'>
-                    <div className="chat-input-bar">
-                        <input type="text" placeholder="Type your message..." className='input-chat'
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)} />
-                        <FontAwesomeIcon icon={faArrowCircleRight} className="fa-2x"
-                            onClick={() => {
-                                handleSendMessage(messageInput);
-                                setMessageInput('');
-                              }} />
-                    </div>
                     <div className="chat-messages">
                         {messages.map((message) => (
                             <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
@@ -171,10 +162,24 @@ function Chat() {
                             </div>
                             </div>
                         ))}
-                        </div>
-
-                            </div>
+                    </div>
+                    </div>
+                    
                 </div>
+                <div className="chat-input-bar">
+                        <input type="text" placeholder="Type your message..." className='input-chat'
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && messageInput.trim()) {
+                                    handleSendMessage(messageInput.trim());
+                                    setMessageInput('');  
+                                }}} />
+                        <FontAwesomeIcon icon={faArrowCircleRight} className="fa-2x"
+                                            onClick={() => {
+                                            handleSendMessage(messageInput.trim());
+                                            setMessageInput('');    }} />
+                    </div>
             </div>
         </div>
     );

@@ -1,11 +1,11 @@
 .chat-input {
     width: 70%;
 }
-
 .chat-container{
-    background-color: floralwhite;
-    height: 80vh;
-    margin-top: 20vh;
+    background-color:floralwhite;
+    height: 73vh;
+    margin-top: 19vh;
+    overflow-y: auto;
 }
 
 .chat-section {
@@ -16,11 +16,10 @@
 .chat-input-bar {
     display: flex;
     align-items: center;
-    position: absolute;
-    bottom: 10vh;
+    bottom: 0vh;
     width: 80vw;
     gap: inherit;
-    position: fixed;
+    background-color: rgb(255, 250, 240,1);
   }
 .input-chat{
     width: 80vw;
@@ -55,6 +54,8 @@
     margin: 1vh;
 }
 .user-title {
+    position: fixed;
+    margin-top: 10vh;
     background-color: #9b0303;
     color: white;
     padding: 3vh;
@@ -63,12 +64,13 @@
   }
   
 .chat-messages {
-    display: flex;
+    display: flex;    
     flex-direction: column;
 }
 .time-stamp {
     float: right;
 }
-.para-color {
+.para-color {   
     color: black;
 }
+
