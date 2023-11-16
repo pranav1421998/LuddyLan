@@ -15,6 +15,7 @@ const Posts = () => {
     const [posts, setPosts] = useState([]);
     const [commentWindows, setCommentWindows] = useState({}); // Comments window drop down
     const [openShareDropdowns, setOpenShareDropdowns] = useState({});
+    const [isLikedByUser, setIsLikedByUser] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
