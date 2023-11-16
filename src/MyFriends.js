@@ -51,7 +51,6 @@ const MyFriends = () => {
     }, [userRequests]);
     
 
-    console.log(userDetails,'ffffffffffffffff');
     // Update the data array with user details
     const data = userDetails.map(user => ({
         name: user.firstName + ' ' + user.lastName, // Adjust this based on the field name in your "users" collection
