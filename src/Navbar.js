@@ -97,7 +97,7 @@ if (isLoggedIn) {
       </div>
       {/* log out */}
       <div className="login">
-      <button className='nav-btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/></button>
+      {/* <button className='nav-btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/></button> */}
         <button className='nav-btn' onClick={handleLogout}><FontAwesomeIcon icon={faSignOut}/>&nbsp;Log out</button>
       </div>
     </nav>

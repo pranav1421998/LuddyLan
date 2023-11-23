@@ -145,43 +145,55 @@ const Dashboard = () => {
   }
  
   useEffect(() => {
-      const fetchData = async () => {
-          const user = auth.currentUser;
-          if (user) {
-              const userDocRef = doc(db, "users", user.email);
-              const userDoc = await getDoc(userDocRef);
-              if (userDoc.exists()) {
-                  setUserDetails({ id: userDoc.id, ...userDoc.data() });
-                  const userEmailAddress = user.email;
-                  const fetchFriends = async () => {
-                      const friendsRef = collection(db, "friends");
-                      const q = query(friendsRef, where("user_email", "==", userEmailAddress), where("is_accepted", "==", true));
-                      const querySnapshot = await getDocs(q);
-                      const friendsArray = [];
-                      querySnapshot.forEach((doc) => {
-                          friendsArray.push({ id: doc.id, ...doc.data() });
-                      });
-                      const friendEmails = friendsArray.map((friend) => friend.follower_email);
-                      friendEmails.push(userEmailAddress);
-                      const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
-                      const postQuerySnapshot = await getDocs(postQuery);
-                      const postArray = [];
-                      postQuerySnapshot.forEach(async (doc) => {
-                          const postData = { id: doc.id, ...doc.data() };
-                          postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
-                          postData.likeCount = await fetchLikeCount(doc.id);
-                          postData.name = await getUserNamesByEmail(postData.ownerId);
-                          postArray.push(postData);
-                      });
-                      setPosts(postArray);
-                  };
-                  fetchFriends();
-              } else { console.log("No such document!"); }
-          } else { console.log("No user is signed in"); }
-      };
-      const unsubscribe = onAuthStateChanged(auth, fetchData);    
-      return () => unsubscribe();
-  }, [auth, db]); 
+    const fetchData = async () => {
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userDocRef = doc(db, "users", user.email);
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
+                    const userEmailAddress = user.email;
+                    const friendsRef = collection(db, "friends");
+                    const q = query(friendsRef, where("user_email", "==", userEmailAddress), where("is_accepted", "==", true));
+                    const querySnapshot = await getDocs(q);
+                    const friendsArray = [];
+                    querySnapshot.forEach((doc) => {
+                        friendsArray.push({ id: doc.id, ...doc.data() });
+                    });
+                    const friendEmails = friendsArray.map((friend) => friend.follower_email);
+                    friendEmails.push(userEmailAddress);
+                    const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
+                    const postQuerySnapshot = await getDocs(postQuery);
+
+                    const postPromises = postQuerySnapshot.docs.map(async (doc) => {
+                        const postData = { id: doc.id, ...doc.data() };
+                        postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
+                        postData.likeCount = await fetchLikeCount(doc.id);
+                        postData.name = await getUserNamesByEmail(postData.ownerId);
+                        return postData;
+                    });
+
+                    const postsData = await Promise.all(postPromises);
+                    setPosts(postsData);
+                } else {
+                    console.log("No such document!");
+                }
+            } else {
+                console.log("No user is signed in");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    fetchData(); // Call fetchData directly on component mount
+
+    const unsubscribe = onAuthStateChanged(auth, fetchData);
+    return () => unsubscribe();
+}, [auth, db]);
+
+
 
 return (
     <section className="main">

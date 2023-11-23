@@ -5,30 +5,35 @@ import { Link, useLocation } from 'react-router-dom';
 const Sidebar2 = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState('Posts');
-
+    
     useEffect(() => {
-        const currentPath = location.pathname; // Get current path
-        const pathTabMap = { // Map paths to tab names
+        const currentPath = location.pathname;
+        const pathTabMap = {
             '/dashboard': 'Posts',
             '/PollList': 'Polls'
         };
-        setActiveTab(pathTabMap[currentPath] || ''); // Set active tab based on current path
-    }, [location.pathname]); // Dependence on pathname ensures effect runs on route change
+        const initialTab = pathTabMap[currentPath] || 'Posts'; // Use 'Posts' as the default if no match
+        setActiveTab(initialTab);
+        console.log(initialTab);
+        handleTabClick(initialTab); // Call handleTabClick with the calculated initial tab
+    }, [location.pathname]);
+    
+
+    
     const handleTabClick = (tab) => {
         if (activeTab !== tab) {
             setActiveTab(tab);
         }
     };
-    
 
     return (
         <div className="sidebar">
             <div className="tabs">
                 <div className={`tab ${activeTab === 'Posts' ? 'active' : ''}`} onClick={() => handleTabClick('Posts')}>
-                    <Link to="/dashboard">Posts</Link> {/* Link to the Settings page */}
+                    <Link to="/dashboard">Posts</Link>
                 </div>
                 <div className={`tab ${activeTab === 'Polls' ? 'active' : ''}`} onClick={() => handleTabClick('Polls')}>
-                    <Link to="/PollList">Polls</Link> {/* Link to the Dashboard page */}
+                    <Link to="/PollList">Polls</Link>
                 </div>
             </div>
         </div>

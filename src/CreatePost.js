@@ -64,6 +64,11 @@ function FileUpload({ onClose }) {
     }
   };
 
+  const handleCancel = () => {
+    // Add any additional cleanup or logic here if needed
+    onClose();
+  };
+
   const handleFileSelect = (event) => {
     const selectedFile = event.target.files[0];
     setImageUpload(selectedFile);
@@ -126,6 +131,7 @@ function FileUpload({ onClose }) {
         <input type="text" value={description} onChange={handleDescriptionChange} />
       </label>
       <button  className="button" onClick={handleUpload}>Upload</button>
+      <button  className="button" style={{backgroundColor: 'crimson'}} onClick={handleCancel}>Cancel</button>
       {uploadTask && (
         <div className="progress-bar">
           Upload Progress: {uploadProgress.toFixed(2)}%

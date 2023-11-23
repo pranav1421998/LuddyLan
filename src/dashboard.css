@@ -59,9 +59,12 @@ ul {
 .top-btn {
     width: 100%;
     position: fixed;
+    float: right;
+    align-items: right;
+    justify-items: right;
     z-index: 3;
     padding: 1vh;
-    background-color: #F0F0F0;
+    background-color: white;
 }
 
 .post {
@@ -69,8 +72,9 @@ ul {
     border: 2px solid #999;
     background: #fff;
     margin-top: 8vh;
-    margin-left: auto;
+    margin-left: 10vw;
     margin-right: auto;
+    border-radius: 5%;
 }
 
 .post-container {
@@ -230,7 +234,7 @@ ul {
 /* Style the button that triggers the modal (Create Post button) */
 .modal-btn {
     align-items: center;
-    background-color: #0074d9;
+    background-color: #9b0303;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -239,6 +243,7 @@ ul {
     opacity: 50%;
     margin-left: auto;
     margin-right: auto;
+    float: inline-end;
 }
 
 .modal-btn:hover {
