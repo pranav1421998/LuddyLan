@@ -78,7 +78,6 @@ function ProfileGlobal() {
 
   return (
     <div>
-      <Sidebar/>
       <div className="modal-container">
         <div className="component">
           <div className="title">
@@ -93,9 +92,6 @@ function ProfileGlobal() {
                     alt="Profile Picture"
                     className="profile-picture"
                   />
-                  <button className="camera-button" onClick={handleCameraButtonClick}>
-                    📷
-                  </button>
                   <input
                     ref={fileInputRef}
                     type="file"
