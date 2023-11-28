@@ -1,0 +1,15 @@
+.header{
+    padding: 2vh;
+    position: fixed;
+}
+.user-container {
+    padding-top: 10vh;
+}
+
+.close-btn {
+    float: right;
+    background-color: #9b0303 !important;
+    color: white;
+    cursor: pointer;
+    padding: 1vh;
+}

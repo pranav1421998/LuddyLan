@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './SidebarChat.css';
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
-import { Link, useLocation } from 'react-router-dom';
-import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
+import { useLocation } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
 import { useUser } from './UserContext';
-import { auth, db, storage } from "./firebaseConfig";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
+import { db } from "./firebaseConfig";
 import defimg from './Images/user.jpg';
 
 const SidebarChat = ({ onUserSelect }) => {

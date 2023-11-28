@@ -20,6 +20,7 @@ import ProfileGlobal from './profileGlobal.js';
 import FriendRequests from "./FriendRequests.js";
 import ProfileSettings from "./profileSettings.js";
 import PasswordRecovery from "./passwordRecovery.js";
+import Groups from './Groups.js';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -59,6 +60,7 @@ function App() {
             <Route path="/Chat" element={<Chat/>} />
             <Route path="/profileGlobal" element={<ProfileGlobal/>} />
             <Route path="/Posts" element={<Posts />} />
+            <Route path="/Groups" element={<Groups />} />
           </Routes>
         </div>
       </Router>
