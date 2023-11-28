@@ -31,7 +31,13 @@ function PollsPage() {
         const pollList = [];
 
         const userProfilePictures = {}; // Store user profile pictures
+        const userVotes = {}; // Store user votes
 
+        // Fetch user votes
+        const voteQuery = query(
+          collection(db, 'votes'),
+          where('userId', '==', user.uid)
+        );
         for (const docSnapshot of querySnapshot.docs) {
           const pollData = docSnapshot.data();
           const ownerId = pollData.ownerId;
@@ -44,10 +50,18 @@ function PollsPage() {
           }
 
           pollList.push({ id: docSnapshot.id, ...pollData });
-        }
-
+          if (pollData.options) {
+            const optionIndex = pollData.options.findIndex(
+              (option) => option.voters && typeof option.voters === 'string' && option.voters.includes(user.email)
+            );
+            if (optionIndex !== -1) {
+              userVotes[docSnapshot.id] = optionIndex;
+            }
+          }
+    }
         setPolls(pollList);
         setUserProfilePictures(userProfilePictures);
+        setSelectedOptions(userVotes);
       } catch (error) {
         console.error('Error fetching polls:', error);
       }
@@ -126,6 +140,7 @@ function PollsPage() {
                       name={`option-${poll.id}`}
                       onClick={() => voteForOption(poll.id, optionIndex)}
                       checked={selectedOptions[poll.id] === optionIndex}
+                      disabled={selectedOptions[poll.id] !== undefined}
                     />
                     <span className="option-text">{option.text}</span>
                     {selectedOptions[poll.id] !== undefined && (
