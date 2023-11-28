@@ -2,7 +2,7 @@
     width: 70%;
 }
 .chat-container{
-    background-color:white;
+    background-color:whitesmoke;
     height: 73vh;
     margin-top: 19vh;
     overflow-y: auto;
@@ -75,3 +75,27 @@
     color: black;
 }
 
+.no-user-selected-message {
+    margin-top: 25vh;
+    size: 20px;
+    float: center;
+}
+
+.fixed-chat-input-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    background-color: #fff; /* Set the background color as needed */
+    padding: 10px;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+}
+
+.comments-icon {
+    font-size: 4em
+}
+.chat-msg {
+    margin-top: 2vh;
+}

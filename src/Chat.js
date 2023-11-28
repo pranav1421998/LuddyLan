@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs,  onSnapshot, orderBy, Timestamp, updateDoc, doc, getDoc, addDoc } from 'firebase/firestore';
 import SidebarChat from './SidebarChat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleRight, faComments } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from './UserContext';
 import {
     serverTimestamp,
@@ -143,46 +143,69 @@ function Chat() {
     };
 
     return (
-        <div>
-            <SidebarChat onUserSelect={handleUserSelect}></SidebarChat>
-            <div className='modal-container'>
-                        <div className="user-title">
-                            {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
-                        </div>
-                
-                <div className='chat-container'>
-                    
-                    <div className='chat-section'>
-                    <div className="chat-messages">
-                        {messages.map((message) => (
-                            <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
-                            <div className='chat-content'>
-                                <p className='para-color'>{message.message_content}</p>
-                                <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
-                            </div>
-                            </div>
-                        ))}
-                    </div>
-                    </div>
-                    
-                </div>
-                <div className="chat-input-bar">
-                        <input type="text" placeholder="Type your message..." className='input-chat'
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' && messageInput.trim()) {
-                                    handleSendMessage(messageInput.trim());
-                                    setMessageInput('');  
-                                }}} />
-                        <FontAwesomeIcon icon={faArrowCircleRight} className="fa-2x"
-                                            onClick={() => {
-                                            handleSendMessage(messageInput.trim());
-                                            setMessageInput('');    }} />
-                    </div>
+    <div>
+        <SidebarChat onUserSelect={handleUserSelect}></SidebarChat>
+        <div className='modal-container'>
+            <div className="user-title">
+                {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
             </div>
+
+            <div className='chat-container'>
+                {!selectedUser ? (
+                    <div className="no-user-selected-message">
+                        <h1>Chat</h1>
+                        <div className='comments-icon'>
+                            <FontAwesomeIcon icon={faComments} /> 
+                        </div>
+                        <h3 className='chat-msg'>Click on a user to start a chat</h3>
+                    </div>
+                ) : (
+                    <div className='chat-section'>
+                        <div className="chat-messages">
+                            {messages.map((message) => (
+                                <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
+                                    <div className='chat-content'>
+                                        <p className='para-color'>{message.message_content}</p>
+                                        <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {selectedUser && (
+                <div className="fixed-chat-input-bar">
+                    <input
+                        type="text"
+                        placeholder="Type your message..."
+                        className='input-chat'
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && messageInput.trim()) {
+                                handleSendMessage(messageInput.trim());
+                                setMessageInput('');
+                            }
+                        }}
+                    />
+                    <FontAwesomeIcon
+                        icon={faArrowCircleRight}
+                        className="fa-2x"
+                        onClick={() => {
+                            handleSendMessage(messageInput.trim());
+                            setMessageInput('');
+                        }}
+                    />
+                </div>
+            )}
         </div>
-    );
+    </div>
+);
+
+    
+    
 }
 
 export default Chat;
