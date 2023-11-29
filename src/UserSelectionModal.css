@@ -13,3 +13,51 @@
     cursor: pointer;
     padding: 1vh;
 }
+
+.select-icon{
+    float: right;
+    justify-items: end;
+}
+/* .group-user-container{ */
+    /* flex-direction: row; */
+    /* display: flex;
+    align-items: center;
+    width: 100% !important;
+
+} */
+
+/* UserSelectionModal.css */
+
+.group-user-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Add this line to push the icons to the right */
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .group-user-container.selected {
+    background-color: #f0f0f0; /* Add background color for selected users */
+  }
+  
+  .chat-profile-picture {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .user-name {
+    flex-grow: 1; /* Make user name take remaining space */
+  }
+  
+  .select-icon {
+    /* color: #777; */
+    font-size: 20px;
+  }
+  
+  .select-icon.selected {
+    color: #007bff; /* Color for selected icons */
+  }
+  
