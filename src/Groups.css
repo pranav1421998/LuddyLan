@@ -1,0 +1,45 @@
+/* Add these styles to your stylesheet or style section */
+
+.post-container {
+    margin-top: 15vh;
+    /* display: flex; */
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .grid-item {
+    background-color: white;
+    /* padding: 20px; */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+    height: 45vh;
+    width: 20vw;
+  }
+  
+.top-btn-grp {
+    width: 100%;
+    position: fixed;
+    /* float: right;
+    align-items: right;
+    justify-items: right; */
+    z-index: 3;
+    /* padding: 1vh; */
+    background-color: white;
+    /* display: flex; */
+    /* flex-direction: row; */
+}
+
+.grp-img{
+    height: 35vh;
+    /* background-image: url("https://e7.pngegg.com/pngimages/912/557/png-clipart-computer-icons-meetup-icon-design-others-miscellaneous-text.png"); */
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    margin-bottom: 3vh;
+}
