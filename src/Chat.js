@@ -137,7 +137,7 @@ function Chat() {
         const date = new Date(timestamp.toMillis());
         const hours = date.getHours() % 12 || 12; // Ensure 12-hour format
         const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const ampm = hours >= 12 ? 'AM' : 'PM';
         const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
         return formattedTime;
     };
