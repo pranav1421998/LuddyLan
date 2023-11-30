@@ -68,11 +68,12 @@ const Groups = () => {
     <section className="main">
       <Sidebar2 />
       <div className="top-btn-grp">
-        {/* <h3>Groups</h3> */}
-        <button className="modal-btn" onClick={openModal}>
-          Create Group
+        <h3>Groups</h3>
+        <button className="modal-btn-grp" onClick={openModal}>
+            Create Group
         </button>
       </div>
+
       <div className="post-container">
         {/* Display your groups here */}
         <div className="grid-container">
