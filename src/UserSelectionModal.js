@@ -105,7 +105,7 @@ const UserSelectionModal = ({ isOpen, onRequestClose, onSelect }) => {
       >
         <button className="close-btn" onClick={onRequestClose}>X</button>
         <div className="header">
-          <h2>Select Users for the Group</h2>
+          <h2>Select Admin(s) for the Group</h2>
         </div>
         <div className="user-container">
           <Menu>
