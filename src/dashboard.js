@@ -198,9 +198,12 @@ const Dashboard = () => {
 return (
     <section className="main">
         <Sidebar2 />
-        <div className="top-btn">
-            <button className="modal-btn" onClick={handleOpenModal}>Create Post</button>
-        </div>
+      <div className="top-btn-grp">
+        <h3>Posts</h3>
+        <button className="modal-btn-grp" onClick={handleOpenModal}>
+            Create Post
+        </button>
+      </div>
         <div className="post-container">
             
             {showModal && (

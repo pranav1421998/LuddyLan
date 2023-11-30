@@ -10,7 +10,8 @@ const Sidebar2 = () => {
         const currentPath = location.pathname;
         const pathTabMap = {
             '/dashboard': 'Posts',
-            '/PollList': 'Polls'
+            '/PollList': 'Polls',
+            '/Groups': 'Groups'
         };
         const initialTab = pathTabMap[currentPath] || 'Posts'; // Use 'Posts' as the default if no match
         setActiveTab(initialTab);
@@ -34,6 +35,9 @@ const Sidebar2 = () => {
                 </div>
                 <div className={`tab ${activeTab === 'Polls' ? 'active' : ''}`} onClick={() => handleTabClick('Polls')}>
                     <Link to="/PollList">Polls</Link>
+                </div>
+                <div className={`tab ${activeTab === 'Groups' ? 'active' : ''}`} onClick={() => handleTabClick('Polls')}>
+                    <Link to="/Groups">Groups</Link>
                 </div>
             </div>
         </div>

@@ -24,11 +24,11 @@
 }
 
 .tab:hover {
-  background-color: #d56565;
+  background-color: white;
 }
 
 .tab.active {
-  background-color: #d56565;
+  background-color: white;
 }
 
 .tab-content {
