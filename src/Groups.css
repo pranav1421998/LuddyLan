@@ -62,7 +62,7 @@
   }
   
   .top-btn-grp h3 {
-    margin-left: 20vw; /* Remove default margin for the heading */
+    margin-left: 20vw;
   }
 
   .modal-btn-grp {
@@ -80,7 +80,7 @@
     
 
 .grp-img{
-    height: 35vh;
+    height: 30vh;
     /* background-image: url("https://e7.pngegg.com/pngimages/912/557/png-clipart-computer-icons-meetup-icon-design-others-miscellaneous-text.png"); */
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;

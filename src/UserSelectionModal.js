@@ -72,7 +72,7 @@ const UserSelectionModal = ({ isOpen, onRequestClose, onSelect }) => {
       // Create a new group object
       const newGroup = {
         groupName: groupName.trim(),
-        users: selectedUsers,
+        admins: selectedUsers,
         createdTimeStamp: new Date(),
       };
 

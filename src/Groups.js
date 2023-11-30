@@ -34,33 +34,29 @@ const Groups = () => {
   };
 
   useEffect(() => {
-    const fetchUserGroups = async () => {
+    const fetchAllGroups = async () => {
       try {
-        if (!user) {
-          console.log("User is not logged in");
-          return; // Exit the function if there is no user logged in
-        }
-
-        // Create a query to fetch groups where users array includes user.email
+        // Create a query to fetch all groups
         const groupsRef = collection(db, 'groups');
-        const q = query(groupsRef, where('users', 'array-contains', user.email));
-        const querySnapshot = await getDocs(q);
-
+        const querySnapshot = await getDocs(groupsRef);
+  
         // Extract the data from the documents
-        const userGroupsData = querySnapshot.docs.map((doc) => ({
+        const allGroupsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        // Update the state with the user's groups
-        setUserGroups(userGroupsData);
+  
+        // Update the state with all groups
+        setUserGroups(allGroupsData);
       } catch (error) {
-        console.error("An error occurred while fetching user groups:", error);
+        console.error("An error occurred while fetching all groups:", error);
       }
     };
-
-    fetchUserGroups();
-  }, [user]);
+  
+    fetchAllGroups();
+  }, []);
+  
+  
 
   console.log(userGroups);
 
@@ -82,6 +78,7 @@ const Groups = () => {
               <div className="grp-img" style={{ backgroundColor: getRandomColor() }}>
               </div>
               <h4>{group.groupName}</h4>
+              <button className="button" style={{backgroundColor: '#9b0303'}} >Follow</button>
             </div>
           ))}
         </div>
