@@ -120,7 +120,7 @@ const Dashboard = () => {
 
   // Function to generate the URL so the user can copy and share the post
   const generatePostURL = (postId) => {
-    // Replace with actual URL after deploying!
+    // Replace with actual URL after deploying! TODO
     return `http://localhost:3000/Posts?pid=${postId}`;
   };
 
