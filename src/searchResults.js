@@ -175,7 +175,6 @@ const SearchResults = ({ users, posts }) => {
         });
         }
     };
-    console.log(recentSearches);
 
     return (
         <div className='base-container'>          
