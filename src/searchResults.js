@@ -38,11 +38,20 @@ const SearchResults = ({ users, posts }) => {
 
         }, [db]);
 
+      const recentSearchClick = (search) => {
+        if(search[0]!='/'){
+        window.open(`/profileGlobal?uid=${search}`);
+        }
+        else{
+          window.open(search);
+        }
+      }
+
       // Function to handle result click and update Firestore
       const handleUserItemClick = async (userEmail) => {
         // Open user profile in a new tab
         window.open(`/profileGlobal?uid=${userEmail}`, '_blank');
-
+    
         // Update Firestore with the clicked user's email
         const userDocRef = doc(db, "users", user_email); // fetching current user data
         const userDoc = await getDoc(userDocRef);
@@ -50,16 +59,21 @@ const SearchResults = ({ users, posts }) => {
         if (userDoc.exists()) {
             recentSearches = userDoc.data().recentlySearched || [];
         }
-        const updatedSearches = [...recentSearches, userEmail].slice(-10); // Keep only the last 10 searches
-        await updateDoc(userDocRef, {
-            recentlySearched: updatedSearches
-        });
+        // Check if userEmail is not already in recentSearches and add accordingly
+        if (!recentSearches.includes(userEmail)) {
+            const updatedSearches = [...recentSearches, userEmail].slice(-10); // Keep only the last 10 searches
+            await updateDoc(userDocRef, {
+                recentlySearched: updatedSearches
+            });
+        }
     };
+    
 
     const handlePostItemClick = async (postId) => {
+      const postUrl = `/Posts?pid=${postId}`;
       // Open post in a new tab
-      window.open(`http://localhost:3000/Posts?pid=${postId}`);
-
+      window.open(postUrl, '_blank');
+  
       // Update Firestore with the clicked user's email
       const userDocRef = doc(db, "users", user_email); // fetching current user data
       const userDoc = await getDoc(userDocRef);
@@ -67,11 +81,15 @@ const SearchResults = ({ users, posts }) => {
       if (userDoc.exists()) {
           recentSearches = userDoc.data().recentlySearched || [];
       }
-      const updatedSearches = [...recentSearches, `http://localhost:3000/Posts?pid=${postId}`].slice(-10); // Keep only the last 10 searches
-      await updateDoc(userDocRef, {
-          recentlySearched: updatedSearches
-      });
+      // Check if postUrl is not already in recentSearches and add accordingly
+      if (!recentSearches.includes(postUrl)) {
+          const updatedSearches = [...recentSearches, postUrl].slice(-10); // Keep only the last 10 searches
+          await updateDoc(userDocRef, {
+              recentlySearched: updatedSearches
+          });
+      }
   };
+  
 
       const formatTimestamp = (timestamp) => {
         const date = timestamp.toDate();
@@ -230,7 +248,9 @@ const SearchResults = ({ users, posts }) => {
                       <h2 className='h-searchr'>Recent Searches</h2>
                       {recentSearches.map((search, index) => (
                           <div key={index} className="search-user-item">
-                              {search}
+                              <div onClick={() => recentSearchClick(search)}>
+                                {search}
+                                </div>
                           </div>
                         ))}
                   </div>
