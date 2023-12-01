@@ -112,3 +112,12 @@
   box-shadow: 5px 5px 10px rgba(0.3, 0.3, 0.3, 0.3);
   /* padding: 10vw; */
  }
+ .search-recent-item{
+  margin-left: 7vw;
+  text-align: left;
+  cursor:pointer;
+ }
+ .search-recent-item:hover{
+  color:#ddd;
+  background-color: #9b0303;
+ }

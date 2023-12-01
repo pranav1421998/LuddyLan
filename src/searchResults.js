@@ -247,10 +247,10 @@ const SearchResults = ({ users, posts }) => {
                       {/* Map over the recent searches and display them */}
                       <h2 className='h-searchr'>Recent Searches</h2>
                       {recentSearches.map((search, index) => (
-                          <div key={index} className="search-user-item">
-                              <div onClick={() => recentSearchClick(search)}>
+                          <div key={index} className="search-recent-item">
+                              <a onClick={() => recentSearchClick(search)}>
                                 {search}
-                                </div>
+                                </a>
                           </div>
                         ))}
                   </div>
