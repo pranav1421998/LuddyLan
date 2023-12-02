@@ -51,7 +51,7 @@ const Login = (props) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-            console.log('User logged in:', userCredential.user);
+            console.log('User logged in:', userCredential);
             const user_email = e.user.email;
             //const userDocRef = doc(db, 'users', user_email); 
             setCookies(user_email);

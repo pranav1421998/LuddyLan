@@ -2,7 +2,6 @@ import './dashboard.css';
 import Cookies from 'js-cookie';
 import Sidebar2 from './Sidebar2';
 import Comments from './Comments';
-import PollPopup from './CreatePoll';
 import CreatePost from './CreatePost';
 import { db, auth } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
@@ -23,9 +22,6 @@ const Dashboard = () => {
     const userDet = Cookies.get('userDetails');
     var userObj = JSON.parse(userDet);
     var user_email = userObj.email;
-
-    const openPollPopup = () => { setShowPopup(true); };
-    const ClosePollPopup = () => { setShowPopup(false); };
     const handleOpenModal = () => { setShowModal(true); };
     const handleCloseModal = () => { setShowModal(false); };
 
