@@ -3,15 +3,23 @@ import Sidebar2 from "./Sidebar2";
 import UserSelectionModal from "./UserSelectionModal";
 import { useUser } from './UserContext';
 import { db, auth } from "./firebaseConfig";
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, doc, setDoc, where, query } from "firebase/firestore";
 import './Groups.css';
 const Groups = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [userGroups, setUserGroups] = useState([]);
+  const navigate = useNavigate();
   const user = useUser();
-
+  const handleFollowButtonClick = (group) => {
+    setSelectedGroup(group);
+    setIsModalOpen(true);
+    // Navigate to the group posts page
+    navigate(`/groupposts/${group.id}/${group.groupName}`);
+  };
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -78,7 +86,7 @@ const Groups = () => {
               <div className="grp-img" style={{ backgroundColor: getRandomColor() }}>
               </div>
               <h4>{group.groupName}</h4>
-              <button className="button" style={{backgroundColor: '#9b0303'}} >Follow</button>
+              <button className="button" style={{backgroundColor: '#9b0303'}} onClick={() => handleFollowButtonClick(group)} >Follow</button>
             </div>
           ))}
         </div>
