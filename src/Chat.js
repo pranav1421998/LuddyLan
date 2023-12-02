@@ -66,7 +66,7 @@ function Chat() {
             });
             return unsubscribe;
         }
-    }, [chatDocId]);
+    }, [chatDocId,user_email]);
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////    
 
@@ -81,7 +81,7 @@ function Chat() {
             onSnapshot(messagesRef, () => {});
           }
         };
-      }, [selectedUser]);
+      }, [selectedUser,chatDocId]);
 
       useEffect(() => {
         // Scroll to the bottom of the chat whenever the messages change
@@ -199,6 +199,7 @@ function Chat() {
         <div className='modal-container'>
             <div className="user-title">
                 {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
+                {isTyping && <div className="typing-indicator">Typing...</div>}
             </div>
 
             <div className='chat-container'>
@@ -221,7 +222,7 @@ function Chat() {
                                     </div>
                                 </div>
                             ))}
-                            {isTyping && <div className="typing-indicator">Typing...</div>}
+                           
 
                         </div>
                     </div>
