@@ -84,14 +84,14 @@ function Chat() {
 
         // Function to render a message
             const renderMessage = (message, index) => {
-            const isLastMessage = index === messages.findIndex((msg, idx) => {
-                return msg.sender_email === user_email && idx > index;
-            });
-        
+                // const isLastMessage = index === messages.findIndex((msg, idx) => {
+                //     return msg.sender_email === user_email && idx > index;
+                // });
+            
             return (
                 <div key={message.id} className={message.sender_email === user_email ? "my-message" : "their-message"}>
                     <div className='chat-content'>
-                        <p className='para-color'>{message.message_content}</p>
+                        <p className='para-color'>{message.message_content} {index}</p>
                         <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
                         {message.read && <small className='read-receipt'><FontAwesomeIcon icon={faEye} /></small>}
                     </div>
