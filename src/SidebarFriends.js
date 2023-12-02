@@ -47,6 +47,16 @@ const SidebarFriends = () => {
               All Users
             </MenuItem>
           </Link>
+          <Link to="/recommendedUsers">
+            <MenuItem
+              style={{
+                background: activeTab === '/recommendedUsers' ? 'white' : 'transparent',
+                color: activeTab === '/recommendedUsers' ? '#9b0303' : 'white'
+              }}
+            >
+              Recommended Users
+            </MenuItem>
+          </Link>
         </Menu>
       </Sidebar>
     </div>

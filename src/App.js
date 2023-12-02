@@ -9,6 +9,7 @@ import Password from "./password";
 import Profile from "./profile.js";
 import Dashboard from "./dashboard";
 import MyFriends from "./MyFriends";
+import RecommendedUsers from './recommendedUsers';
 import AllUsers from "./AllUsers.js";
 import PollForm from "./CreatePoll.js";
 import LandingPage from "./LandingPage";
@@ -53,6 +54,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profileSettings" element={<ProfileSettings />} />
             <Route path="/myFriends" element={<MyFriends />} />
+            <Route path="/recommendedUsers" element={<RecommendedUsers />} />
             <Route path="/" element={< LandingPage/>} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/PollList" element={< PollList/>} />
