@@ -37,21 +37,20 @@ function Chat() {
         };
 
 
-    const markMessagesAsRead = async () => {
-        if (chatDocId) { // Ensure chatDocId is not null or undefined
-            const messagesRef = collection(db, 'chats', chatDocId, 'messages');
-            const querySnapshot = await getDocs(messagesRef);
-            querySnapshot.forEach(async (doc) => {
-                if (doc.data().sender_email !== user_email && !doc.data().read) {
-                    const messageRef = doc.ref;
-                    await updateDoc(messageRef, {
-                        read: true
-                    });
-                }
-            });
-        }
-    };
-    
+        const markMessagesAsRead = async () => {
+            if (chatDocId && selectedUser && selectedUser.email !== user_email) {
+                const messagesRef = collection(db, 'chats', chatDocId, 'messages');
+                const querySnapshot = await getDocs(messagesRef);
+                
+                querySnapshot.forEach(async (docSnapshot) => {
+                    if (!docSnapshot.data().read && docSnapshot.data().sender_email !== user_email) {
+                        await updateDoc(docSnapshot.ref, {
+                            read: true
+                        });
+                    }
+                });
+            }
+        };
     
     // Call this function when a user selects a chat or when the component mounts with a selected chat
     useEffect(() => {
@@ -209,6 +208,7 @@ function Chat() {
                 sender_name: currentUser.displayName,
                 send_timestamp: serverTimestamp(),
                 message_content: messageContent,
+                read: false, // Initial value when the message is sent
             });
 
             handleTyping(false); // User stops typing when a message is sent
