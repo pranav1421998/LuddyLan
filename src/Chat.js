@@ -8,6 +8,7 @@ import { faArrowCircleRight, faComments } from '@fortawesome/free-solid-svg-icon
 import { useUser } from './UserContext';
 import Cookies from 'js-cookie';
 import { debounce } from 'lodash'; // You can install lodash if not already: npm install lodash
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import {
     serverTimestamp,
   } from 'firebase/firestore';
@@ -82,20 +83,22 @@ function Chat() {
     }, [chatDocId,user_email]);
 
         // Function to render a message
-        const renderMessage = (message, index) => {
-            const isLastMessage = index === messages.length - 1;
-            const isMessageRead = message.read && message.sender_email !== user_email;
-    
+            const renderMessage = (message, index) => {
+            const isLastMessage = index === messages.findIndex((msg, idx) => {
+                return msg.sender_email === user_email && idx > index;
+            });
+        
             return (
                 <div key={message.id} className={message.sender_email === user_email ? "my-message" : "their-message"}>
                     <div className='chat-content'>
                         <p className='para-color'>{message.message_content}</p>
                         <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
-                        {isLastMessage && isMessageRead && <small className='read-receipt'>Seen</small>}
+                        {message.read && <small className='read-receipt'><FontAwesomeIcon icon={faEye} /></small>}
                     </div>
                 </div>
             );
         };
+        
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////    
 
