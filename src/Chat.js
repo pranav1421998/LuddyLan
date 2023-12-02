@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleRight, faComments } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from './UserContext';
 import Cookies from 'js-cookie';
+import { debounce } from 'lodash'; // You can install lodash if not already: npm install lodash
 import {
     serverTimestamp,
   } from 'firebase/firestore';
@@ -23,6 +24,19 @@ function Chat() {
     var userObj = JSON.parse(userDet);
     var user_email = userObj.email;
     ////////////////////////////////  for read receipts and typing.... ////////////
+
+        // Debounce function to handle typing status
+        const handleStopTyping = debounce(() => {
+            handleTyping(false);
+        }, 1000); // 1000ms = 1 second
+    
+        const handleInputChange = (e) => {
+            setMessageInput(e.target.value);
+            handleTyping(true);
+            handleStopTyping();
+        };
+
+
     const markMessagesAsRead = async () => {
         if (chatDocId) { // Ensure chatDocId is not null or undefined
             const messagesRef = collection(db, 'chats', chatDocId, 'messages');
@@ -180,6 +194,8 @@ function Chat() {
                 send_timestamp: serverTimestamp(),
                 message_content: messageContent,
             });
+
+            handleTyping(false); // User stops typing when a message is sent
         }
         fetchMessages(selectedUser);
     };
@@ -236,7 +252,7 @@ function Chat() {
                         placeholder="Type your message..."
                         className='input-chat'
                         value={messageInput}
-                        onChange={(e) => setMessageInput(e.target.value)}
+                        onChange={handleInputChange} // Updated to handleInputChange}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && messageInput.trim()) {
                                 handleSendMessage(messageInput.trim());
