@@ -28,7 +28,7 @@ function Chat() {
         // Debounce function to handle typing status
         const handleStopTyping = debounce(() => {
             handleTyping(false);
-        }, 1000); // 1000ms = 1 second
+        }, 5000); // display typing for 5 seconds after stopping typing
     
         const handleInputChange = (e) => {
             setMessageInput(e.target.value);
@@ -81,6 +81,22 @@ function Chat() {
             return unsubscribe;
         }
     }, [chatDocId,user_email]);
+
+        // Function to render a message
+        const renderMessage = (message, index) => {
+            const isLastMessage = index === messages.length - 1;
+            const isMessageRead = message.read && message.sender_email !== user_email;
+    
+            return (
+                <div key={message.id} className={message.sender_email === user_email ? "my-message" : "their-message"}>
+                    <div className='chat-content'>
+                        <p className='para-color'>{message.message_content}</p>
+                        <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
+                        {isLastMessage && isMessageRead && <small className='read-receipt'>Seen</small>}
+                    </div>
+                </div>
+            );
+        };
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////    
 
@@ -230,14 +246,7 @@ function Chat() {
                 ) : (
                     <div className='chat-section'>
                         <div className="chat-messages">
-                            {messages.map((message) => (
-                                <div key={message.id} className={message.sender_email === user_email ? "my-message" : "their-message"}>
-                                    <div className='chat-content'>
-                                        <p className='para-color'>{message.message_content}</p>
-                                        <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
-                                    </div>
-                                </div>
-                            ))}
+                            {messages.map((message,index) => renderMessage(message, index))}
                            
 
                         </div>
