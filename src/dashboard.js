@@ -20,7 +20,9 @@ const Dashboard = () => {
     const [showModal, setShowModal] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
-    const user_email = Cookies.get('userDetails');
+    const userDet = Cookies.get('userDetails');
+    var userObj = JSON.parse(userDet);
+    var user_email = userObj.email;
 
     const openPollPopup = () => { setShowPopup(true); };
     const ClosePollPopup = () => { setShowPopup(false); };
@@ -146,46 +148,55 @@ const Dashboard = () => {
  
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                const userDocRef = doc(db, "users", user.email);
-                const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
-                    const userEmailAddress = user.email;
-                    const friendsRef = collection(db, "friends");
-                    const q = query(friendsRef, where("user_email", "==", userEmailAddress), where("is_accepted", "==", true));
-                    const querySnapshot = await getDocs(q);
-                    const friendsArray = [];
-                    querySnapshot.forEach((doc) => {
-                        friendsArray.push({ id: doc.id, ...doc.data() });
-                    });
-                    const friendEmails = friendsArray.map((friend) => friend.follower_email);
-                    friendEmails.push(userEmailAddress);
-                    const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
-                    const postQuerySnapshot = await getDocs(postQuery);
-
-                    const postPromises = postQuerySnapshot.docs.map(async (doc) => {
-                        const postData = { id: doc.id, ...doc.data() };
-                        postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
-                        postData.likeCount = await fetchLikeCount(doc.id);
-                        postData.name = await getUserNamesByEmail(postData.ownerId);
-                        return postData;
-                    });
-
-                    const postsData = await Promise.all(postPromises);
-                    setPosts(postsData);
-                } else {
-                    console.log("No such document!");
-                }
-            } else {
-                console.log("No user is signed in");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+      try {
+          const user = auth.currentUser;
+          if (user) {
+              const userDocRef = doc(db, "users", user.email);
+              const userDoc = await getDoc(userDocRef);
+              if (userDoc.exists()) {
+                  setUserDetails({ id: userDoc.id, ...userDoc.data() });
+                  const userEmailAddress = user.email;
+                  const friendsRef = collection(db, "friends");
+                  const q = query(friendsRef, where("user_email", "==", userEmailAddress), where("is_accepted", "==", true));
+                  const querySnapshot = await getDocs(q);
+                  const friendsArray = [];
+                  querySnapshot.forEach((doc) => {
+                      friendsArray.push({ id: doc.id, ...doc.data() });
+                  });
+                  const friendEmails = friendsArray.map((friend) => friend.follower_email);
+                  friendEmails.push(userEmailAddress);
+                  const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
+                  const postQuerySnapshot = await getDocs(postQuery);
+  
+                  const postPromises = postQuerySnapshot.docs.map(async (docSnapshot) => {
+                    const postData = { id: docSnapshot.id, ...docSnapshot.data() };
+                    postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
+                    postData.likeCount = await fetchLikeCount(docSnapshot.id);
+                    postData.name = await getUserNamesByEmail(postData.ownerId);
+                    
+                    if (user_email) { // Check if userDetails is available
+                        const likeDocRef = doc(db, "posts", postData.id, "likes", user_email); 
+                        const likeDocSnap = await getDoc(likeDocRef);
+                        postData.likedByUser = likeDocSnap.exists();
+                    } else {
+                        postData.likedByUser = false; // Default value if userDetails is not available
+                    }
+                    return postData;
+                });
+                
+                const postsData = await Promise.all(postPromises);
+                setPosts(postsData);
+              } else {
+                  console.log("No such document!");
+              }
+          } else {
+              console.log("No user is signed in");
+          }
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+  
 
     fetchData(); // Call fetchData directly on component mount
 

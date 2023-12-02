@@ -17,6 +17,9 @@ const Posts = () => {
     const [commentWindows, setCommentWindows] = useState({}); // Comments window drop down
     const [openShareDropdowns, setOpenShareDropdowns] = useState({});
     const [isLikedByUser, setIsLikedByUser] = useState(false);
+    const userDet = Cookies.get('userDetails');
+    var userObj = JSON.parse(userDet);
+    var user_email = userObj.email;
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -145,24 +148,35 @@ const Posts = () => {
 
         const fetchPost = async () => {
           try {
-            const postDocRef = doc(db, "posts", postId);
-            const postDoc = await getDoc(postDocRef);
-    
-            if (postDoc.exists()) {
-                const postData = { id: postDoc.id, ...postDoc.data() };
-                postData.likeCount = await fetchLikeCount(postDoc.id);
-                postData.name = await getUserNamesByEmail(postData.ownerId);
-                setPost(postData);
-                // Getting profile picture for post
-                const pic = await getProfilePicByEmail(postData.ownerId);
-                setProfilePicture(pic);
-            } else {
-              console.error("No such document for post:", postId);
-            }
+              const postDocRef = doc(db, "posts", postId);
+              const postDoc = await getDoc(postDocRef);
+      
+              if (postDoc.exists()) {
+                  const postData = { id: postDoc.id, ...postDoc.data() };
+                  postData.likeCount = await fetchLikeCount(postDoc.id);
+                  postData.name = await getUserNamesByEmail(postData.ownerId);
+                  
+                  // Check if the current user has liked the post
+                  if (user_email) {
+                      const likeDocRef = doc(db, "posts", postId, "likes", user_email);
+                      const likeDocSnap = await getDoc(likeDocRef);
+                      postData.likedByUser = likeDocSnap.exists();
+                  } else {
+                      postData.likedByUser = false;
+                  }
+      
+                  setPost(postData);
+                  // Getting profile picture for post
+                  const pic = await getProfilePicByEmail(postData.ownerId);
+                  setProfilePicture(pic);
+              } else {
+                  console.error("No such document for post:", postId);
+              }
           } catch (error) {
-            console.error("Error fetching post:", error);
+              console.error("Error fetching post:", error);
           }
-        };
+      };
+      
         fetchData();
         fetchPost();
     }, [auth, db, postId]);
