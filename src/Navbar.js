@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { faHome, faUser, faUsers, faComment, faGear, faSignOut, faSignIn, faSearch  } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faUsers, faComment, faGear, faSignOut, faSignIn, faSearch, faBell  } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   
@@ -97,7 +97,7 @@ if (isLoggedIn) {
       </div>
       {/* log out */}
       <div className="login">
-      {/* <button className='nav-btn' onClick={() => navigate('/profileSettings')}><FontAwesomeIcon icon={faGear}/></button> */}
+        <button className='nav-btn' onClick={() => navigate('/notifications')}><FontAwesomeIcon icon={faBell}/></button>
         <button className='nav-btn' onClick={handleLogout}><FontAwesomeIcon icon={faSignOut}/>&nbsp;Log out</button>
       </div>
     </nav>
