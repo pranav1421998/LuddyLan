@@ -89,7 +89,7 @@ const addNotification = async (groupId, groupName) => {
 
           if (existingNotificationSnapshot.empty) {
             // Add a new notification
-            const notificationMessage = `${groupName} added a post!`;
+            const notificationMessage = `${userDetails.firstName + " " + userDetails.lastName} added a post to the ${groupName} group!`;
             await addDoc(notificationsRef, {
               message: notificationMessage
             });
