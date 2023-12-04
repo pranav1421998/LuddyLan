@@ -1,19 +1,18 @@
 import './Groupposts.css';
+import Groups from './Groups';
 import Cookies from 'js-cookie';
 import Sidebar2 from './Sidebar2';
 import Comments from './Comments';
-import PollPopup from './CreatePoll';
-import CreatePost from './CreatePost';
+import EditModal from './EditModal';
 import { db, auth } from "./firebaseConfig";
 import CreateGroupPosts from './CreateGroupposts';
-import React, { useEffect, useState,useRef } from "react";
-import { Link, useNavigate,useParams } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState,useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faShare,faClipboard ,faClipboardfaHome, faUsers, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { doc, getDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
-import Groups from './Groups';
-import EditModal from './EditModal';
+import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { doc, getDoc, addDoc, getDocs, setDoc, deleteDoc, updateDoc, arrayUnion, orderBy, query, where, collection } from "firebase/firestore";
+
 const Groupposts = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [posts, setPosts] = useState([]);
@@ -26,13 +25,16 @@ const Groupposts = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const navigate = useNavigate();
-    const{groupId,groupName}=useParams();
+    const{groupId,groupName} = useParams();
     const user_email = Cookies.get('userDetails');
 
     const openPollPopup = () => { setShowPopup(true); };
     const ClosePollPopup = () => { setShowPopup(false); };
     const handleOpenModal = () => { setShowModal(true); };
-    const handleCloseModal = () => { setShowModal(false); };
+    const handleCloseModal = () => { 
+      setShowModal(false);
+      addNotification(groupId, groupName); 
+    };
 
   // Event handler to open the comment window for a specific post
   const openCommentWindow = (postId) => {
@@ -42,14 +44,9 @@ const Groupposts = () => {
       [postId]: !commentWindows[postId],
     });
   };
-  const handleEditButtonClick = () => {
-    setIsEditModalOpen(true);
-  };
-  const handleProfilePictureUpdate = (file) => {
-};
-  const handleCameraButtonClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleProfilePictureUpdate = (file) => {};
+  const handleEditButtonClick = () => { setIsEditModalOpen(true); };
+  const handleCameraButtonClick = () => { fileInputRef.current.click(); };
   const handleFileInputChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -60,6 +57,50 @@ const Groupposts = () => {
     setIsEditModalOpen(false);
     setUserInfo(editedData);
   };
+
+// Function to add a notification for each user (admin or follower) of the group
+const addNotification = async (groupId, groupName) => {
+  try {
+    // Get the group document
+    const groupDocRef = doc(db, 'groups', groupId);
+    const groupDoc = await getDoc(groupDocRef);
+
+    if (groupDoc.exists()) {
+      const groupData = groupDoc.data();
+
+      // Get the admin and follower user IDs
+      const adminUserIds = groupData.admins || [];
+      const followerUserIds = groupData.followers || [];
+
+      // Combine admin and follower user IDs
+      const allUserIds = [...new Set([...adminUserIds, ...followerUserIds])];
+
+      // Iterate through each user ID and add a notification
+      for (const userId of allUserIds) {
+        // Check if the user exists
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          // Check if the user already has a notification for this post
+          const notificationsRef = collection(db, 'users', userId, 'notifications');
+          const existingNotificationQuery = query(notificationsRef, where('postId', '==', groupId));
+          const existingNotificationSnapshot = await getDocs(existingNotificationQuery);
+
+          if (existingNotificationSnapshot.empty) {
+            // Add a new notification
+            const notificationMessage = `${groupName} added a post!`;
+            await addDoc(notificationsRef, {
+              message: notificationMessage
+            });
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error adding post notification:', error);
+  }
+};
 
   // Function to format a date as a more readable string
   const formatTimestamp = (timestamp) => {
@@ -196,8 +237,6 @@ const Groupposts = () => {
     const unsubscribe = onAuthStateChanged(auth, fetchData);
     return () => unsubscribe();
 }, [auth, db]);
-
-
 
 return (
     <section className="main">
