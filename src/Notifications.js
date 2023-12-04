@@ -4,6 +4,7 @@ import "./Notifications.css";
 import Cookies from "js-cookie";
 import { Button } from "react-bootstrap";
 import { db, auth } from "./firebaseConfig";
+import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { doc, getDoc, getDocs, deleteDoc, collection } from "firebase/firestore";
 
 const Notifications = () => {
+    const navigate = useNavigate();
     const [notifications, setNotifications] = useState([]);
+
+    const navigateToGroup = (gId, gName) => {
+        navigate(`/groupposts/${gId}/${gName}`);
+      };
 
     const fetchNotifications = async () => {
         const user = auth.currentUser;
@@ -28,8 +34,8 @@ const Notifications = () => {
                     const notificationsData = snapshot.docs.map(doc => {
                         return {
                             id: doc.id,
-                            message: doc.data().message || '', // Use 'message' instead of 'alerts'
-                            timestamp: doc.data().timestamp || null,
+                            message: doc.data().message || '',
+                            name: doc.data().name || '',
                             // Add other fields as needed
                         };
                     });
@@ -72,25 +78,25 @@ const Notifications = () => {
 
     return (
         <div className="border">
-            <div className="header1">Notifications</div>
-            <div className="bg">
-                <ul>
-                    {notifications && notifications.map(notification => (
-                        <div key={notification.id}>
-                            {notification.message && (
-                                <li className="item">
-                                    <span>{notification.message}</span>
-                                    <Button className="noti-btn" onClick={() => deleteNotification(notification.id)}>
-                                        <FontAwesomeIcon icon={faTrash}/>
-                                    </Button>
-                                </li>
-                            )}
-                        </div>
-                    ))}
-                </ul>
-            </div>
+          <div className="header1">Notifications</div>
+          <div className="bg">
+            <ul>
+              {notifications && notifications.map((notification) => (
+                <div key={notification.id}>
+                  {notification.message && (
+                    <li className="item">
+                      <span onClick={() => navigateToGroup(notification.id, notification.name)}>{notification.message}</span>
+                      <Button className="noti-btn" onClick={() => deleteNotification(notification.id)}>
+                        <FontAwesomeIcon icon={faTrash}/>
+                      </Button>
+                    </li>
+                  )}
+                </div>
+              ))}
+            </ul>
+          </div>
         </div>
-    );    
+      );    
     
 };
 

@@ -14,28 +14,28 @@ import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSqu
 import { doc, getDoc, addDoc, getDocs, setDoc, deleteDoc, updateDoc, arrayUnion, orderBy, query, where, collection } from "firebase/firestore";
 
 const Groupposts = () => {
-    const [userDetails, setUserDetails] = useState(null);
-    const [posts, setPosts] = useState([]);
-    const [userPosts, setUserPosts] = useState([]);
-    const [userInfo, setUserInfo] = useState({});
-    const fileInputRef = useRef(null);
-    const [commentWindows, setCommentWindows] = useState({}); // Comments window drop down
-    const [openShareDropdowns, setOpenShareDropdowns] = useState({});
-    const [showModal, setShowModal] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const{groupId,groupName} = useParams();
-    const user_email = Cookies.get('userDetails');
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [posts, setPosts] = useState([]);
+  const{groupId, groupName} = useParams();
+  const [userInfo, setUserInfo] = useState({});
+  const [userPosts, setUserPosts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+  const [commentWindows, setCommentWindows] = useState({});
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [openShareDropdowns, setOpenShareDropdowns] = useState({});
+    
+  const user_email = Cookies.get('userDetails');
 
-    const openPollPopup = () => { setShowPopup(true); };
-    const ClosePollPopup = () => { setShowPopup(false); };
-    const handleOpenModal = () => { setShowModal(true); };
-    const handleCloseModal = () => { 
-      setShowModal(false);
-      addNotification(groupId, groupName); 
-    };
-
+  const openPollPopup = () => { setShowPopup(true); };
+  const ClosePollPopup = () => { setShowPopup(false); };
+  const handleOpenModal = () => { setShowModal(true); };
+  const handleCloseModal = () => { 
+    setShowModal(false);
+    addNotification(groupId, groupName); 
+  };
   // Event handler to open the comment window for a specific post
   const openCommentWindow = (postId) => {
     // Use the object to toggle the comment window state for the specific post
@@ -91,7 +91,9 @@ const addNotification = async (groupId, groupName) => {
             // Add a new notification
             const notificationMessage = `${userDetails.firstName + " " + userDetails.lastName} added a post to the ${groupName} group!`;
             await addDoc(notificationsRef, {
-              message: notificationMessage
+              message: notificationMessage,
+              name: groupName,
+              id: groupId
             });
           }
         }

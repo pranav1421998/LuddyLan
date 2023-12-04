@@ -50,6 +50,10 @@ span {
     flex: 1;
 }
 
+span:hover {
+    cursor: pointer;
+}
+
 /* css for delete/trash can button */
 .noti-btn {
     color: #990000;
