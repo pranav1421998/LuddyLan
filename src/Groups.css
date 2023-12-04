@@ -40,6 +40,11 @@
     color: black;
     height: 45vh;
     width: 20vw;
+    cursor: pointer;
+  }
+
+  .grid-item:hover {
+    background-color: #f0f0f0; /* Change to your desired hover background color */
   }
   
 /* .top-btn-grp {
