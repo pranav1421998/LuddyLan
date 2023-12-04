@@ -6,6 +6,9 @@ import SidebarChat from './SidebarChat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleRight, faComments } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from './UserContext';
+import Cookies from 'js-cookie';
+import { debounce } from 'lodash'; // You can install lodash if not already: npm install lodash
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import {
     serverTimestamp,
   } from 'firebase/firestore';
@@ -16,6 +19,88 @@ function Chat() {
     const [chatDocId, setChatDocId] = useState(null);
     const [messageInput, setMessageInput] = useState('');
     const currentUser = useUser();
+    const [isTyping, setIsTyping] = useState(false);
+
+    const userDet = Cookies.get('userDetails');
+    var userObj = JSON.parse(userDet);
+    var user_email = userObj.email;
+    ////////////////////////////////  for read receipts and typing.... ////////////
+
+        // Debounce function to handle typing status
+        const handleStopTyping = debounce(() => {
+            handleTyping(false);
+        }, 5000); // display typing for 5 seconds after stopping typing
+    
+        const handleInputChange = (e) => {
+            setMessageInput(e.target.value);
+            handleTyping(true);
+            handleStopTyping();
+        };
+
+
+        const markMessagesAsRead = async () => {
+            if (chatDocId && selectedUser && selectedUser.email !== user_email) {
+                const messagesRef = collection(db, 'chats', chatDocId, 'messages');
+                const querySnapshot = await getDocs(messagesRef);
+                
+                querySnapshot.forEach(async (docSnapshot) => {
+                    if (!docSnapshot.data().read && docSnapshot.data().sender_email !== user_email) {
+                        await updateDoc(docSnapshot.ref, {
+                            read: true
+                        });
+                    }
+                });
+            }
+        };
+    
+    // Call this function when a user selects a chat or when the component mounts with a selected chat
+    useEffect(() => {
+        if (selectedUser) {
+            markMessagesAsRead();
+        }
+    }, [selectedUser]);
+
+    const handleTyping = (isTyping) => {
+        const chatRef = doc(db, 'chats', chatDocId);
+        updateDoc(chatRef, {
+            typingUser: isTyping ? user_email : null
+        });
+    };
+    
+    // Implement a debounce mechanism to call handleTyping(false) when the user stops typing
+
+    useEffect(() => {
+        if (chatDocId) {
+            const chatRef = doc(db, 'chats', chatDocId);
+            const unsubscribe = onSnapshot(chatRef, (doc) => {
+                if (doc.exists()) {
+                    const chatData = doc.data();
+                    setIsTyping(chatData.typingUser && chatData.typingUser !== user_email);
+                }
+            });
+            return unsubscribe;
+        }
+    }, [chatDocId,user_email]);
+
+        // Function to render a message
+            const renderMessage = (message, index) => {
+                // const isLastMessage = index === messages.findIndex((msg, idx) => {
+                //     return msg.sender_email === user_email && idx > index;
+                // });
+            
+            return (
+                <div key={message.id} className={message.sender_email === user_email ? "my-message" : "their-message"}>
+                    <div className='chat-content'>
+                        <p className='para-color'>{message.message_content}</p>
+                        <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
+                        {message.read && <small className='read-receipt'><FontAwesomeIcon icon={faEye} /></small>}
+                    </div>
+                </div>
+            );
+        };
+        
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////    
 
     useEffect(() => {
         if (selectedUser) {
@@ -28,7 +113,7 @@ function Chat() {
             onSnapshot(messagesRef, () => {});
           }
         };
-      }, [selectedUser]);
+      }, [selectedUser,chatDocId]);
 
       useEffect(() => {
         // Scroll to the bottom of the chat whenever the messages change
@@ -40,15 +125,14 @@ function Chat() {
     
     
       async function fetchMessages(selectedUser) {
-        if (currentUser && selectedUser) {
-            console.log('Fetching messages between', currentUser.email, 'and', selectedUser.id);
-            const currentUserEmail = currentUser.email;
+        if (user_email && selectedUser) {
+            console.log('Fetching messages between', user_email, 'and', selectedUser.id);
             const selectedUserEmail = selectedUser.id;
     
             const chatsRef = collection(db, 'chats');
             const chatQuery = query(
                 chatsRef,
-                where('users', 'array-contains', currentUserEmail)
+                where('users', 'array-contains', user_email)
             );
     
             const querySnapshot = await getDocs(chatQuery);
@@ -89,15 +173,14 @@ function Chat() {
     };
 
     const handleSendMessage = async (messageContent) => {
-        if (currentUser && selectedUser) {
-            const currentUserEmail = currentUser.email;
+        if (user_email && selectedUser) {
             const selectedUserEmail = selectedUser.id;
     
             // Find the chat document
             const chatsRef = collection(db, 'chats');
             const chatQuery = query(
                 chatsRef,
-                where('users', 'array-contains', currentUserEmail)
+                where('users', 'array-contains', user_email)
             );
     
             const querySnapshot = await getDocs(chatQuery);
@@ -113,7 +196,7 @@ function Chat() {
             // If no chat document exists, create a new one
             if (!chatDocRef) {
                 const newChatDocRef = await addDoc(chatsRef, {
-                    users: [currentUserEmail, selectedUserEmail],
+                    users: [user_email, selectedUserEmail],
                     // Add any other fields you need
                 });
     
@@ -124,11 +207,14 @@ function Chat() {
             const messagesRef = collection(chatDocRef, 'messages');
     
             await addDoc(messagesRef, {
-                sender_email: currentUser.email,
+                sender_email: user_email,
                 sender_name: currentUser.displayName,
                 send_timestamp: serverTimestamp(),
                 message_content: messageContent,
+                read: false, // Initial value when the message is sent
             });
+
+            handleTyping(false); // User stops typing when a message is sent
         }
         fetchMessages(selectedUser);
     };
@@ -148,6 +234,7 @@ function Chat() {
         <div className='modal-container'>
             <div className="user-title">
                 {selectedUser && <h3>{selectedUser.firstName + ' ' + selectedUser.lastName}</h3>}
+                {isTyping && <div className="typing-indicator">Typing...</div>}
             </div>
 
             <div className='chat-container'>
@@ -162,14 +249,9 @@ function Chat() {
                 ) : (
                     <div className='chat-section'>
                         <div className="chat-messages">
-                            {messages.map((message) => (
-                                <div key={message.id} className={message.sender_email === currentUser.email ? "my-message" : "their-message"}>
-                                    <div className='chat-content'>
-                                        <p className='para-color'>{message.message_content}</p>
-                                        <small className='time-stamp'>{message?.send_timestamp && renderTimestamp(message.send_timestamp)}</small>
-                                    </div>
-                                </div>
-                            ))}
+                            {messages.map((message,index) => renderMessage(message, index))}
+                           
+
                         </div>
                     </div>
                 )}
@@ -182,7 +264,7 @@ function Chat() {
                         placeholder="Type your message..."
                         className='input-chat'
                         value={messageInput}
-                        onChange={(e) => setMessageInput(e.target.value)}
+                        onChange={handleInputChange} // Updated to handleInputChange}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && messageInput.trim()) {
                                 handleSendMessage(messageInput.trim());

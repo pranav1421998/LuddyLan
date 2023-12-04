@@ -10,6 +10,7 @@ import Password from "./password";
 import Profile from "./profile.js";
 import Dashboard from "./dashboard";
 import MyFriends from "./MyFriends";
+import RecommendedUsers from './recommendedUsers';
 import AllUsers from "./AllUsers.js";
 import PollForm from "./CreatePoll.js";
 import LandingPage from "./LandingPage";
@@ -22,8 +23,10 @@ import ProfileGlobal from "./profileGlobal.js";
 import FriendRequests from "./FriendRequests.js";
 import ProfileSettings from "./profileSettings.js";
 import PasswordRecovery from "./passwordRecovery.js";
+import Groupposts from './Groupposts.js';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CreateGroupPosts from './CreateGroupposts.js';
 
 function App() {
   const auth = getAuth(); // Initialize the auth instance
@@ -54,6 +57,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profileSettings" element={<ProfileSettings />} />
             <Route path="/myFriends" element={<MyFriends />} />
+            <Route path="/recommendedUsers" element={<RecommendedUsers />} />
             <Route path="/" element={< LandingPage/>} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/PollList" element={< PollList/>} />
@@ -63,6 +67,8 @@ function App() {
             <Route path="/Posts" element={<Posts />} />
             <Route path="/Groups" element={<Groups />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/groupposts/:groupId/:groupName" element={<Groupposts />} />
+            <Route path="/creategroupposts" element={<CreateGroupPosts />} />
           </Routes>
         </div>
       </Router>

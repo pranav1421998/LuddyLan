@@ -86,11 +86,11 @@
     bottom: 0;
     left: 0;
     width: 80%;
-    background-color: #fff; /* Set the background color as needed */
+    background-color: rgba(255,255,255, 0.5);
     padding: 10px;
     margin-left: 20vw;
     margin-right: 20vw;
-    box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+    box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .comments-icon {
