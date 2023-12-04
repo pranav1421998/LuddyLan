@@ -38,7 +38,8 @@
 }
 
 .user-results,
-.post-results {
+.post-results,
+.recent-searches {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 5px;
@@ -87,6 +88,11 @@
     display: flex;
     flex-direction: row;
   }
+  .search-post-item:hover{
+    background-color: #9b0303;
+    border-radius: 1vh;
+    color: #ddd;
+  }
   .search-profile-picture {
     width: 50px;
     height: 50px;
@@ -102,6 +108,11 @@
   .user-search-item{
     cursor: pointer;
   }
+  .search-user-container:hover{
+    background-color: #9b0303;
+    border-radius: 1vh;
+    color: #ddd;
+  }
  .heading-searchr {
   background-color: rgba(255, 255, 255, 1);
   width: 100vw;
@@ -110,4 +121,13 @@
   /* margin-top: 20vh; */
   box-shadow: 5px 5px 10px rgba(0.3, 0.3, 0.3, 0.3);
   /* padding: 10vw; */
+ }
+ .search-recent-item{
+  margin-left: 7vw;
+  text-align: left;
+  cursor:pointer;
+ }
+ .search-recent-item:hover{
+  color:#ddd;
+  background-color: #9b0303;
  }

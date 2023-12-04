@@ -129,6 +129,13 @@ const GridCards = ({ data }) => {
                         Unfollow
                     </button>
                 );
+            case 'RecommendedUsers':
+                return (
+                    <button className="connect-button" style={{ backgroundColor: '#9b0303', cursor: "pointer" }} onClick={() => handleConnectClick(item.email, 'connect')}>
+                            Connect
+                        </button>
+                );
+
             default:
                 return null;
         }

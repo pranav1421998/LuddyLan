@@ -15,7 +15,7 @@ const Sidebar2 = () => {
         };
         const initialTab = pathTabMap[currentPath] || 'Posts'; // Use 'Posts' as the default if no match
         setActiveTab(initialTab);
-        console.log(initialTab);
+        // console.log(initialTab);
         handleTabClick(initialTab); // Call handleTabClick with the calculated initial tab
     }, [location.pathname]);
     

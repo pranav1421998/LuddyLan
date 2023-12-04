@@ -1,28 +1,33 @@
-import './dashboard.css';
+import './Groupposts.css';
 import Cookies from 'js-cookie';
 import Sidebar2 from './Sidebar2';
 import Comments from './Comments';
 import PollPopup from './CreatePoll';
 import CreatePost from './CreatePost';
 import { db, auth } from "./firebaseConfig";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import CreateGroupPosts from './CreateGroupposts';
+import React, { useEffect, useState,useRef } from "react";
+import { Link, useNavigate,useParams } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faComment, faShare, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faThumbsUp, faShare,faClipboard ,faClipboardfaHome, faUsers, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { doc, getDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
-
-const Dashboard = () => {
+import Groups from './Groups';
+import EditModal from './EditModal';
+const Groupposts = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [posts, setPosts] = useState([]);
+    const [userPosts, setUserPosts] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
+    const fileInputRef = useRef(null);
     const [commentWindows, setCommentWindows] = useState({}); // Comments window drop down
     const [openShareDropdowns, setOpenShareDropdowns] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const navigate = useNavigate();
-    const userDet = Cookies.get('userDetails');
-    var userObj = JSON.parse(userDet);
-    var user_email = userObj.email;
+    const{groupId,groupName}=useParams();
+    const user_email = Cookies.get('userDetails');
 
     const openPollPopup = () => { setShowPopup(true); };
     const ClosePollPopup = () => { setShowPopup(false); };
@@ -36,6 +41,24 @@ const Dashboard = () => {
       ...commentWindows,
       [postId]: !commentWindows[postId],
     });
+  };
+  const handleEditButtonClick = () => {
+    setIsEditModalOpen(true);
+  };
+  const handleProfilePictureUpdate = (file) => {
+};
+  const handleCameraButtonClick = () => {
+    fileInputRef.current.click();
+  };
+  const handleFileInputChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      handleProfilePictureUpdate(selectedFile);
+    }
+  };
+  const handleSaveEditedData = (editedData) => {
+    setIsEditModalOpen(false);
+    setUserInfo(editedData);
   };
 
   // Function to format a date as a more readable string
@@ -66,6 +89,9 @@ const Dashboard = () => {
     const querySnapshot = await getDocs(likesCollection);
     return querySnapshot.size;
   };
+  const handleCreatePost = () => {
+    navigate(`/create-grouppost/${groupId}/${groupName}`);
+  };
  
   // Function that allows user to like or unlike a post
   const toggleLike = async (postId) => {
@@ -84,24 +110,6 @@ const Dashboard = () => {
       console.error("Error toggling like status: ", error);
     }
   };
- 
-  const getFriendProfilePicture = async (friendEmail) => {
-    try {
-        const friendUserDocRef = doc(db, "users", friendEmail);
-        const friendUserDoc = await getDoc(friendUserDocRef);
-        if (friendUserDoc.exists()) {
-            const friendUserData = friendUserDoc.data();
-            return friendUserData.profilePicture || null;
-        } else {
-            console.error("No such document for friend user:", friendEmail);
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching friend's profile picture:", error);
-        return null;
-    }
-  };
-
   const toggleShareDropdown = (postId) => {
     setOpenShareDropdowns((prevOpenDropdowns) => ({
       ...prevOpenDropdowns,
@@ -122,7 +130,7 @@ const Dashboard = () => {
 
   // Function to generate the URL so the user can copy and share the post
   const generatePostURL = (postId) => {
-    // Replace with actual URL after deploying! TODO
+    // Replace with actual URL after deploying!
     return `http://localhost:3000/Posts?pid=${postId}`;
   };
 
@@ -148,55 +156,40 @@ const Dashboard = () => {
  
   useEffect(() => {
     const fetchData = async () => {
-      try {
-          const user = auth.currentUser;
-          if (user) {
-              const userDocRef = doc(db, "users", user.email);
-              const userDoc = await getDoc(userDocRef);
-              if (userDoc.exists()) {
-                  setUserDetails({ id: userDoc.id, ...userDoc.data() });
-                  const userEmailAddress = user.email;
-                  const friendsRef = collection(db, "friends");
-                  const q = query(friendsRef, where("user_email", "==", userEmailAddress), where("is_accepted", "==", true));
-                  const querySnapshot = await getDocs(q);
-                  const friendsArray = [];
-                  querySnapshot.forEach((doc) => {
-                      friendsArray.push({ id: doc.id, ...doc.data() });
-                  });
-                  const friendEmails = friendsArray.map((friend) => friend.follower_email);
-                  friendEmails.push(userEmailAddress);
-                  const postQuery = query(collection(db, "posts"), where("ownerId", "in", friendEmails), orderBy("uploadedDate", "desc"));
-                  const postQuerySnapshot = await getDocs(postQuery);
-  
-                  const postPromises = postQuerySnapshot.docs.map(async (docSnapshot) => {
-                    const postData = { id: docSnapshot.id, ...docSnapshot.data() };
-                    postData.friendProfilePicture = await getFriendProfilePicture(postData.ownerId);
-                    postData.likeCount = await fetchLikeCount(docSnapshot.id);
-                    postData.name = await getUserNamesByEmail(postData.ownerId);
-                    
-                    if (user_email) { // Check if userDetails is available
-                        const likeDocRef = doc(db, "posts", postData.id, "likes", user_email); 
-                        const likeDocSnap = await getDoc(likeDocRef);
-                        postData.likedByUser = likeDocSnap.exists();
-                    } else {
-                        postData.likedByUser = false; // Default value if userDetails is not available
-                    }
-                    return postData;
-                });
-                
-                const postsData = await Promise.all(postPromises);
-                setPosts(postsData);
-              } else {
-                  console.log("No such document!");
-              }
-          } else {
-              console.log("No user is signed in");
-          }
-      } catch (error) {
-          console.error("Error fetching data:", error);
-      }
-  };
-  
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userDocRef = doc(db, "users", user.email);
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    setUserDetails({ id: userDoc.id, ...userDoc.data() });
+                    const userEmailAddress = user.email;
+                    const postQuery = query(
+                        collection(db, "posts"),
+                        where("ownerId", "==", groupId), // Update this line to filter by group ID
+                        orderBy("uploadedDate", "desc")
+                      );
+                    const postQuerySnapshot = await getDocs(postQuery);
+
+                    const postPromises = postQuerySnapshot.docs.map(async (doc) => {
+                        const postData = { id: doc.id, ...doc.data() };
+                        postData.likeCount = await fetchLikeCount(doc.id);
+                        postData.name = await getUserNamesByEmail(postData.ownerId);
+                        return postData;
+                    });
+
+                    const postsData = await Promise.all(postPromises);
+                    setPosts(postsData);
+                } else {
+                    console.log("No such document!");
+                }
+            } else {
+                console.log("No user is signed in");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
 
     fetchData(); // Call fetchData directly on component mount
 
@@ -216,12 +209,47 @@ return (
         </button>
       </div>
         <div className="post-container">
-            
+        <div className="profile-img-container">
+                <div className="circular-image">
+                  <img
+                    src={faImage}
+                    alt="Profile Picture"
+                    className="profile-picture"
+                  />
+                  <button className="camera-button" onClick={handleCameraButtonClick}>
+                    📷
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileInputChange}
+                    style={{ display: 'none' }}
+                  />
+                  
+                </div>
+                
+                <div style={{ flexDirection: 'column' }}>
+                <p className='public-button'><FontAwesomeIcon icon={faPenToSquare} onClick={handleEditButtonClick} /></p>
+                  <p className="heading-profile">{groupName}</p>
+                  <div className="friends-posts">
+                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
+                  </div>
+                </div>
+                {isEditModalOpen && (
+                  <EditModal
+                    userData={groupName}
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={handleSaveEditedData}
+                  />
+                )}
+              </div>
             {showModal && (
                 <div className="modal">
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseModal}>close</span>
-                        <CreatePost onClose={handleCloseModal}/>
+                        <CreateGroupPosts onClose={handleCloseModal} groupId={groupId} groupName={groupName}/>
                     </div>
                 </div>
             )}
@@ -229,11 +257,11 @@ return (
                 <div key={post.id} className="post">
                     <div className="post-header">
                         <p className="user-icon">
-                            {post.friendProfilePicture ? ( <img src={post.friendProfilePicture} alt="Profile" className="profile-picture"/> ) : 
-                            ( <FontAwesomeIcon icon={faUser}/> )}
+                            
+                 <FontAwesomeIcon icon={faUser}/> 
                         </p>
                         <div className="head">
-                            <p className="username">{post.name.firstName} {post.name.lastName}</p>                            
+                            <p className="username">{groupName}</p>                            
                             <p className="date">{formatTimestamp(post.uploadedDate)}</p>
                         </div>
                     </div>
@@ -279,4 +307,4 @@ return (
   );
 };
 
-export default Dashboard;
+export default Groupposts;

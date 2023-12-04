@@ -78,6 +78,7 @@ function PollsPage() {
         // Decrease the vote count for the previously selected option
         if (selectedOptions[pollId] !== undefined) {
           updatedOptions[selectedOptions[pollId]].votes -= 1;
+          updatedOptions[selectedOptions[pollId]].voters = updatedOptions[selectedOptions[pollId]].voters.replace(user.email + ",", "");
         }
 
         // Increase the vote count for the newly selected option
@@ -140,7 +141,7 @@ function PollsPage() {
                       name={`option-${poll.id}`}
                       onClick={() => voteForOption(poll.id, optionIndex)}
                       checked={selectedOptions[poll.id] === optionIndex}
-                      disabled={selectedOptions[poll.id] !== undefined}
+                      
                     />
                     <span className="option-text">{option.text}</span>
                     {selectedOptions[poll.id] !== undefined && (
