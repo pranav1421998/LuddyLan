@@ -8,12 +8,14 @@ import React, { useEffect, useState } from "react";
 import { getDocs, collection, doc, setDoc, where, query, getDoc, addDoc } from "firebase/firestore";
 import './Groups.css';
 const Groups = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [userGroups, setUserGroups] = useState([]);
   const navigate = useNavigate();
   const user = useUser();
+
   const handleFollowButtonClick = (group) => {
     setSelectedGroup(group);
     setIsModalOpen(true);
@@ -81,14 +83,7 @@ const Groups = () => {
     } catch (error) {
       console.error("An error occurred while adding user to group:", error);
     }
-  };
-  
-  
-  
-  
-  
-
-  
+  };  
 
   const followGroup = async (groupId) => {
     try {
@@ -135,7 +130,7 @@ const Groups = () => {
         {/* Display your groups here */}
         <div className="grid-container">
           {userGroups.map((group) => (
-            <div className="grid-item" key={group.id}>
+            <div className="grid-item" key={group.id} onClick={() => handleFollowButtonClick(group)}>
               <div className="grp-img" style={{ backgroundColor: getRandomColor() }}>
               </div>
               <h4>{group.groupName}</h4>

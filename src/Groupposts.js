@@ -212,7 +212,7 @@ return (
         <div className="profile-img-container">
                 <div className="circular-image">
                   <img
-                    src={faImage}
+                    src="https://png.pngtree.com/png-vector/20191009/ourmid/pngtree-group-icon-png-image_1796653.jpg"
                     alt="Profile Picture"
                     className="profile-picture"
                   />
