@@ -10,7 +10,7 @@ import './UserSelectionModal.css';
 import { faHome, faUser, faUsers, faComment, faImage, faPenToSquare, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const UserSelectionModal = ({ isOpen, onRequestClose, onSelect }) => {
+const UserSelectionModal = ({ isOpen, onRequestClose, onSelect, onCreateGroup }) => {
     const [users, setUsers] = React.useState([]);
     const [selectedUsers, setSelectedUsers] = React.useState([]);
     const location = useLocation();
@@ -79,6 +79,8 @@ const UserSelectionModal = ({ isOpen, onRequestClose, onSelect }) => {
       // Save the new group to the groups collection
       const groupsRef = collection(db, 'groups');
       await setDoc(doc(groupsRef), newGroup);
+
+      onCreateGroup();
 
       // Close the modal
       onRequestClose();
