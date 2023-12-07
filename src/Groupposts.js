@@ -248,6 +248,7 @@ return (
         <button className="modal-btn-grp" onClick={handleOpenModal}>
             Create Post
         </button>
+
       </div>
         <div className="post-container">
         <div className="profile-img-container">
@@ -276,6 +277,7 @@ return (
                   <div className="friends-posts">
                     <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
                   </div>
+                  <button className="donate-btn">Donate</button>
                 </div>
                 {isEditModalOpen && (
                   <EditModal

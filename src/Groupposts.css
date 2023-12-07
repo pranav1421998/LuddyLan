@@ -429,3 +429,17 @@ ul {
 .share-btn:hover {
     cursor: pointer;
 }
+
+.donate-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-left: 30vw;
+    color: #990000;
+    border: black;
+    opacity: 75%;
+}
+
+.donate-btn:hover {
+    opacity: 100%;
+    cursor: pointer;
+}
