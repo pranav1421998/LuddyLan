@@ -26,6 +26,7 @@ const Groupposts = () => {
   const [commentWindows, setCommentWindows] = useState({});
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [openShareDropdowns, setOpenShareDropdowns] = useState({});
+  const [isDonateWindowOpen, setIsDonateWindowOpen] = useState(false);
     
   const user_email = Cookies.get('userDetails');
 
@@ -38,11 +39,13 @@ const Groupposts = () => {
   };
   // Event handler to open the comment window for a specific post
   const openCommentWindow = (postId) => {
-    // Use the object to toggle the comment window state for the specific post
     setCommentWindows({
       ...commentWindows,
       [postId]: !commentWindows[postId],
     });
+  };
+  const toggleDonateWindow = () => {
+    setIsDonateWindowOpen(!isDonateWindowOpen);
   };
   const handleProfilePictureUpdate = (file) => {};
   const handleEditButtonClick = () => { setIsEditModalOpen(true); };
@@ -57,6 +60,15 @@ const Groupposts = () => {
     setIsEditModalOpen(false);
     setUserInfo(editedData);
   };
+
+    // TODO: Function to handle the donation process
+    const handleDonate = () => {
+      // Donation logic here
+      // Redirect  user to a payment type or handle donations another way 
+      console.log("Donation logic goes here!");
+      // Closing the donation window for now
+      toggleDonateWindow();
+    };  
 
 // Function to add a notification for each user (admin or follower) of the group
 const addNotification = async (groupId, groupName) => {
@@ -277,7 +289,7 @@ return (
                   <div className="friends-posts">
                     <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
                   </div>
-                  <button className="donate-btn">Donate</button>
+                  <button className="donate-btn" onClick={toggleDonateWindow}>Donate</button>
                 </div>
                 {isEditModalOpen && (
                   <EditModal
@@ -331,8 +343,20 @@ return (
                           <FontAwesomeIcon icon={faShare}/> Share
                         </button>
                       </div>
+                      {/* Donation window */}
+                      {isDonateWindowOpen && (
+                        <div className="donation-window">
+                          <h3>Donation Page</h3>
+                          <div className="donation-content">
+                            <label htmlFor="amount">Amount:</label>
+                            <input type="text" id="amount" name="amount" placeholder="$0.00"/>
+                            <button className="pay-btn" onClick={handleDonate}>Pay</button>
+                          </div>
+                          <p>Thank you for your donation(s).</p>
+                        </div>
+                      )}
                       {/* Comment window */}
-                      {commentWindows[post.id] && (  // Use the commentWindows state to conditionally render the Comments component
+                      {commentWindows[post.id] && (  
                         <Comments postId={post.id} onClose={() => openCommentWindow(post.id)}/>
                       )}
                       {/* Share window */}
