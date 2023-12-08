@@ -11,7 +11,7 @@ import React, { useEffect, useState,useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { doc, getDoc, addDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
-import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSquare, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Groupposts = () => {
   const navigate = useNavigate();
@@ -346,14 +346,24 @@ return (
                       {/* Donation window */}
                       {isDonateWindowOpen && (
                         <div className="donation-window">
-                          <h3>Donation Page</h3>
-                          <button onClick={() => handleDonate}>Close <FontAwesomeIcon icon={faShare}/></button>
-                          <div className="donation-content">
-                            <label htmlFor="amount">Amount:</label>
-                            <input type="text" id="amount" name="amount" placeholder="$0.00"/>
-                            <button className="pay-btn" onClick={handleDonate}>Pay</button>
+                          <div className="donation-head">
+                            <h3>Donation Page</h3>
+                            <button className="exit-btn" onClick={handleDonate}>
+                              Close <FontAwesomeIcon icon={faTimes} />
+                            </button>
                           </div>
-                          <p>Thank you for your donation(s).</p>
+                          <div className="body-content">
+                            <div className="donation-content">
+                              <div className="amount-label">
+                                <span>Amount:&nbsp;&nbsp;&nbsp;</span>
+                                <input type="text" id="amount" name="amount" placeholder="$0.00" />
+                              </div>
+                              <button className="pay-btn" onClick={handleDonate}>
+                                Pay
+                              </button>
+                            </div>
+                            <p>Thank you for your donation(s).</p>
+                          </div>
                         </div>
                       )}
                       {/* Comment window */}
