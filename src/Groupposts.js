@@ -10,8 +10,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState,useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { doc, getDoc, addDoc, getDocs, setDoc, deleteDoc, updateDoc, arrayUnion, orderBy, query, where, collection } from "firebase/firestore";
+import { doc, getDoc, addDoc, getDocs, setDoc, deleteDoc, orderBy, query, where, collection } from "firebase/firestore";
+import { faUser, faThumbsUp, faShare,faClipboard, faComment, faImage, faPenToSquare, faClose } from '@fortawesome/free-solid-svg-icons';
 
 const Groupposts = () => {
   const navigate = useNavigate();
@@ -347,6 +347,7 @@ return (
                       {isDonateWindowOpen && (
                         <div className="donation-window">
                           <h3>Donation Page</h3>
+                          <button onClick={() => handleDonate}>Close <FontAwesomeIcon icon={faShare}/></button>
                           <div className="donation-content">
                             <label htmlFor="amount">Amount:</label>
                             <input type="text" id="amount" name="amount" placeholder="$0.00"/>
