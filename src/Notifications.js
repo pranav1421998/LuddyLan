@@ -16,7 +16,7 @@ const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
 
     const navigateToGroup = (gId, gName) => {
-        navigate(`/groupposts/${gId}/${gName}`);
+        window.open(`/groupposts/${gId}/${gName}`);
       };
 
     const fetchNotifications = async () => {
@@ -36,7 +36,7 @@ const Notifications = () => {
                             id: doc.id,
                             message: doc.data().message || '',
                             name: doc.data().name || '',
-                            // Add other fields as needed
+                            group_id:  doc.data().group_id || ''
                         };
                     });
     
@@ -85,7 +85,7 @@ const Notifications = () => {
                 <div key={notification.id}>
                   {notification.message && (
                     <li className="item">
-                      <span onClick={() => navigateToGroup(notification.id, notification.name)}>{notification.message}</span>
+                      <span onClick={() => navigateToGroup(notification.group_id, notification.name)}>{notification.message}</span>
                       <Button className="noti-btn" onClick={() => deleteNotification(notification.id)}>
                         <FontAwesomeIcon icon={faTrash}/>
                       </Button>

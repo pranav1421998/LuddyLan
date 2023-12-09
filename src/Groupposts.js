@@ -105,7 +105,7 @@ const addNotification = async (groupId, groupName) => {
             await addDoc(notificationsRef, {
               message: notificationMessage,
               name: groupName,
-              id: groupId
+              group_id: groupId
             });
           }
         }
