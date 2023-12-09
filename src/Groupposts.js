@@ -287,7 +287,7 @@ return (
                 <p className='public-button'><FontAwesomeIcon icon={faPenToSquare} onClick={handleEditButtonClick} /></p>
                   <p className="heading-profile">{groupName}</p>
                   <div className="friends-posts">
-                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
+                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />&nbsp;Posts: {posts.length}</p>
                   </div>
                   <button className="donate-btn" onClick={toggleDonateWindow}>Donate</button>
                 </div>

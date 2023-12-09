@@ -143,9 +143,9 @@ function Profile() {
                   <p className="heading-profile">{userInfo.firstName} {userInfo.lastName}</p>
                   <p className="email-profile">{userInfo.id}</p>
                   <div className="friends-posts">
-                    <p className="friends-count"><FontAwesomeIcon icon={faUsers} />Friends:{friendsCollection.length} </p>
-                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />Posts: {userPosts.length}</p>
-                    <p className='friends-count'>Make it public:   
+                    <p className="friends-count"><FontAwesomeIcon icon={faUsers} />&nbsp;Friends:{friendsCollection.length} </p>
+                    <p className="posts-count"><FontAwesomeIcon icon={faImage} />&nbsp;Posts: {userPosts.length}</p>
+                    <p className='friends-count'>Make it public:&nbsp; 
                     <Switch
                       checked={isPublic}
                       onChange={togglePublic}
