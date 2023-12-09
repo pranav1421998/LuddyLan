@@ -58,7 +58,7 @@ function PollsPage() {
               userVotes[docSnapshot.id] = optionIndex;
             }
           }
-    }
+        }
         setPolls(pollList);
         setUserProfilePictures(userProfilePictures);
         setSelectedOptions(userVotes);
@@ -78,12 +78,11 @@ function PollsPage() {
         // Decrease the vote count for the previously selected option
         if (selectedOptions[pollId] !== undefined) {
           updatedOptions[selectedOptions[pollId]].votes -= 1;
-          updatedOptions[selectedOptions[pollId]].voters = updatedOptions[selectedOptions[pollId]].voters.replace(user.email + ",", "");
         }
 
         // Increase the vote count for the newly selected option
         updatedOptions[optionIndex].votes += 1;
-        updatedOptions[optionIndex].voters+=user.email+",";
+        updatedOptions[optionIndex].voters += user.email + ",";
         // Calculate the new percentages for all options
         const totalVotes = updatedOptions.reduce((total, option) => total + option.votes, 0);
         updatedOptions.forEach((option) => {
@@ -109,7 +108,7 @@ function PollsPage() {
     <section className="main">
       <Sidebar2 />
       <div className="top-btn">
-          <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
+        <button className="modal-btn" onClick={openPollPopup}>Create Poll</button>
       </div>
       <div className="post-container">
         {showPopup && (
@@ -120,45 +119,50 @@ function PollsPage() {
           </div>
         )}
         <div className="wrapper">
-          {polls.map((poll) => (
-            <div key={poll.id} className='poll-area poll-container'>
-              <div className="post-header">
-                <p className="user-icon">
-                  {userProfilePictures[poll.ownerId] ? (
-                    <img src={userProfilePictures[poll.ownerId]} alt="Owner Profile" className="profile-picture"/>) : 
-                    ( <FontAwesomeIcon icon={faUser} /> )}
-                </p>
-                <div className="head">
-                  <p className="username">{poll.ownerId}</p>
+          {polls.length === 0 ? (
+            <alert>No polls available.</alert>
+          ) : (
+            polls.map((poll) => (
+              <div key={poll.id} className='poll-area poll-container'>
+                <div className="post-header">
+                  <p className="user-icon">
+                    {userProfilePictures[poll.ownerId] ? (
+                      <img src={userProfilePictures[poll.ownerId]} alt="Owner Profile" className="profile-picture" />
+                    ) :
+                      (<FontAwesomeIcon icon={faUser} />)}
+                  </p>
+                  <div className="head">
+                    <p className="username">{poll.ownerId}</p>
+                  </div>
                 </div>
-              </div>
-              <header>{poll.question}</header>
-              <ul>
-                {poll.options.map((option, optionIndex) => (
-                  <li key={optionIndex}>
-                    <input
-                      type="radio"
-                      name={`option-${poll.id}`}
-                      onClick={() => voteForOption(poll.id, optionIndex)}
-                      checked={selectedOptions[poll.id] === optionIndex}
-                      
-                    />
-                    <span className="option-text">{option.text}</span>
-                    {selectedOptions[poll.id] !== undefined && (
-                      <div className="progress-bar">
-                        <div
-                          className="progress"
-                          style={{ width: `${option.percentage}%` }}
-                        >
-                          <span className="percentage">{option.percentage}%</span>
+                <header>{poll.question}</header>
+                <ul>
+                  {poll.options.map((option, optionIndex) => (
+                    <li key={optionIndex}>
+                      <input
+                        type="radio"
+                        name={`option-${poll.id}`}
+                        onClick={() => voteForOption(poll.id, optionIndex)}
+                        checked={selectedOptions[poll.id] === optionIndex}
+                        disabled={selectedOptions[poll.id] !== undefined}
+                      />
+                      <span className="option-text">{option.text}</span>
+                      {selectedOptions[poll.id] !== undefined && (
+                        <div className="progress-bar">
+                          <div
+                            className="progress"
+                            style={{ width: `${option.percentage}%` }}
+                          >
+                            <span className="percentage">{option.percentage}%</span>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>
