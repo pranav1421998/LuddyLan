@@ -7,7 +7,7 @@ import defimg from './Images/user.jpg';
 import { Link, useNavigate } from "react-router-dom";
 //firebase
 import { db } from './firebaseConfig';
-import { doc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, updateDoc, where, query } from "firebase/firestore";
 //cookies
 import Cookies from 'js-cookie';
 
@@ -25,18 +25,77 @@ const SearchResults = ({ users, posts }) => {
       const queryTextg = searchParams.get('query');
       // const [profilePictureURL, setProfilePictureURL] = useState('');
 
+      const fetchUserFirstName = async (userEmail) => {
+        try {
+          const userDocRef = doc(db, "users", userEmail);
+          const userDoc = await getDoc(userDocRef);
+      
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            return userData.firstName + " " + userData.lastName;
+          } else {
+            return null; // User not found for the given email
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          throw error;
+        }
+      };
+
+      async function getPostCaption(postId) {
+        try {
+          const userDocRef = doc(db, "posts", postId);
+          const userDoc = await getDoc(userDocRef);
+      
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            return userData.caption;
+          } else {
+            return null; // User not found for the given email
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          throw error;
+        }
+      }
+      
+      
       useEffect(() => {
         const fetchData = async () => {
           const userDocRef = doc(db, "users", user_email); // fetching current user data
           const userDoc = await getDoc(userDocRef);
+      
           if (userDoc.exists()) {
-            setRecentSearches(userDoc.data().recentlySearched);
+            const recentlySearched = userDoc.data().recentlySearched || [];
+      
+            const updatedRecentSearches = await Promise.all(recentlySearched.map(async (search) => {
+              if (search.endsWith("@iu.edu")) {
+                const name = await fetchUserFirstName(search);
+                return { data: name, search };
+              } else if(search.startsWith("/Posts?pid=")){
+                const postId = search.replace("/Posts?pid=", "");
+                const caption = await getPostCaption(postId);
+                console.log(caption,'aaaaaaa');
+                console.log(search,'bbbbbbbbb');
+                // const caption = await
+                return { data: caption, search };
+              }
+              else {
+                return { data: 'test', search};
+              }
+            }));
+      
+            setRecentSearches(updatedRecentSearches);
           }
-
-        }
+        };
+      
         fetchData();
+      }, [db, user_email]);
+      
+      
 
-        }, [db]);
+    console.log(recentSearches,'1111111');
+    
 
       const recentSearchClick = (search) => {
         if(search[0]!='/'){
@@ -48,49 +107,61 @@ const SearchResults = ({ users, posts }) => {
       }
 
       // Function to handle result click and update Firestore
-      const handleUserItemClick = async (userEmail) => {
-        // Open user profile in a new tab
-        window.open(`/profileGlobal?uid=${userEmail}`, '_blank');
-    
-        // Update Firestore with the clicked user's email
-        const userDocRef = doc(db, "users", user_email); // fetching current user data
-        const userDoc = await getDoc(userDocRef);
-        let recentSearches = [];
-        if (userDoc.exists()) {
-            recentSearches = userDoc.data().recentlySearched || [];
-        }
-        // Check if userEmail is not already in recentSearches and add accordingly
-        if (!recentSearches.includes(userEmail)) {
-            const updatedSearches = [...recentSearches, userEmail].slice(-10); // Keep only the last 10 searches
-            await updateDoc(userDocRef, {
-                recentlySearched: updatedSearches
-            });
-        }
-    };
-    
+      // ... (previous code)
 
-    const handlePostItemClick = async (postId) => {
-      const postUrl = `/Posts?pid=${postId}`;
-      // Open post in a new tab
-      window.open(postUrl, '_blank');
-  
-      // Update Firestore with the clicked user's email
-      const userDocRef = doc(db, "users", user_email); // fetching current user data
-      const userDoc = await getDoc(userDocRef);
-      let recentSearches = [];
-      if (userDoc.exists()) {
-          recentSearches = userDoc.data().recentlySearched || [];
-      }
-      // Check if postUrl is not already in recentSearches and add accordingly
-      if (!recentSearches.includes(postUrl)) {
-          const updatedSearches = [...recentSearches, postUrl].slice(-10); // Keep only the last 10 searches
-          await updateDoc(userDocRef, {
-              recentlySearched: updatedSearches
-          });
-      }
-  };
-  
+const handleUserItemClick = async (userEmail) => {
+  // Open user profile in a new tab
+  window.open(`/profileGlobal?uid=${userEmail}`, '_blank');
 
+  // Update Firestore with the clicked user's email
+  const userDocRef = doc(db, "users", user_email); // fetching current user data
+  const userDoc = await getDoc(userDocRef);
+  let recentSearches = [];
+  if (userDoc.exists()) {
+      recentSearches = userDoc.data().recentlySearched || [];
+  }
+  // Check if userEmail is not already in recentSearches and add accordingly
+  if (!recentSearches.some(item => item.email === userEmail)) {
+      const updatedSearches = [
+          { email: userEmail, data: "123" }, // Add the 'data' field with value "123"
+          ...recentSearches
+      ].slice(0, 10); // Keep only the last 10 searches
+
+      await updateDoc(userDocRef, {
+          recentlySearched: updatedSearches
+      });
+  }
+};
+
+const handlePostItemClick = async (postId) => {
+  const postUrl = `/Posts?pid=${postId}`;
+  // Open post in a new tab
+  window.open(postUrl, '_blank');
+
+  // Update Firestore with the clicked user's email
+  const userDocRef = doc(db, "users", user_email); // fetching current user data
+  const userDoc = await getDoc(userDocRef);
+  let recentSearches = [];
+  if (userDoc.exists()) {
+      recentSearches = userDoc.data().recentlySearched || [];
+  }
+  // Check if postUrl is not already in recentSearches and add accordingly
+  if (!recentSearches.some(item => item.postId === postId)) {
+      const updatedSearches = [
+          { postId, postUrl, data: "123" }, // Add the 'data' field with value "123"
+          ...recentSearches
+      ].slice(0, 10); // Keep only the last 10 searches
+
+      await updateDoc(userDocRef, {
+          recentlySearched: updatedSearches
+      });
+  }
+};
+
+// ... (remaining code)
+
+  
+  console.log(recentSearches,'0000000');
       const formatTimestamp = (timestamp) => {
         const date = timestamp.toDate();
         const options = { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
@@ -245,10 +316,10 @@ const SearchResults = ({ users, posts }) => {
                   <div className="recent-searches">
                       {/* Map over the recent searches and display them */}
                       <h2 className='h-searchr'>Recent Searches</h2>
-                      {recentSearches.map((search, index) => (
-                          <div key={index} className="search-recent-item">
-                              <a onClick={() => recentSearchClick(search)}>
-                                {search}
+                      {recentSearches.map((rsearch) => (
+                          <div className="search-recent-item">
+                              <a onClick={() => recentSearchClick(rsearch.search)}>
+                                {rsearch.data}
                                 </a>
                           </div>
                         ))}
