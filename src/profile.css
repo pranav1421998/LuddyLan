@@ -75,6 +75,7 @@
  .heading-profile {
     font-size: 32px;
     color: white;
+    display: flex;
     padding-left: 10vw;
  }
  .email-profile {
