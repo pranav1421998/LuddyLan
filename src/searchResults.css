@@ -126,6 +126,7 @@
   margin-left: 7vw;
   text-align: left;
   cursor:pointer;
+  padding: 1vh;
  }
  .search-recent-item:hover{
   color:#ddd;
