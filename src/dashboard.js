@@ -116,10 +116,17 @@ const Dashboard = () => {
     alert("Copied to clipboard!");
   };
 
+  const getBaseUrl = () => {
+    return `${window.location.protocol}//${window.location.host}`;
+  }
+  
+
   // Function to generate the URL so the user can copy and share the post
   const generatePostURL = (postId) => {
     // Replace with actual URL after deploying! TODO
-    return `http://localhost:3000/Posts?pid=${postId}`;
+    const baseurl = getBaseUrl();
+    console.log(baseurl);
+    return `${baseurl}/Posts?pid=${postId}`;
   };
 
   async function getUserNamesByEmail(email) {
