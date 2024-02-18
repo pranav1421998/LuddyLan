@@ -1,2 +1,2 @@
-# team_20_SE
+# Luddy Lan
 Social Network 
